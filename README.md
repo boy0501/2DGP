@@ -2,8 +2,7 @@
 
 -제목 I WANNA DO BOSSRUSH (IWDB) (원작 I WANNA BE THE BOSHY (IWBTB))
 
-
-![보시](https://user-images.githubusercontent.com/37091845/94274990-61821300-ff81-11ea-9280-c22e3c6a2f6b.png)
+<img src="https://user-images.githubusercontent.com/37091845/94274990-61821300-ff81-11ea-9280-c22e3c6a2f6b.png" alt="보시" style="zoom: 80%;" />
 
 
 
@@ -35,8 +34,7 @@ f.일시중지 Scene
 
 각 Scene 끼리의 이동 가능 도시화
 
-
-![도식화](https://user-images.githubusercontent.com/37091845/94274814-1d8f0e00-ff81-11ea-8fc4-7b7b6721fce1.png)
+<img src="https://user-images.githubusercontent.com/37091845/94274814-1d8f0e00-ff81-11ea-8fc4-7b7b6721fce1.png" alt="도식화" style="zoom: 50%;" />
 
 
 
@@ -44,7 +42,7 @@ a.게임 시작전 Scene
 
 게임시작,랭킹,게임종료 3가지 선택을 할 수 있는 Scene 
 
-![게임시작전](https://user-images.githubusercontent.com/37091845/94274977-5e872280-ff81-11ea-8b05-acd4b60a54c4.png)
+<img src="https://user-images.githubusercontent.com/37091845/94274977-5e872280-ff81-11ea-8b05-acd4b60a54c4.png" alt="게임시작전" style="zoom: 50%;" />
 
 b. 보스 선택 Scene
 
@@ -52,7 +50,7 @@ b. 보스 선택 Scene
 
 Enter 시 보스 싸움 Scene으로 간다.  하지만 난 보스 한개만 만들것이다.
 
-![보스선택](https://user-images.githubusercontent.com/37091845/94274988-60e97c80-ff81-11ea-887e-4a1bb9acb10a.png)
+<img src="https://user-images.githubusercontent.com/37091845/94274988-60e97c80-ff81-11ea-887e-4a1bb9acb10a.png" alt="보스선택" style="zoom:33%;" />
 
 c. 보스와의 싸움 Scene
 
@@ -60,19 +58,19 @@ c. 보스와의 싸움 Scene
 
 공격시 총알이 직진으로 나간다.
 
-![보스](https://user-images.githubusercontent.com/37091845/94274986-6050e600-ff81-11ea-84e8-4a26f56dfb35.png)
+<img src="https://user-images.githubusercontent.com/37091845/94274986-6050e600-ff81-11ea-84e8-4a26f56dfb35.png" alt="보스" style="zoom: 33%;" />
 
 d. 일시중지 Scene
 
 여러가지 Scene으로 이동 가능한 Pause Scene이다.
 
-![일시정지](https://user-images.githubusercontent.com/37091845/94274994-62b34000-ff81-11ea-9313-51547889f919.png)
+<img src="https://user-images.githubusercontent.com/37091845/94274994-62b34000-ff81-11ea-9313-51547889f919.png" alt="일시정지" style="zoom:33%;" />
 
 e.
 
 랭킹 Scene
 
-![랭크](https://user-images.githubusercontent.com/37091845/94274972-5a5b0500-ff81-11ea-9e20-8e7f1914d06b.png)
+<img src="https://user-images.githubusercontent.com/37091845/94274972-5a5b0500-ff81-11ea-9e20-8e7f1914d06b.png" alt="랭크" style="zoom: 33%;" />
 
 f. Logo Scene
 
