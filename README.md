@@ -4,7 +4,7 @@
 
 
 
-![보시](res\보시.png)
+![도식화](https://user-images.githubusercontent.com/37091845/94274814-1d8f0e00-ff81-11ea-8fc4-7b7b6721fce1.png)
 
 
 
