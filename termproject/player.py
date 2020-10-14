@@ -68,15 +68,16 @@ class Player:
 
 
 
+    def fire(self):
+        pass
 
-
-    def draw(self):
+    def draw(self,posi):
         images = self.images[self.action]
         image = images[self.fidx % len(images)]
+        result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
         self.width = Player.IMAGESIZE[self.action][self.fidx%len(images)][0]       
         self.height = Player.IMAGESIZE[self.action][self.fidx%len(images)][1]
-        flip = 'h' if self.delta[0] < 0 else ''
-        image.composite_draw(0,self.flip,*self.pos,self.width,self.height)
+        image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
         
 
     def update(self):

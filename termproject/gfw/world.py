@@ -1,10 +1,12 @@
 from functools import reduce
 import gfw
 from pico2d import *
+import math
 
 objects = []
 trashcan = []
-
+pos = (0,0)
+dtheta = 0
 def init(layer_names):
     global objects
     objects = []
@@ -48,16 +50,20 @@ def clear_at(layer_index):
     objects[layer_index] = []
 
 def update():
+    global dtheta
+    global pos
     for obj in all_objects():
         obj.update()
     if len(trashcan) > 0:
         empty_trashcan()
+    pos =(math.sin(dtheta*180/math.pi) * 10, math.sin(dtheta*180/math.pi) * 10)
+    dtheta = (dtheta+1) % 360
     # counts = list(map(len, objects))
     # print('count:', counts, count())
 
 def draw():
     for obj in all_objects():
-        obj.draw()
+        obj.draw(pos)
 
 def empty_trashcan():
     global trashcan

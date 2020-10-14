@@ -1,6 +1,7 @@
 import random
 from pico2d import *
 import gfw
+import math
 
 RES_DIR = './res'
 
@@ -35,10 +36,16 @@ class ImageObject:
 	def __init__(self, imageName, x, y):
 		self.image = gfw.image.load(RES_DIR + '/' + imageName)
 		self.x, self.y = x, y
-	def draw(self):
-		self.image.draw(self.x, self.y)
+		self.dx,self.dy=0.0,0.0
+		self.dtheta = 0
+	def draw(self,pos):
+		#배경그리는곳
+		self.image.draw(self.x+pos[0], self.y+pos[1])
 	def update(self):
-		pass
+		self.dy = math.sin(self.dtheta*180/math.pi) * 10
+		self.dx = math.sin(self.dtheta*180/math.pi) * 10
+		self.dtheta = (self.dtheta+1)%360
+		
 
 if __name__ == "__main__":
 	print("This file is not supposed to be executed directly.")
