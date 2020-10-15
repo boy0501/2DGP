@@ -57,7 +57,7 @@ def update():
     if len(trashcan) > 0:
         empty_trashcan()
     pos =(math.sin(dtheta*180/math.pi) * 10, math.sin(dtheta*180/math.pi) * 10)
-    dtheta = (dtheta+1) % 360
+    #dtheta = (dtheta+1) % 360
     # counts = list(map(len, objects))
     # print('count:', counts, count())
 
