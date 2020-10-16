@@ -14,13 +14,13 @@ class Bullet:
         x,y = self.pos
         return x - 40, y - 50, x + 40, y + 40
 
-    def __init__(self,x,y,speed):
+    def __init__(self,x,y,d,speed):
         # if len(Bullet.images) == 0:
         #     self.load_images('male')
         #     self.load_images('female')
 
         self.pos = (x,y)
-        self.delta = 1, 1
+        self.delta = 1 * d, 1 * d
         self.image = gfw.image.load(gobj.RES_DIR + '/2862.png')
         self.speed = speed
         self.fidx = 0
@@ -34,7 +34,7 @@ class Bullet:
         x += dx * self.speed * gfw.delta_time
         #y += dy * self.speed * gfw.delta_time
         self.pos = x,y
-        if(self.pos[0] > get_canvas_width()+8):
+        if((self.pos[0] > get_canvas_width()+8 )|(self.pos[0] < -8)):
             self.remove()
 
 

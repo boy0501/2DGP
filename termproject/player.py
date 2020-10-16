@@ -81,7 +81,8 @@ class Player:
         result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
         self.width = Player.IMAGESIZE[self.action][self.fidx%len(images)][0]       
         self.height = Player.IMAGESIZE[self.action][self.fidx%len(images)][1]
-        image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
+        image.composite_draw(0,self.flip,*result_posi)
+       # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
         
 
     def update(self):
@@ -92,13 +93,17 @@ class Player:
         y += dy * self.speed * gfw.delta_time
         self.pos = x,y
         self.time += gfw.delta_time
-        self.laser_time += gfw.delta_time
         self.fidx = round(self.time*Player.FPS)
-        if self.laser_time >= Player.LASER_INTERVAL:
-            self.laser_time = 0
-            Player.LASER_INTERVAL = 0
-            self.action = 'Idle'
-
+        if self.action == 'Attack':
+            self.laser_time += gfw.delta_time
+            if self.laser_time >= Player.LASER_INTERVAL:
+                self.laser_time = 0
+                Player.LASER_INTERVAL = 0
+                self.action = \
+                'Idle' if dx == 0 else \
+                'Walk' if dx < 0 else \
+                'Walk' if dx > 0 else \
+                'Jump'
 
     def handle_event(self, e):
         pair = (e.type, e.key)
@@ -117,7 +122,7 @@ class Player:
             elif dx == 1: 
                 self.flip = ''
         if pair in Player.SPECIAL_KEY_MAP:
-            if Player.SPECIAL_KEY_MAP[pair]==14:
+            if Player.SPECIAL_KEY_MAP[pair]==14:               
                 self.action = 'Attack'
                 self.fire()             
             # self.action = \
@@ -130,9 +135,13 @@ class Player:
     def fire(self):
         #print(len(bullet.Bullet.bullets))
         if(bullet.Bullet.BULLET_NUM<bullet.Bullet.BULLET_MAX):
-            bullet1 = bullet.Bullet(*self.pos,200)
+            if self.flip == 'h':
+                bullet1 = bullet.Bullet(self.pos[0]+4,self.pos[1]-4,-1,300)
+            else:
+                bullet1 = bullet.Bullet(self.pos[0]+4,self.pos[1]-4,1,300)
             gfw.world.add(gfw.layer.bullet,bullet1)
-            bullet.Bullet.BULLET_NUM += 1   
+            bullet.Bullet.BULLET_NUM += 1
+            Player.LASER_INTERVAL = 0.15   
         # if len(bullet.Bullet.bullets)<5:
         #     bullet1 = bullet.Bullet(*self.pos,200)
         #     #bullet.Bullet.bullets.append(bullet1)

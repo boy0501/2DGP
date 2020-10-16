@@ -9,7 +9,7 @@ canvas_width = 640
 canvas_height = 480
 
 def enter():
-    gfw.world.init(['bg', 'player','bullet'])
+    gfw.world.init(['bg', 'bullet','player'])
     global player
     player = Player()
     gfw.world.add(gfw.layer.player, player)
@@ -43,4 +43,3 @@ if __name__ == '__main__':
     gfw.run_main()
 
 
-    
