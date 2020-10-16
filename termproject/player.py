@@ -35,7 +35,7 @@ class Player:
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 100, 100
-        self.delta = 0, 0
+        self.delta = (0, 0)
         self.speed = 200
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
@@ -47,6 +47,7 @@ class Player:
         self.flip = ''
         self.laser_time = 0
         self.bulletnum = 0
+        self.gravity = 0.3
 
     @staticmethod
     def load_images():
@@ -89,21 +90,41 @@ class Player:
         x,y = self.pos
         dx,dy = self.delta
         #print(dx,dy)        
+
+        dy -= self.gravity
         x += dx * self.speed * gfw.delta_time
         y += dy * self.speed * gfw.delta_time
-        self.pos = x,y
-        self.time += gfw.delta_time
-        self.fidx = round(self.time*Player.FPS)
+
+        if y < 90 and dy < 0:
+            dy = 0
+            y = 90
+
         if self.action == 'Attack':
             self.laser_time += gfw.delta_time
             if self.laser_time >= Player.LASER_INTERVAL:
                 self.laser_time = 0
                 Player.LASER_INTERVAL = 0
                 self.action = \
+                'Jump' if dy != 0 else \
                 'Idle' if dx == 0 else \
                 'Walk' if dx < 0 else \
                 'Walk' if dx > 0 else \
-                'Jump'
+                'Idle'
+        elif self.action == 'Jump':
+            if y == 90 and dy ==0:
+                if dx != 0:
+                    self.action = 'Walk'
+                else:
+                    self.action = 'Idle'
+            
+
+
+
+        self.pos = x,y
+        self.delta = dx,dy
+        self.time += gfw.delta_time
+        self.fidx = round(self.time*Player.FPS)
+        
 
     def handle_event(self, e):
         pair = (e.type, e.key)
@@ -124,7 +145,14 @@ class Player:
         if pair in Player.SPECIAL_KEY_MAP:
             if Player.SPECIAL_KEY_MAP[pair]==14:               
                 self.action = 'Attack'
-                self.fire()             
+                self.fire()
+            elif Player.SPECIAL_KEY_MAP[pair]==7:
+                self.action = 'Jump'
+                deltay = 5
+                deltax = self.delta[0]  
+                self.delta = deltax,deltay
+                
+
             # self.action = \
             #     'Jump' if Player.SPECIAL_KEY_MAP[pair] == 7 else \
             #     'Attack'

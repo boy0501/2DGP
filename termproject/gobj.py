@@ -37,14 +37,12 @@ def draw_collision_box():
 class ImageObject:
 
 	FPS = 12
-
+	image_ground = []
 
 	@staticmethod
 	def load_images():
 		images = []
-		
 		file_fmt = '%s/미싱노패턴/보스방/Animation-%d Direction-%d Frame-%d 복사.png'
-
 		action_images = []
 		n = -1
 		while True:
@@ -61,6 +59,7 @@ class ImageObject:
 
 	def __init__(self, imageName, x, y):
 		#self.image = self.imagegfw.image.load('./res/bg/1770.png')
+		ImageObject.image_ground = gfw.image.load('./res/미싱노패턴/보스방/3818.png')
 		self.image = ImageObject.load_images()
 		self.x, self.y = x, y
 		self.dx,self.dy=0.0,0.0
@@ -73,6 +72,7 @@ class ImageObject:
 		#배경그리는곳
 		
 		image.clip_draw(0,0,700,500,320+pos[0],240+pos[1])
+		ImageObject.image_ground.clip_draw(0,0,700,500,320+pos[0],240+pos[1])
 		#self.image.draw(self.x+pos[0], self.y+pos[1])
 	def update(self):
 		self.dy = math.sin(self.dtheta*180/math.pi) * 10
