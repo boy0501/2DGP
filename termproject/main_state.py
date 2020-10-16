@@ -1,6 +1,7 @@
 import gfw
 from pico2d import *
 from player import Player
+from bullet import Bullet
 import gobj
 
 
@@ -8,7 +9,7 @@ canvas_width = 640
 canvas_height = 480
 
 def enter():
-    gfw.world.init(['bg', 'player'])
+    gfw.world.init(['bg', 'player','bullet'])
     global player
     player = Player()
     gfw.world.add(gfw.layer.player, player)
@@ -40,3 +41,6 @@ def exit():
 
 if __name__ == '__main__':
     gfw.run_main()
+
+
+    

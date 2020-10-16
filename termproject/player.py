@@ -3,7 +3,7 @@ import random
 from pico2d import *
 import gfw
 import gobj
-
+import bullet
 
 class Player:
     KEY_MAP = {
@@ -29,6 +29,7 @@ class Player:
     }
     images = {}
     FPS = 12
+    LASER_INTERVAL = 0
 
     #constructor
     def __init__(self):
@@ -44,7 +45,9 @@ class Player:
         self.width = 10
         self.height = 10
         self.flip = ''
-       
+        self.laser_time = 0
+        self.bulletnum = 0
+
     @staticmethod
     def load_images():
         images = {}
@@ -68,10 +71,11 @@ class Player:
 
 
 
-    def fire(self):
-        pass
+ 
 
     def draw(self,posi):
+        if self.laser_time < Player.LASER_INTERVAL:
+            self.action = 'Attack'
         images = self.images[self.action]
         image = images[self.fidx % len(images)]
         result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
@@ -83,17 +87,22 @@ class Player:
     def update(self):
         x,y = self.pos
         dx,dy = self.delta
-        print(dx,dy)        
+        #print(dx,dy)        
         x += dx * self.speed * gfw.delta_time
         y += dy * self.speed * gfw.delta_time
         self.pos = x,y
         self.time += gfw.delta_time
+        self.laser_time += gfw.delta_time
         self.fidx = round(self.time*Player.FPS)
+        if self.laser_time >= Player.LASER_INTERVAL:
+            self.laser_time = 0
+            Player.LASER_INTERVAL = 0
+            self.action = 'Idle'
 
 
     def handle_event(self, e):
         pair = (e.type, e.key)
-        print(pair)
+        #print(pair)
         if pair in Player.KEY_MAP:
             pdx = self.delta[0]
             self.delta = gobj.point_add(self.delta, Player.KEY_MAP[pair])
@@ -108,8 +117,25 @@ class Player:
             elif dx == 1: 
                 self.flip = ''
         if pair in Player.SPECIAL_KEY_MAP:
-            self.action = \
-                'Jump' if Player.SPECIAL_KEY_MAP[pair] == 7 else \
-                'Attack'
+            if Player.SPECIAL_KEY_MAP[pair]==14:
+                self.action = 'Attack'
+                self.fire()             
+            # self.action = \
+            #     'Jump' if Player.SPECIAL_KEY_MAP[pair] == 7 else \
+            #     'Attack'
+            #      gfw.world.add(gfw.layer.bullet, bullet)
+
             # print(dx, pdx, self.action)
             
+    def fire(self):
+        #print(len(bullet.Bullet.bullets))
+        if(bullet.Bullet.BULLET_NUM<bullet.Bullet.BULLET_MAX):
+            bullet1 = bullet.Bullet(*self.pos,200)
+            gfw.world.add(gfw.layer.bullet,bullet1)
+            bullet.Bullet.BULLET_NUM += 1   
+        # if len(bullet.Bullet.bullets)<5:
+        #     bullet1 = bullet.Bullet(*self.pos,200)
+        #     #bullet.Bullet.bullets.append(bullet1)
+        #     for b in range(0,len(bullet.Bullet.bullets)):
+        #         gfw.world.add(gfw.layer.bullet,bullet.Bullet.bullets[b])
+        #     Player.LASER_INTERVAL = 0.15

@@ -18,21 +18,26 @@ def init(layer_names):
         layerIndex += 1
 
 def add(layer_index, obj):
+    global objects
     objects[layer_index].append(obj)
 
 def remove(obj):
+    global trashcan
     trashcan.append(obj)
 
 def all_objects():
+    global objects
     for layer_objects in objects:
         for obj in layer_objects:
             yield obj
 
 def objects_at(layer_index):
+    global objects
     for obj in objects[layer_index]:
         yield obj
 
 def count_at(layer_index):
+    global objects
     return len(objects[layer_index])
 
 def count():
@@ -45,6 +50,7 @@ def clear():
     objects = []
 
 def clear_at(layer_index):
+    global objects
     for o in objects[layer_index]:
         del o
     objects[layer_index] = []
@@ -56,10 +62,14 @@ def update():
         obj.update()
     if len(trashcan) > 0:
         empty_trashcan()
-    pos =(math.sin(dtheta*180/math.pi) * 10, math.sin(dtheta*180/math.pi) * 10)
+    #ㅡㅡㅡㅡㅡ 화면 흔들림효과
+    #pos =(math.sin(dtheta*180/math.pi) * 10, math.sin(dtheta*180/math.pi) * 10)
     #dtheta = (dtheta+1) % 360
-    # counts = list(map(len, objects))
-    # print('count:', counts, count())
+    #ㅡㅡㅡㅡㅡ 화면 흔들림효과
+    counts = list(map(len, objects))
+    #print('count:', counts, count())
+    #print(objects)
+    #print(trashcan)
 
 def draw():
     for obj in all_objects():
@@ -67,7 +77,8 @@ def draw():
 
 def empty_trashcan():
     global trashcan
-
+    global objects
+    
     for obj in trashcan:
         for layer_objects in objects:
             # if obj in layer_objects:

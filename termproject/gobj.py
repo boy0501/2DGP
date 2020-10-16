@@ -72,7 +72,7 @@ class ImageObject:
 		image = images[self.fidx % len(images)]
 		#배경그리는곳
 		
-		image.clip_draw(0,0,640,480,320,240)
+		image.clip_draw(0,0,700,500,320+pos[0],240+pos[1])
 		#self.image.draw(self.x+pos[0], self.y+pos[1])
 	def update(self):
 		self.dy = math.sin(self.dtheta*180/math.pi) * 10
