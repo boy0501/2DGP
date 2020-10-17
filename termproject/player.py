@@ -18,7 +18,8 @@ class Player:
     }
     SPECIAL_KEY_MAP ={
     (SDL_KEYDOWN, SDLK_LSHIFT): 7,
-    (SDL_KEYDOWN, SDLK_z): 14
+    (SDL_KEYDOWN, SDLK_z): 14,
+    (SDL_KEYUP,SDLK_LSHIFT): 8  
     }
     STATES = ['Attack','Idle' ,'Walk' ,'Jump','Double_jump','Fall']
     STATESDIC = {'Attack':14, 'Idle' : 0, 'Walk' :1 , 'Jump' : 7,'Double_jump':7,'Fall' :7}
@@ -33,7 +34,7 @@ class Player:
     images = {}
     FPS = 12
     LASER_INTERVAL = 0
-
+    JUMP_INTERVAL = 0
     #constructor
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
@@ -49,8 +50,9 @@ class Player:
         self.height = 10
         self.flip = ''
         self.laser_time = 0
+        self.jump_time = 0
         self.bulletnum = 0
-        self.gravity = 0.3
+        self.gravity = 0.1
         self.Djump_state = Player.JUMP_STATES_DIC['Normal']
         
 
@@ -91,18 +93,18 @@ class Player:
        # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
         
     def jump(self):
-        if self.state == 'Double_jump' or self.Djump == Player.JUMP_STATES_DIC['Double_jump']:
+        if self.state == 'Double_jump' or self.Djump_state == Player.JUMP_STATES_DIC['Double_jump']:
             return
         if self.state == 'Jump':
             self.state = 'Double_jump'
-            self.Djump = Player.JUMP_STATES_DIC['Double_jump']
+            self.Djump_state = Player.JUMP_STATES_DIC['Double_jump']
         elif self.state == 'Fall':
             self.state = 'Double_jump'
-            self.Djump = Player.JUMP_STATES_DIC['Double_jump']
+            self.Djump_state = Player.JUMP_STATES_DIC['Double_jump']
         else:
             self.state = 'Jump'
-            self.Djump += 1
-        deltay = 5
+            self.Djump_state += 1
+        deltay = 3
         deltax = self.delta[0]
         self.delta = deltax, deltay
 
@@ -120,7 +122,7 @@ class Player:
         if y < 90 and dy < 0:
             dy = 0
             y = 90
-            self.Djump = self.Djump = Player.JUMP_STATES_DIC['Normal']
+            self.Djump_state = Player.JUMP_STATES_DIC['Normal']
 
         if self.state == 'Attack':
             self.laser_time += gfw.delta_time
@@ -128,14 +130,19 @@ class Player:
                 self.laser_time = 0
                 Player.LASER_INTERVAL = 0
                 self.state = \
-                'Jump' if dy != 0 and self.Djump == Player.JUMP_STATES_DIC['Normal'] else \
-                'Double_jump' if dy != 0 and self.Djump == Player.JUMP_STATES_DIC['Jump'] else\
+                'Jump' if dy != 0 and self.Djump_state == Player.JUMP_STATES_DIC['Normal'] else \
+                'Double_jump' if dy != 0 and self.Djump_state == Player.JUMP_STATES_DIC['Jump'] else\
                 'Idle' if dx == 0 else \
                 'Walk' if dx < 0 else \
                 'Walk' if dx > 0 else \
                 'Idle'
-            
         elif self.state in Player.STATES[-3:]:
+            self.jump_time += gfw.delta_time
+            if self.jump_time >= Player.JUMP_INTERVAL:
+                self.jump_time = 0
+                Player.JUMP_INTERVAL = 0
+
+
             if y == 90 and dy ==0:
                 if dx != 0:
                     self.state = 'Walk'
@@ -162,7 +169,8 @@ class Player:
                 'Idle' if dx == 0 else \
                 'Walk' if dx < 0 else \
                 'Walk' if dx > 0 else \
-                'Jump' 
+                'Jump' if dy != 0 else \
+                'Jump'
             if dx == -1 :
                 self.flip = 'h'
             elif dx == 1: 
@@ -173,8 +181,11 @@ class Player:
                 self.fire()
             elif Player.SPECIAL_KEY_MAP[pair]==7:
                 self.jump()
-                
-                
+                Player.JUMP_INTERVAL = 0.25   
+            elif Player.SPECIAL_KEY_MAP[pair] == 8:
+                dx,dy = self.delta
+                if(dy>=0):
+                    self.delta = (dx,0)
 
             # self.state = \
             #     'Jump' if Player.SPECIAL_KEY_MAP[pair] == 7 else \
