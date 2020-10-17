@@ -20,13 +20,16 @@ class Player:
     (SDL_KEYDOWN, SDLK_LSHIFT): 7,
     (SDL_KEYDOWN, SDLK_z): 14
     }
-    ACTIONS = ['Attack','Idle' ,'Walk' ,'Jump']
-    ACTIONSDIC = {'Attack':14, 'Idle' : 0, 'Walk' :1 , 'Jump' : 7}
+    STATES = ['Attack','Idle' ,'Walk' ,'Jump','Double_jump','Fall']
+    STATESDIC = {'Attack':14, 'Idle' : 0, 'Walk' :1 , 'Jump' : 7,'Double_jump':7,'Fall' :7}
     IMAGESIZE ={'Walk':[(24,23),(16,25),(21,22),(16,25)],
                 'Idle':[(32,32)],
                 'Jump':[(32,32)],
-                'Attack':[(32,32)]
+                'Attack':[(32,32)],
+                'Double_jump':[(32,32)],
+                'Fall':[(32,32)]
     }
+    JUMP_STATES_DIC = {'Normal':0,'Jump':1,'Double_jump':2}
     images = {}
     FPS = 12
     LASER_INTERVAL = 0
@@ -40,7 +43,7 @@ class Player:
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
         self.images = Player.load_images()
-        self.action = 'Idle'
+        self.state = 'Idle'
         self.wh = ()
         self.width = 10
         self.height = 10
@@ -48,26 +51,28 @@ class Player:
         self.laser_time = 0
         self.bulletnum = 0
         self.gravity = 0.3
+        self.Djump_state = Player.JUMP_STATES_DIC['Normal']
+        
 
     @staticmethod
     def load_images():
         images = {}
         count = 0
-        action_value = 0
+        state_value = 0
         file_fmt = '%s/Animation-%d Direction-%d Frame-%d.png'
-        for action in Player.ACTIONS:
-            action_images = []
+        for state in Player.STATES:
+            state_images = []
             n = -1
             while True:
                 n += 1
-                action_value = Player.ACTIONSDIC[action]
-                fn = file_fmt % (gobj.RES_DIR,action_value,0,n)
+                state_value = Player.STATESDIC[state]
+                fn = file_fmt % (gobj.RES_DIR,state_value,0,n)
                 if os.path.isfile(fn):
-                    action_images.append(gfw.image.load(fn))
+                    state_images.append(gfw.image.load(fn))
                 else:
                     break
                 count += 1
-            images[action] = action_images
+            images[state] = state_images
         return images
 
 
@@ -76,15 +81,32 @@ class Player:
 
     def draw(self,posi):
         if self.laser_time < Player.LASER_INTERVAL:
-            self.action = 'Attack'
-        images = self.images[self.action]
+            self.state = 'Attack'
+        images = self.images[self.state]
         image = images[self.fidx % len(images)]
         result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
-        self.width = Player.IMAGESIZE[self.action][self.fidx%len(images)][0]       
-        self.height = Player.IMAGESIZE[self.action][self.fidx%len(images)][1]
+        self.width = Player.IMAGESIZE[self.state][self.fidx%len(images)][0]       
+        self.height = Player.IMAGESIZE[self.state][self.fidx%len(images)][1]
         image.composite_draw(0,self.flip,*result_posi)
        # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
         
+    def jump(self):
+        if self.state == 'Double_jump' or self.Djump == Player.JUMP_STATES_DIC['Double_jump']:
+            return
+        if self.state == 'Jump':
+            self.state = 'Double_jump'
+            self.Djump = Player.JUMP_STATES_DIC['Double_jump']
+        elif self.state == 'Fall':
+            self.state = 'Double_jump'
+            self.Djump = Player.JUMP_STATES_DIC['Double_jump']
+        else:
+            self.state = 'Jump'
+            self.Djump += 1
+        deltay = 5
+        deltax = self.delta[0]
+        self.delta = deltax, deltay
+
+    
 
     def update(self):
         x,y = self.pos
@@ -98,24 +120,27 @@ class Player:
         if y < 90 and dy < 0:
             dy = 0
             y = 90
+            self.Djump = self.Djump = Player.JUMP_STATES_DIC['Normal']
 
-        if self.action == 'Attack':
+        if self.state == 'Attack':
             self.laser_time += gfw.delta_time
             if self.laser_time >= Player.LASER_INTERVAL:
                 self.laser_time = 0
                 Player.LASER_INTERVAL = 0
-                self.action = \
-                'Jump' if dy != 0 else \
+                self.state = \
+                'Jump' if dy != 0 and self.Djump == Player.JUMP_STATES_DIC['Normal'] else \
+                'Double_jump' if dy != 0 and self.Djump == Player.JUMP_STATES_DIC['Jump'] else\
                 'Idle' if dx == 0 else \
                 'Walk' if dx < 0 else \
                 'Walk' if dx > 0 else \
                 'Idle'
-        elif self.action == 'Jump':
+            
+        elif self.state in Player.STATES[-3:]:
             if y == 90 and dy ==0:
                 if dx != 0:
-                    self.action = 'Walk'
+                    self.state = 'Walk'
                 else:
-                    self.action = 'Idle'
+                    self.state = 'Idle'
             
 
 
@@ -133,7 +158,7 @@ class Player:
             pdx = self.delta[0]
             self.delta = gobj.point_add(self.delta, Player.KEY_MAP[pair])
             dx = self.delta[0]
-            self.action = \
+            self.state = \
                 'Idle' if dx == 0 else \
                 'Walk' if dx < 0 else \
                 'Walk' if dx > 0 else \
@@ -144,22 +169,23 @@ class Player:
                 self.flip = ''
         if pair in Player.SPECIAL_KEY_MAP:
             if Player.SPECIAL_KEY_MAP[pair]==14:               
-                self.action = 'Attack'
+                self.state = 'Attack'
                 self.fire()
             elif Player.SPECIAL_KEY_MAP[pair]==7:
-                self.action = 'Jump'
-                deltay = 5
-                deltax = self.delta[0]  
-                self.delta = deltax,deltay
+                self.jump()
+                
                 
 
-            # self.action = \
+            # self.state = \
             #     'Jump' if Player.SPECIAL_KEY_MAP[pair] == 7 else \
             #     'Attack'
             #      gfw.world.add(gfw.layer.bullet, bullet)
 
-            # print(dx, pdx, self.action)
-            
+            # print(dx, pdx, self.state)
+
+    def move(self, diff):
+        self.pos = gobj.point_add(self.pos, diff)        
+
     def fire(self):
         #print(len(bullet.Bullet.bullets))
         if(bullet.Bullet.BULLET_NUM<bullet.Bullet.BULLET_MAX):
