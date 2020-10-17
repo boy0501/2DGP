@@ -34,7 +34,7 @@ class Player:
     images = {}
     FPS = 12
     LASER_INTERVAL = 0
-    JUMP_INTERVAL = 0
+
     #constructor
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
@@ -50,7 +50,6 @@ class Player:
         self.height = 10
         self.flip = ''
         self.laser_time = 0
-        self.jump_time = 0
         self.bulletnum = 0
         self.gravity = 0.1
         self.Djump_state = Player.JUMP_STATES_DIC['Normal']
@@ -104,7 +103,7 @@ class Player:
         else:
             self.state = 'Jump'
             self.Djump_state += 1
-        deltay = 3
+        deltay = 2.3
         deltax = self.delta[0]
         self.delta = deltax, deltay
 
@@ -137,12 +136,6 @@ class Player:
                 'Walk' if dx > 0 else \
                 'Idle'
         elif self.state in Player.STATES[-3:]:
-            self.jump_time += gfw.delta_time
-            if self.jump_time >= Player.JUMP_INTERVAL:
-                self.jump_time = 0
-                Player.JUMP_INTERVAL = 0
-
-
             if y == 90 and dy ==0:
                 if dx != 0:
                     self.state = 'Walk'
@@ -162,14 +155,14 @@ class Player:
         pair = (e.type, e.key)
         #print(pair)
         if pair in Player.KEY_MAP:
-            pdx = self.delta[0]
+            #pdx = self.delta[0]
             self.delta = gobj.point_add(self.delta, Player.KEY_MAP[pair])
-            dx = self.delta[0]
+            dx,dy = self.delta
             self.state = \
+                'Jump' if dy != 0 else \
                 'Idle' if dx == 0 else \
                 'Walk' if dx < 0 else \
                 'Walk' if dx > 0 else \
-                'Jump' if dy != 0 else \
                 'Jump'
             if dx == -1 :
                 self.flip = 'h'
@@ -181,7 +174,7 @@ class Player:
                 self.fire()
             elif Player.SPECIAL_KEY_MAP[pair]==7:
                 self.jump()
-                Player.JUMP_INTERVAL = 0.25   
+                  
             elif Player.SPECIAL_KEY_MAP[pair] == 8:
                 dx,dy = self.delta
                 if(dy>=0):
@@ -201,9 +194,9 @@ class Player:
         #print(len(bullet.Bullet.bullets))
         if(bullet.Bullet.BULLET_NUM<bullet.Bullet.BULLET_MAX):
             if self.flip == 'h':
-                bullet1 = bullet.Bullet(self.pos[0]+4,self.pos[1]-4,-1,300)
+                bullet1 = bullet.Bullet(self.pos[0]+4,self.pos[1]-4,-1)
             else:
-                bullet1 = bullet.Bullet(self.pos[0]+4,self.pos[1]-4,1,300)
+                bullet1 = bullet.Bullet(self.pos[0]+4,self.pos[1]-4,1)
             gfw.world.add(gfw.layer.bullet,bullet1)
             bullet.Bullet.BULLET_NUM += 1
             Player.LASER_INTERVAL = 0.15   

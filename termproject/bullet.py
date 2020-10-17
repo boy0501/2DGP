@@ -14,7 +14,7 @@ class Bullet:
         x,y = self.pos
         return x - 40, y - 50, x + 40, y + 40
 
-    def __init__(self,x,y,d,speed):
+    def __init__(self,x,y,d):
         # if len(Bullet.images) == 0:
         #     self.load_images('male')
         #     self.load_images('female')
@@ -22,7 +22,7 @@ class Bullet:
         self.pos = (x,y)
         self.delta = 1 * d, 1 * d
         self.image = gfw.image.load(gobj.RES_DIR + '/2862.png')
-        self.speed = speed
+        self.speed = 500
         self.fidx = 0
         self.time = 0
 
