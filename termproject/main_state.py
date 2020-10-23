@@ -2,6 +2,8 @@ import gfw
 from pico2d import *
 from player import Player
 from bullet import Bullet
+from boss import Boss
+from background import Background
 import gobj
 
 
@@ -9,13 +11,15 @@ canvas_width = 640
 canvas_height = 480
 
 def enter():
-    gfw.world.init(['bg', 'bullet','player'])
+    gfw.world.init(['bg', 'bullet','player','boss'])
     global player
     player = Player()
+    boss = Boss()
+    bg = Background()
     gfw.world.add(gfw.layer.player, player)
 
-    bg = gobj.ImageObject('1770.png', canvas_width //2, canvas_height //2)
     gfw.world.add(gfw.layer.bg, bg)
+    gfw.world.add(gfw.layer.boss,boss)
 
 def update():
     gfw.world.update()

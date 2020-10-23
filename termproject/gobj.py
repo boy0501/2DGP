@@ -32,55 +32,5 @@ def draw_collision_box():
 		if hasattr(obj, 'get_bb'):
 			draw_rectangle(*obj.get_bb())
 
-   
-
-class ImageObject:
-
-	FPS = 12
-	image_ground = []
-
-	@staticmethod
-	def load_images():
-		images = []
-		file_fmt = '%s/미싱노패턴/보스방/Animation-%d Direction-%d Frame-%d 복사.png'
-		action_images = []
-		n = -1
-		while True:
-			n += 1
-
-			fn = file_fmt % (RES_DIR,0,0,n)
-			if os.path.isfile(fn):
-				action_images.append(gfw.image.load(fn))
-			else:
-				break
-		images = action_images
-		return images
-
-
-	def __init__(self, imageName, x, y):
-		#self.image = self.imagegfw.image.load('./res/bg/1770.png')
-		ImageObject.image_ground = gfw.image.load('./res/미싱노패턴/보스방/3818.png')
-		self.image = ImageObject.load_images()
-		self.x, self.y = x, y
-		self.dx,self.dy=0.0,0.0
-		self.dtheta = 0
-		self.fidx = 0 #fps 의 dx이다
-		self.time = 0
-	def draw(self,pos):
-		images = self.image
-		image = images[self.fidx % len(images)]
-		#배경그리는곳
-		
-		image.clip_draw(0,0,700,500,320+pos[0],240+pos[1])
-		ImageObject.image_ground.clip_draw(0,0,700,500,320+pos[0],240+pos[1])
-		#self.image.draw(self.x+pos[0], self.y+pos[1])
-	def update(self):
-		self.dy = math.sin(self.dtheta*180/math.pi) * 10
-		self.dx = math.sin(self.dtheta*180/math.pi) * 10
-		self.dtheta = (self.dtheta+1)%360
-		self.time += gfw.delta_time
-		self.fidx = round(self.time*ImageObject.FPS)		
-		
-
 if __name__ == "__main__":
 	print("This file is not supposed to be executed directly.")
