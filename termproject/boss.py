@@ -3,6 +3,8 @@ import random
 from pico2d import *
 import gfw
 import gobj
+import math
+from behaviortree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 
 class Boss:
     SPECIAL_KEY_MAP ={
@@ -18,7 +20,7 @@ class Boss:
     #constructor
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
-        self.pos = 300, 300
+        self.pos = 500, 300
         self.delta = (0, 0)
         self.speed = 200
         self.fidx = 0 #fps 의 dx이다
@@ -32,18 +34,26 @@ class Boss:
         self.laser_time = 0
         self.bulletnum = 0
         self.gravity = 0.1
+        self.dtheta = 0
+        self.shield = True
 
     @staticmethod
     def load_images():
         images = {}
         count = 0
         state_value = 0
-        file_fmt = '%s/보스/3827.png'
+        file_fmt_boss = '%s/보스/3827.png'
+        file_fmt_shield = '%s/보스/6714.png'
         state_images = []
-        fn = file_fmt % (gobj.RES_DIR)
+        state_shield = []
+        fn = file_fmt_boss % (gobj.RES_DIR)
         if os.path.isfile(fn):
             state_images.append(gfw.image.load(fn))
         images[0] = state_images
+        fn = file_fmt_shield % (gobj.RES_DIR)
+        if os.path.isfile(fn):
+            state_shield.append(gfw.image.load(fn))
+        images[1] = state_shield
         return images
 
 
@@ -51,26 +61,42 @@ class Boss:
  
 
     def draw(self,posi):
-        images = self.images[0]
-        image = images[self.fidx % len(images)]
-        result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
-        image.composite_draw(0,self.flip,*result_posi,85,200)
+        
+        for n in range(2):
+            images = self.images[n]
+            image = images[self.fidx % len(images)]
+            result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
+            if n == 0:
+                image.composite_draw(0,self.flip,*result_posi,85,200)
+            elif n == 1:
+                image.composite_draw(0,self.flip,*result_posi,180,250)
+
+
        # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
             
 
     def update(self):
-      
+         #ㅡㅡㅡㅡㅡ 화면 흔들림효과
+        pos = (self.pos[0],self.pos[1])
+        if self.time > 0.05:
+            pos =(self.pos[0], self.pos[1]+math.sin(self.dtheta*180/math.pi) * 20)
+            self.dtheta = (self.dtheta+1) % 360
+            self.time = 0
+        #ㅡㅡㅡㅡㅡ 화면 흔들림효과
             
 
 
 
-        # self.pos = x,y
+        self.pos = pos
         # self.delta = dx,dy
-        # self.time += gfw.delta_time
+        self.time += gfw.delta_time
         self.fidx = round(self.time*Boss.FPS)
         
 
 
     def move(self, diff):
         self.pos = gobj.point_add(self.pos, diff)        
+
+    def build_behavior_tree(self):
+        self.bt = BehaviorTree.build({})
 
