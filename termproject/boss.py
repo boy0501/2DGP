@@ -72,7 +72,8 @@ class Boss:
             if n == 0:
                 image.composite_draw(0,self.flip,*result_posi,85,200)
             elif n == 1:
-                image.composite_draw(0,self.flip,*result_posi,180,250)
+                if self.shield == True:
+                    image.composite_draw(0,self.flip,*result_posi,180,250)
 
 
        # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
@@ -114,6 +115,7 @@ class Boss:
             self.state = 'Idle'
             self.ret_time = 0 
             self.chance_time = 0
+            self.shield = True
             return BehaviorTree.FAIL
 
         return BehaviorTree.SUCCESS
@@ -129,6 +131,7 @@ class Boss:
         if self.Pattern_time > 11:
             self.Pattern_time = 0
             self.state = 'Chance'
+            self.shield = False
             return BehaviorTree.FAIL
 
         if old_pt_time != self.Pattern_time // 1:
