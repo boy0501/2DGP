@@ -123,12 +123,15 @@ class Boss:
     def do_pattern1(self):
         if self.state!='Pattern1':
             return BehaviorTree.FAIL
+        old_pt_time = self.Pattern_time // 1
+
+        self.Pattern_time += gfw.delta_time
         if self.Pattern_time > 11:
             self.Pattern_time = 0
             self.state = 'Chance'
             return BehaviorTree.FAIL
 
-        if self.Pattern_time % 2 == 0:
+        if old_pt_time != self.Pattern_time // 1:
             bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
             #self.Pattern_time = 0
 
@@ -141,9 +144,6 @@ class Boss:
         pos = (self.pos[0], self.pos[1])
         
         self.time += gfw.delta_time
-        for states in Boss.STATES[2:4]:
-            if self.state == states:
-                self.Pattern_time += gfw.delta_time
 
         self.ret_time += gfw.delta_time
 
