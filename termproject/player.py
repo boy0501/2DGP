@@ -144,7 +144,6 @@ class Player:
                     self.state = 'Idle'
             
 
-        print(x,y)
 
         self.pos = x,y
         self.delta = dx,dy

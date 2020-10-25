@@ -34,6 +34,7 @@ class Boss:
         self.flip = ''
         self.ret_time = 0
         self.Pattern_time = 0
+        self.chance_time = 0
         self.bulletnum = 0
         self.gravity = 0.1
         self.dtheta = 0
@@ -80,8 +81,9 @@ class Boss:
         if self.state != 'Idle':
             return BehaviorTree.FAIL
 
-        pos = (self.pos[0], self.pos[1])
-        self.ret_time += gfw.delta_time
+        x,y = self.pos
+        if y <300:
+            y +=  500 * gfw.delta_time
 
         if self.ret_time > 2:
             self.state = 'Pattern' + str(random.randint(1,1))
@@ -90,16 +92,45 @@ class Boss:
             return BehaviorTree.FAIL
 
 
-        self.pos = pos
+        self.pos = x,y
         # self.delta = dx,dy
         return BehaviorTree.SUCCESS
+
+    def do_chance(self):
+        if self.state != 'Chance':
+            return BehaviorTree.FAIL
+        x,y = self.pos
+        dx,dy = self.delta
+
+        self.chance_time += gfw.delta_time
+        if y >75:
+            y -=  800 * gfw.delta_time
+
+
+
+        self.delta = dx,dy
+        self.pos = x,y
+        if self.chance_time > 2:
+            self.state = 'Idle'
+            self.ret_time = 0 
+            self.chance_time = 0
+            return BehaviorTree.FAIL
+
+        return BehaviorTree.SUCCESS
+
+
 
     def do_pattern1(self):
         if self.state!='Pattern1':
             return BehaviorTree.FAIL
-        if self.Pattern_time > 1.0:
-            bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
+        if self.Pattern_time > 11:
             self.Pattern_time = 0
+            self.state = 'Chance'
+            return BehaviorTree.FAIL
+
+        if self.Pattern_time % 2 == 0:
+            bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
+            #self.Pattern_time = 0
 
         return BehaviorTree.SUCCESS
 
@@ -108,16 +139,21 @@ class Boss:
         #보스는 어떠한 상황이던간에 위아래로 움직인다. 그래서 공통으로 넣음
         #함수로 묶을 수 있으나,,, 나중에 해야징징이
         pos = (self.pos[0], self.pos[1])
+        
         self.time += gfw.delta_time
-        self.Pattern_time += gfw.delta_time
+        for states in Boss.STATES[2:4]:
+            if self.state == states:
+                self.Pattern_time += gfw.delta_time
+
+        self.ret_time += gfw.delta_time
+
+
         if self.time > 0.05:
-            if self.pos[1]<290:
-                pos = (self.pos[0],self.pos[1]+10)
-            else:
-                pos = (self.pos[0], self.pos[1] +
-                   math.sin(self.dtheta*180/math.pi)*10)
-                self.dtheta = (self.dtheta+1) % 360
-                self.time = 0
+            pos = (self.pos[0], self.pos[1] +
+                math.sin(self.dtheta*180/math.pi)*10)
+            self.dtheta = (self.dtheta+1) % 360
+            self.time = 0
+
         self.pos = pos
         self.fidx = round(self.time*Boss.FPS)
 
@@ -133,6 +169,11 @@ class Boss:
             "name":"BossState",
             "class":SelectorNode,
             "children":[
+                {
+                    "name":"Chance",
+                    "class":LeafNode,
+                    "function" : self.do_chance
+                },
                 {
                     "name":"Idle",
                     "class":LeafNode,
