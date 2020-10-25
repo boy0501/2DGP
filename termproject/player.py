@@ -89,6 +89,7 @@ class Player:
         self.width = Player.IMAGESIZE[self.state][self.fidx%len(images)][0]       
         self.height = Player.IMAGESIZE[self.state][self.fidx%len(images)][1]
         image.composite_draw(0,self.flip,*result_posi)
+        
        # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
         
     def jump(self):
@@ -143,7 +144,7 @@ class Player:
                     self.state = 'Idle'
             
 
-
+        print(x,y)
 
         self.pos = x,y
         self.delta = dx,dy

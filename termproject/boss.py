@@ -4,6 +4,7 @@ from pico2d import *
 import gfw
 import gobj
 import math
+import bossPattern
 from behaviortree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 
 class Boss:
@@ -12,7 +13,7 @@ class Boss:
     (SDL_KEYDOWN, SDLK_z): 14,
     (SDL_KEYUP,SDLK_LSHIFT): 8  
     }
-    STATES = ['Attack','Idle' ,'Walk' ,'Jump','Double_jump','Fall']
+    STATES = ['Idle','Dead','Pattern1','Pattern2','Pattern3','Chance']
     images = {}
     FPS = 1
     LASER_INTERVAL = 0
@@ -21,7 +22,7 @@ class Boss:
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 500, 300
-        self.delta = (0, 0)
+        self.delta = (0, -5)
         self.speed = 200
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
@@ -31,17 +32,18 @@ class Boss:
         self.width = 10
         self.height = 10
         self.flip = ''
-        self.laser_time = 0
+        self.ret_time = 0
+        self.Pattern_time = 0
         self.bulletnum = 0
         self.gravity = 0.1
         self.dtheta = 0
         self.shield = True
+        self.Pattern_INFO = 0
+        self.build_behavior_tree()
 
     @staticmethod
     def load_images():
         images = {}
-        count = 0
-        state_value = 0
         file_fmt_boss = '%s/보스/3827.png'
         file_fmt_shield = '%s/보스/6714.png'
         state_images = []
@@ -73,30 +75,84 @@ class Boss:
 
 
        # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)
-            
+    def do_idle(self):
+        
+        if self.state != 'Idle':
+            return BehaviorTree.FAIL
 
-    def update(self):
-         #ㅡㅡㅡㅡㅡ 화면 흔들림효과
-        pos = (self.pos[0],self.pos[1])
-        if self.time > 0.05:
-            pos =(self.pos[0], self.pos[1]+math.sin(self.dtheta*180/math.pi) * 20)
-            self.dtheta = (self.dtheta+1) % 360
-            self.time = 0
-        #ㅡㅡㅡㅡㅡ 화면 흔들림효과
-            
+        pos = (self.pos[0], self.pos[1])
+        self.ret_time += gfw.delta_time
 
+        if self.ret_time > 2:
+            self.state = 'Pattern' + str(random.randint(1,1))
+            #설정된 보스패턴으로 초기화
+            self.Pattern_INFO = bossPattern.BossPattern(self.state)
+            return BehaviorTree.FAIL
 
 
         self.pos = pos
         # self.delta = dx,dy
-        self.time += gfw.delta_time
-        self.fidx = round(self.time*Boss.FPS)
+        return BehaviorTree.SUCCESS
+
+    def do_pattern1(self):
+        if self.state!='Pattern1':
+            return BehaviorTree.FAIL
+        if self.Pattern_time > 1.0:
+            bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
+            self.Pattern_time = 0
+
+        return BehaviorTree.SUCCESS
+
+    def update(self):
         
+        #보스는 어떠한 상황이던간에 위아래로 움직인다. 그래서 공통으로 넣음
+        #함수로 묶을 수 있으나,,, 나중에 해야징징이
+        pos = (self.pos[0], self.pos[1])
+        self.time += gfw.delta_time
+        self.Pattern_time += gfw.delta_time
+        if self.time > 0.05:
+            if self.pos[1]<290:
+                pos = (self.pos[0],self.pos[1]+10)
+            else:
+                pos = (self.pos[0], self.pos[1] +
+                   math.sin(self.dtheta*180/math.pi)*10)
+                self.dtheta = (self.dtheta+1) % 360
+                self.time = 0
+        self.pos = pos
+        self.fidx = round(self.time*Boss.FPS)
+
+
+        self.bt.run()
 
 
     def move(self, diff):
         self.pos = gobj.point_add(self.pos, diff)        
 
     def build_behavior_tree(self):
-        self.bt = BehaviorTree.build({})
+        self.bt = BehaviorTree.build({
+            "name":"BossState",
+            "class":SelectorNode,
+            "children":[
+                {
+                    "name":"Idle",
+                    "class":LeafNode,
+                    "function" : self.do_idle
+                },
+                {
+                    "name":"Pattern",
+                    "class":SelectorNode,
+                    "children":[
+                        {
+                            "name":"Pattern1",
+                            "class":LeafNode,
+                            "function" : self.do_pattern1
+                        }
+                    ]
+                }
+
+            ]
+
+
+        }
+        )
 
