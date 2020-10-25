@@ -36,8 +36,10 @@ class Bullet:
         self.pos = x,y
         if((self.pos[0] > get_canvas_width()+8 )|(self.pos[0] < -8)):
             self.remove()
-
-
+    
+    def screenshake(self,pos):
+        pass       
+        
     def draw(self,pos):
         image = self.image
         flip = 'h' if self.delta[0] < 0 else ''

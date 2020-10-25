@@ -151,6 +151,9 @@ class Player:
         self.fidx = round(self.time*Player.FPS)
         
 
+    def screenshake(self,pos):
+        pass       
+        
     def handle_event(self, e):
         pair = (e.type, e.key)
         #print(pair)

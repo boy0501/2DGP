@@ -99,7 +99,10 @@ class Background:
         self.dx = math.sin(self.dtheta*180/math.pi) * 10
         self.dtheta = (self.dtheta+1)%360
         self.time += gfw.delta_time
-        self.fidx = round(self.time*Background.FPS)        
+        self.fidx = round(self.time*Background.FPS) 
+
+    def screenshake(self,pos):
+        pass       
         
    
 

@@ -55,11 +55,15 @@ def clear_at(layer_index):
         del o
     objects[layer_index] = []
 
+
 def update():
     global dtheta
     global pos
+    reference = [pos]
     for obj in all_objects():
         obj.update()
+        obj.screenshake(reference)
+        pos = reference[0]
     if len(trashcan) > 0:
         empty_trashcan()
     #ㅡㅡㅡㅡㅡ 화면 흔들림효과
@@ -72,6 +76,7 @@ def update():
     #print(trashcan)
 
 def draw():
+    global pos
     for obj in all_objects():
         obj.draw(pos)
 

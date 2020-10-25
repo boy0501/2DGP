@@ -160,6 +160,11 @@ class Boss:
 
         self.bt.run()
 
+  
+        
+    def screenshake(self,pos):
+        pass       
+        
 
     def move(self, diff):
         self.pos = gobj.point_add(self.pos, diff)        
