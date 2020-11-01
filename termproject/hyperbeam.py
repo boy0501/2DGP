@@ -44,6 +44,7 @@ class HyperBeam:
         self.state = state
         self.rad = 0
         self.radb = 0
+        self.shakeWH = 40
         HyperBeam.images = image
 
     def draw(self,posi):
@@ -131,6 +132,9 @@ class HyperBeam:
             #self.rad = 0 
             #self.rad = 0
             self.setBeamtuple()
+        if self.state =='Beam':
+            if self.time > self.Firetime:
+                self.remove()
         if self.state == 'Energy':
             self.EnergyMove()
             if self.pos[0]<510 and self.pos[0]>490:
@@ -145,11 +149,14 @@ class HyperBeam:
 
 
     def screenshake(self,pos):
-        # self.shaketime += gfw.delta_time
-        # if 0 < self.shaketime and self.shaketime < 0.2: 
-        #     pos1 =(math.sin(self.dtheta*180/math.pi) * 5, math.sin(self.dtheta*180/math.pi) * 5)
-        #     pos[0] = pos1
-        #     self.dtheta = (self.dtheta+1) % 360
+        if self.state == 'Beam':
+            self.shaketime += gfw.delta_time
+            if self.shaketime > self.delaytime:
+                pos1 =(math.sin(self.dtheta*180/math.pi) * self.shakeWH, math.sin(self.dtheta*180/math.pi) * self.shakeWH)
+                pos[0] = pos1
+                self.dtheta = (self.dtheta+1) % 360
+                self.shakeWH -= 0.2877
+
         # if self.shaketime > 1:
         #     self.shaketime = 0
         pass

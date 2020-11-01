@@ -146,7 +146,7 @@ class Boss:
         if self.state!='Pattern2':
             return BehaviorTree.FAIL
         self.Pattern_time += gfw.delta_time
-        if self.Pattern_time > 11:
+        if self.Pattern_time > 6.5:
             self.Pattern_time = 0
             self.Pattern2Start = 0
             self.state = 'Chance'
