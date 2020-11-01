@@ -4,7 +4,8 @@ import gfw
 import math
 
 RES_DIR = './res'
-
+canv_width = 640
+canv_height =480
 def rand(val):
 	return val * random.uniform(0.9, 1.1)
 

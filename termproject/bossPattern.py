@@ -5,6 +5,7 @@ import gfw
 import gobj
 import math
 import rockthrow
+import hyperbeam
 from behaviortree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 
 class BossPattern:
@@ -48,6 +49,14 @@ class BossPattern:
                     state_images.append(gfw.image.load(fn))
                 else:
                     break
+            n = -1
+            while True:
+                n += 1
+                fn = file_fmt % (gobj.RES_DIR,state,4,0,n)
+                if os.path.isfile(fn):
+                    state_images.append(gfw.image.load(fn))
+                else:
+                    break
             images[state] = state_images 
             
         BossPattern.images = images
@@ -57,6 +66,9 @@ class BossPattern:
         if self.state == 'Pattern1':
             rock = rockthrow.RockThrow(BossPattern.images[self.state],'Large',random.randint(60,280), 470,0,-5)
             gfw.world.add(gfw.layer.rock,rock)
+        if self.state == 'Pattern2':
+            beam = hyperbeam.HyperBeam(BossPattern.images[self.state],'Charge')
+            gfw.world.add(gfw.layer.beam,beam)
 
 
 

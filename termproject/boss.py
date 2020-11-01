@@ -40,6 +40,7 @@ class Boss:
         self.dtheta = 0
         self.shield = True
         self.Pattern_INFO = 0
+        self.Pattern2Start = 0 # 빔 테스트 임시변수임
         self.build_behavior_tree()
 
     @staticmethod
@@ -87,7 +88,7 @@ class Boss:
             y +=  500 * gfw.delta_time
 
         if self.ret_time > 2:
-            self.state = 'Pattern' + str(random.randint(1,1))
+            self.state = 'Pattern' + str(random.randint(2,2))
             #설정된 보스패턴으로 초기화
             self.Pattern_INFO = bossPattern.BossPattern(self.state)
             return BehaviorTree.FAIL
@@ -125,6 +126,7 @@ class Boss:
     def do_pattern1(self):
         if self.state!='Pattern1':
             return BehaviorTree.FAIL
+        #정수연산을 해주기 위해서 pattern_time 을 //1 해서 old_pt_time에 정수로 저장해준다. 시간초가 바뀌면 돌 하나씩 생성해줄것임.
         old_pt_time = self.Pattern_time // 1
 
         self.Pattern_time += gfw.delta_time
@@ -137,6 +139,22 @@ class Boss:
         if old_pt_time != self.Pattern_time // 1:
             bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
             #self.Pattern_time = 0
+
+        return BehaviorTree.SUCCESS
+
+    def do_pattern2(self):
+        if self.state!='Pattern2':
+            return BehaviorTree.FAIL
+        self.Pattern_time += gfw.delta_time
+        if self.Pattern_time > 11:
+            self.Pattern_time = 0
+            self.Pattern2Start = 0
+            self.state = 'Chance'
+            self.shield = False
+            return BehaviorTree.FAIL
+        if self.Pattern2Start == 0:
+            bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
+        self.Pattern2Start = 1
 
         return BehaviorTree.SUCCESS
 
@@ -195,6 +213,11 @@ class Boss:
                             "name":"Pattern1",
                             "class":LeafNode,
                             "function" : self.do_pattern1
+                        },
+                        {
+                            "name":"Pattern2",
+                            "class":LeafNode,
+                            "function" : self.do_pattern2
                         }
                     ]
                 }
