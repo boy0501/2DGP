@@ -16,6 +16,9 @@ class HyperBeam:
     #돌에대한 이미지만 받을것이기떄문에 dic이 아닌 list
     images = []
     FPS = {'Beam':5,'Charge':6,'Energy':3}
+    beampix = 16 * 7 #원본이미지에 8배 곱해준것
+    BEAM = [(500-beampix/2,350-beampix/2),(500-beampix,350-beampix*3/4),(500-beampix*3/2,350-beampix),
+    (500-beampix*39/16,350-beampix*25/16),(500-beampix*39/16,350-beampix*25/16)]
     LASER_INTERVAL = 0
 
     #constructor
@@ -37,8 +40,10 @@ class HyperBeam:
         self.delaytime = 1.2
         self.dimgsize = 1.0
         self.fidx = 0
+        self.beamtarget = 0,0
         self.state = state
         self.rad = 0
+        self.radb = 0
         HyperBeam.images = image
 
     def draw(self,posi):
@@ -51,6 +56,9 @@ class HyperBeam:
         # self.height = Player.IMAGESIZE[self.state][self.fidx%len(images)][1]
         # image.composite_draw(0,self.flip,*result_posi)   
         if self.time > self.delaytime or self.state!='Beam': 
+            if(self.state == 'Beam'):
+                self.pos = HyperBeam.BEAM[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
+
             image = HyperBeam.images[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
             image.composite_draw(self.rad,'',*self.pos,image.w*self.dimgsize,image.h*self.dimgsize)
        #image.draw(*self.pos,100,100)
@@ -66,7 +74,20 @@ class HyperBeam:
         y += dy
         self.pos = x,y 
 
-
+    def setBeamtuple(self):
+        originalx = math.cos(0)
+        originaly = math.sin(0)
+        dx = math.cos(self.rad)
+        dx = originalx - dx
+        dy = math.sin(self.rad)
+        dy = originaly - dy
+        if (self.rad*180/math.pi) > 0:
+            HyperBeam.BEAM = [
+        (dx*HyperBeam.beampix +     500-HyperBeam.beampix/2 ,        dy*HyperBeam.beampix +             350-HyperBeam.beampix/2),
+        (dx*HyperBeam.beampix*2 +   500-HyperBeam.beampix,           dy*HyperBeam.beampix*3/2 +          350-HyperBeam.beampix*3/4),
+        (dx*HyperBeam.beampix*3 +   500-HyperBeam.beampix*3/2,       dy*HyperBeam.beampix*2 +           350-HyperBeam.beampix),
+        (dx*HyperBeam.beampix*39/8 + 500-HyperBeam.beampix*39/16,    dy*HyperBeam.beampix*25/8   +     350-HyperBeam.beampix*25/16),
+        (dx*HyperBeam.beampix*39/8 + 500-HyperBeam.beampix*39/16,    dy*HyperBeam.beampix*25/8    +    350-HyperBeam.beampix*25/16)]
 
 
     def update(self):
@@ -88,8 +109,11 @@ class HyperBeam:
             self.time = 0
             self.state = 'Beam'
             self.pos = gobj.canv_width//2,gobj.canv_height//2
-            self.dimgsize = 8.2
-            self.rad = 0
+            self.dimgsize = 7
+            #HyperBeam.beampix *= 7
+            self.rad = 30 * math.pi / 180
+            #self.rad = 0
+            self.setBeamtuple()
         if self.state == 'Energy':
             self.EnergyMove()
             if self.pos[0]<510 and self.pos[0]>490:
