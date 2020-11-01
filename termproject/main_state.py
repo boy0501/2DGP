@@ -37,7 +37,6 @@ def handle_event(e):
     elif e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
             gfw.pop()
-
     player.handle_event(e)
 
 def exit():

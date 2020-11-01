@@ -9,12 +9,12 @@ class Player:
     KEY_MAP = {
         (SDL_KEYDOWN, SDLK_LEFT):  (-1,  0),
         (SDL_KEYDOWN, SDLK_RIGHT): ( 1,  0),
-        (SDL_KEYDOWN, SDLK_DOWN):  ( 0, -1),
-        (SDL_KEYDOWN, SDLK_UP):    ( 0,  1),
+        #(SDL_KEYDOWN, SDLK_DOWN):  ( 0, -1),
+        #(SDL_KEYDOWN, SDLK_UP):    ( 0,  1),
         (SDL_KEYUP, SDLK_LEFT):    ( 1,  0),
         (SDL_KEYUP, SDLK_RIGHT):   (-1,  0),
-        (SDL_KEYUP, SDLK_DOWN):    ( 0,  1),
-        (SDL_KEYUP, SDLK_UP):      ( 0, -1),
+        #(SDL_KEYUP, SDLK_DOWN):    ( 0,  1),
+        #(SDL_KEYUP, SDLK_UP):      ( 0, -1),
     }
     SPECIAL_KEY_MAP ={
     (SDL_KEYDOWN, SDLK_LSHIFT): 7,
@@ -34,6 +34,7 @@ class Player:
     images = {}
     FPS = 12
     LASER_INTERVAL = 0
+    PlayerPos = 0,0
 
     #constructor
     def __init__(self):
@@ -54,7 +55,7 @@ class Player:
         self.gravity = 0.1
         self.Djump_state = Player.JUMP_STATES_DIC['Normal']
         
-
+        
     @staticmethod
     def load_images():
         images = {}
@@ -145,6 +146,7 @@ class Player:
             
 
 
+        Player.PlayerPos = self.pos
         self.pos = x,y
         self.delta = dx,dy
         self.time += gfw.delta_time

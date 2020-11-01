@@ -4,7 +4,7 @@ from pico2d import *
 import gfw
 import gobj
 import math
-
+import player
 
 class HyperBeam:
     SPECIAL_KEY_MAP ={
@@ -88,7 +88,22 @@ class HyperBeam:
         (dx*HyperBeam.beampix*3 +   500-HyperBeam.beampix*3/2,       dy*HyperBeam.beampix*2 +           350-HyperBeam.beampix),
         (dx*HyperBeam.beampix*39/8 + 500-HyperBeam.beampix*39/16,    dy*HyperBeam.beampix*25/8   +     350-HyperBeam.beampix*25/16),
         (dx*HyperBeam.beampix*39/8 + 500-HyperBeam.beampix*39/16,    dy*HyperBeam.beampix*25/8    +    350-HyperBeam.beampix*25/16)]
+        elif (self.rad * 180 /math.pi) <= 0:
+            HyperBeam.BEAM =[
+        (-dx*HyperBeam.beampix +     500-HyperBeam.beampix/2 ,        dy*HyperBeam.beampix +             350-HyperBeam.beampix/2),
+        (-dx*HyperBeam.beampix*2 +   500-HyperBeam.beampix,           dy*HyperBeam.beampix*3/2 +          350-HyperBeam.beampix*3/4),
+        (-dx*HyperBeam.beampix*3 +   500-HyperBeam.beampix*3/2,       dy*HyperBeam.beampix*2 +           350-HyperBeam.beampix),
+        (-dx*HyperBeam.beampix*39/8 + 500-HyperBeam.beampix*39/16,    dy*HyperBeam.beampix*25/8   +     350-HyperBeam.beampix*25/16),
+        (-dx*HyperBeam.beampix*39/8 + 500-HyperBeam.beampix*39/16,    dy*HyperBeam.beampix*25/8    +    350-HyperBeam.beampix*25/16)]
 
+    def BossAndPlayer_Calcul_rad(self):
+        c = math.dist((500,300),(50,40))        #lineAB
+        a = math.dist(self.beamtarget,(50,40))  #lineBC
+        b = math.dist((500,300),self.beamtarget)#lineAC
+        self.rad = math.acos((b**2+c**2 - a**2)/(2*b*c))
+        #500,300 과 0,0 을 잇는 직선보다 플레이어가 위에 있다면 rad은 거꾸로 돌아간거니 -1곱함
+        if 3*self.beamtarget[0]/5 - self.beamtarget[1] < 0:
+            self.rad *= -1
 
     def update(self):
         self.time += gfw.delta_time
@@ -109,9 +124,11 @@ class HyperBeam:
             self.time = 0
             self.state = 'Beam'
             self.pos = gobj.canv_width//2,gobj.canv_height//2
+            self.beamtarget = player.Player.PlayerPos
             self.dimgsize = 7
             #HyperBeam.beampix *= 7
-            self.rad = 30 * math.pi / 180
+            self.BossAndPlayer_Calcul_rad()
+            #self.rad = 0 
             #self.rad = 0
             self.setBeamtuple()
         if self.state == 'Energy':
