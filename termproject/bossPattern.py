@@ -57,6 +57,14 @@ class BossPattern:
                     state_images.append(gfw.image.load(fn))
                 else:
                     break
+            n = - 1
+            while True:
+                n += 1
+                fn = file_fmt % (gobj.RES_DIR,state,5,0,n)
+                if os.path.isfile(fn):
+                    state_images.append(gfw.image.load(fn))
+                else:
+                    break
             images[state] = state_images 
             
         BossPattern.images = images

@@ -12,16 +12,16 @@ class HyperBeam:
     (SDL_KEYDOWN, SDLK_z): 14,
     (SDL_KEYUP,SDLK_LSHIFT): 8  
     }
-    STATES = {'Beam':0,'Charge':5}
+    STATES = {'Beam':0,'Charge':5,'Energy':11}
     #돌에대한 이미지만 받을것이기떄문에 dic이 아닌 list
     images = []
-    FPS = {'Beam':5,'Charge':6}
+    FPS = {'Beam':5,'Charge':6,'Energy':3}
     LASER_INTERVAL = 0
 
     #constructor
-    def __init__(self,image,state):
+    def __init__(self,image,state,x=500,y=300):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
-        self.pos = 500,300
+        self.pos = x,y
         self.delta = 1,0
         self.speed = 2
         self.gravity = 10
@@ -32,6 +32,9 @@ class HyperBeam:
         self.shaketime = 0
         self.Chargingtime = 3.5
         self.Firetime = 3.0
+        self.EnergyRe_gentime = 0.05
+        self.Energytime = 0
+        self.delaytime = 1.2
         self.dimgsize = 1.0
         self.fidx = 0
         self.state = state
@@ -46,50 +49,56 @@ class HyperBeam:
         # result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
         # self.width = Player.IMAGESIZE[self.state][self.fidx%len(images)][0]       
         # self.height = Player.IMAGESIZE[self.state][self.fidx%len(images)][1]
-        # image.composite_draw(0,self.flip,*result_posi)    
-        image = HyperBeam.images[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
-        image.composite_draw(self.rad,'',*self.pos,image.w*self.dimgsize,image.h*self.dimgsize)
+        # image.composite_draw(0,self.flip,*result_posi)   
+        if self.time > self.delaytime or self.state!='Beam': 
+            image = HyperBeam.images[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
+            image.composite_draw(self.rad,'',*self.pos,image.w*self.dimgsize,image.h*self.dimgsize)
        #image.draw(*self.pos,100,100)
         
              
+    def EnergyMove(self):
+        targetx = 500
+        targety = 300
+        x,y = self.pos
+        dx = (targetx - x)/15
+        dy = (targety - y)/15
+        x += dx
+        y += dy
+        self.pos = x,y 
+
+
 
 
     def update(self):
         self.time += gfw.delta_time
         self.fidx = round(self.time*HyperBeam.FPS[self.state])
+        
         if self.state == 'Charge':
             self.rad+=0.1
-            self.dimgsize += 0.01
+            self.dimgsize += 0.01 
+            self.Energytime += gfw.delta_time
+            if self.Energytime > self.EnergyRe_gentime:
+                self.Energytime = 0
+                randomtheta = random.randint(0,360)
+                randx = math.cos(randomtheta*180/math.pi)*150 +500
+                randy = math.sin(randomtheta*180/math.pi)*150 +300
+                energy = HyperBeam(HyperBeam.images, 'Energy', randx,randy)
+                gfw.world.add(gfw.layer.beam, energy)
         if self.time > self.Chargingtime:
+            self.time = 0
             self.state = 'Beam'
             self.pos = gobj.canv_width//2,gobj.canv_height//2
             self.dimgsize = 8.2
             self.rad = 0
-        # x,y = self.pos
-        # dx,dy = self.delta
-        # dy -= self.gravity
-        # x += dx * self.speed * gfw.delta_time
-        # y += dy * self.speed * gfw.delta_time
+        if self.state == 'Energy':
+            self.EnergyMove()
+            if self.pos[0]<510 and self.pos[0]>490:
+                if self.pos[1]<310 and self.pos[1]>290:
+                    self.remove()
 
-        # if 60 < x and x < 280:
-        #     if y - HyperBeam.images[HyperBeam.STATES[self.state]].h < 60 and dy < 0:
-        #         dy *= -1
-        #         Ldx = -20
-        #         Rdx = 20
-        #         if(self.state == 'Large'):
-        #             rock = HyperBeam(HyperBeam.images, 'medium', x, y, Ldx, dy)
-        #             gfw.world.add(gfw.layer.rock, rock)
-        #             rock = HyperBeam(HyperBeam.images, 'medium', x, y, Rdx, dy)
-        #             gfw.world.add(gfw.layer.rock, rock)
-        #             self.remove()
-        #         elif (self.state == 'medium'):
-        #             rock = HyperBeam(HyperBeam.images, 'small', x, y, Ldx, dy)
-        #             gfw.world.add(gfw.layer.rock, rock)
-        #             rock = HyperBeam(HyperBeam.images, 'small', x, y, Rdx, dy)
-        #             gfw.world.add(gfw.layer.rock, rock)
-        #             self.remove()
-        #         elif (self.state == 'small'):
-        #             self.remove()
+
+
+
         # if y <-10:
         #     self.remove()
 
