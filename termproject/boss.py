@@ -39,6 +39,7 @@ class Boss:
         self.gravity = 0.1
         self.dtheta = 0
         self.shield = True
+        self.old_Pattern = ''
         self.Pattern_INFO = 0
         self.Pattern2Start = 0 # 빔 테스트 임시변수임
         self.build_behavior_tree()
@@ -88,9 +89,13 @@ class Boss:
             y +=  500 * gfw.delta_time
 
         if self.ret_time > 2:
-            self.state = 'Pattern' + str(random.randint(2,2))
+            while True:
+                self.state = 'Pattern' + str(random.randint(1,2))
+                if self.state != self.old_Pattern:
+                    break
             #설정된 보스패턴으로 초기화
             self.Pattern_INFO = bossPattern.BossPattern(self.state)
+            self.old_Pattern = self.state
             return BehaviorTree.FAIL
 
 
