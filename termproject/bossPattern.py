@@ -83,7 +83,6 @@ class BossPattern:
             gfw.world.add(gfw.layer.leaf,leaf)
 
 
-
     def update(self):
         pass
     

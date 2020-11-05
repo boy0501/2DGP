@@ -12,10 +12,11 @@ class RazorLeaf:
     (SDL_KEYDOWN, SDLK_z): 14,
     (SDL_KEYUP,SDLK_LSHIFT): 8  
     }
-    STATES = {'Ready':0,'Fire':1}
+    #뒤에있는 숫자는 이미지파일의 시작 인덱스이다.
+    STATES = {'Ready':0,'Fire':9}
     #돌에대한 이미지만 받을것이기떄문에 dic이 아닌 list
     images = []
-    FPS = {'Pattern1':1,'Pattern2':1,'Pattern3':1}
+    FPS = {'Ready':8,'Fire':1}
     LASER_INTERVAL = 0
 
     #constructor

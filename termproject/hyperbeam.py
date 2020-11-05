@@ -12,6 +12,7 @@ class HyperBeam:
     (SDL_KEYDOWN, SDLK_z): 14,
     (SDL_KEYUP,SDLK_LSHIFT): 8  
     }
+    #뒤에있는 숫자는 이미지파일의 시작 인덱스이다.
     STATES = {'Beam':0,'Charge':5,'Energy':11}
     #돌에대한 이미지만 받을것이기떄문에 dic이 아닌 list
     images = []
