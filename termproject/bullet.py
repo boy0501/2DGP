@@ -19,11 +19,11 @@ class Bullet:
 
         self.pos = (x,y)
         self.delta = 1 * d, 1 * d
+        self.for_get_bb_pos = 0,0
         self.image = gfw.image.load(gobj.RES_DIR + '/2862.png')
         self.speed = 500
         self.fidx = 0
         self.time = 0
-        self.for_get_bb_pos = 0,0
 
     def get_bb(self):
         x,y = self.for_get_bb_pos

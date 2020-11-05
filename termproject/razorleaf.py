@@ -25,6 +25,7 @@ class RazorLeaf:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 500,300
         self.delta = 0,1
+        self.for_get_bb_pos = 0,0
         self.destination = 500,300
         self.speed = 5
         self.gravity = 10
@@ -41,10 +42,15 @@ class RazorLeaf:
         self.Leafdest()
 
     def draw(self,posi):
-
+        result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
+        self.for_get_bb_pos = result_posi
         image = RazorLeaf.images[RazorLeaf.STATES[self.state] + self.fidx % RazorLeaf.FPS[self.state]]
-        image.draw(*self.pos,image.w * self.Scale,image.h * self.Scale)
-
+        image.draw(*result_posi,image.w * self.Scale,image.h * self.Scale)
+    
+    def get_bb(self):
+        image = RazorLeaf.images[RazorLeaf.STATES[self.state] + self.fidx % RazorLeaf.FPS[self.state]]
+        x,y = self.for_get_bb_pos
+        return x - image.w* self.Scale//2, y - image.h* self.Scale//2, x + image.w* self.Scale//2, y + image.h* self.Scale//2    
         
              
     def Leafdest(self):

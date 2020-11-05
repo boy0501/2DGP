@@ -17,12 +17,13 @@ class Boss:
     images = {}
     FPS = 1
     LASER_INTERVAL = 0
-
+    BossScale = 3.5
     #constructor
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 500, 300
         self.delta = (0, -5)
+        self.for_get_bb_pos = 0,0
         self.speed = 200
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
@@ -62,7 +63,11 @@ class Boss:
         return images
 
 
-
+    def get_bb(self):
+        images = self.images[0]
+        image = images[self.fidx % len(images)]
+        x,y = self.for_get_bb_pos
+        return x - image.w*Boss.BossScale//2, y - image.h*Boss.BossScale//2, x + image.w*Boss.BossScale//2, y + image.h*Boss.BossScale//2
  
 
     def draw(self,posi):
@@ -71,11 +76,12 @@ class Boss:
             images = self.images[n]
             image = images[self.fidx % len(images)]
             result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
+            self.for_get_bb_pos = result_posi
             if n == 0:
-                image.composite_draw(0,self.flip,*result_posi,85,200)
+                image.composite_draw(0,self.flip,*result_posi,image.w*Boss.BossScale,image.h*Boss.BossScale)
             elif n == 1:
                 if self.shield == True:
-                    image.composite_draw(0,self.flip,*result_posi,180,250)
+                    image.composite_draw(0,self.flip,*result_posi,image.w*4,image.h*4)
 
 
        # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)

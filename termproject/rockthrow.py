@@ -23,6 +23,7 @@ class RockThrow:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = x,y
         self.delta = dx,dy
+        self.for_get_bb_pos = 0,0
         self.speed = 2
         self.gravity = 10
         self.time = 0
@@ -34,11 +35,16 @@ class RockThrow:
         RockThrow.images = image
 
     def draw(self,posi):
+        result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
+        self.for_get_bb_pos = result_posi
         image = RockThrow.images[RockThrow.STATES[self.state]]
-        image.draw(*self.pos)
+        image.draw(*result_posi)
         
              
-
+    def get_bb(self):
+        image = RockThrow.images[RockThrow.STATES[self.state]]
+        x,y = self.for_get_bb_pos
+        return x - image.w//2, y - image.h//2, x + image.w//2, y + image.h//2
 
     def update(self):
         x,y = self.pos
