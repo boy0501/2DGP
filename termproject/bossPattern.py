@@ -6,6 +6,7 @@ import gobj
 import math
 import rockthrow
 import hyperbeam
+import razorleaf
 from behaviortree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 
 class BossPattern:
@@ -78,7 +79,8 @@ class BossPattern:
             beam = hyperbeam.HyperBeam(BossPattern.images[self.state],'Charge')
             gfw.world.add(gfw.layer.beam,beam)
         if self.state == 'Pattern3':
-            pass
+            leaf = razorleaf.RazorLeaf(BossPattern.images[self.state],'Ready')
+            gfw.world.add(gfw.layer.leaf,leaf)
 
 
 
