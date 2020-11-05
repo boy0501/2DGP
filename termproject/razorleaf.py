@@ -4,6 +4,7 @@ from pico2d import *
 import gfw
 import gobj
 import math
+import player
 
 
 class RazorLeaf:
@@ -23,8 +24,9 @@ class RazorLeaf:
     def __init__(self,image,state):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 500,300
-        self.delta = 0,0
-        self.speed = 2
+        self.delta = 0,1
+        self.destination = 500,300
+        self.speed = 5
         self.gravity = 10
         self.time = 0
         self.width = 10
@@ -34,7 +36,9 @@ class RazorLeaf:
         self.state = state
         self.Scale = 2
         self.ready_time = 3.0   #나뭇잎이 발사 되기 전 ready 상태
+        self.fire_state = 0
         RazorLeaf.images = image
+        self.Leafdest()
 
     def draw(self,posi):
 
@@ -43,25 +47,55 @@ class RazorLeaf:
 
         
              
+    def Leafdest(self):
+        if self.state == 'Ready':
+            self.destination = random.randint(400,550),random.randint(350,400)
+            destx,desty = self.destination
+            dx,dy = self.delta
+            x,y = self.pos
+            dx = (destx - x)/0.3
+            dy = (desty - y)/0.3
+            self.delta = dx,dy
+        elif self.state =='Fire':
+            self.destination = player.Player.PlayerPos
+            destx,desty = self.destination
+            dx,dy = self.delta
+            x,y = self.pos
+            dx = (destx - x)/1
+            dy = (desty - y)/1
+            self.delta = dx,dy
 
+    def Leafmove(self,x,y,dx,dy):
+        if x < self.destination[0]-2 or x >self.destination[0]+2:
+            x += dx  * gfw.delta_time
+        if y < self.destination[1]-2 or y >self.destination[1]+2:
+            y += dy  * gfw.delta_time
+        return x,y
 
     def update(self):
         x,y = self.pos
         dx,dy = self.delta
         if self.state == 'Fire':
-            dy -= self.gravity
-        
-        x += dx * self.speed * gfw.delta_time
-        y += dy * self.speed * gfw.delta_time
+            # dy -= self.gravity
+            x += dx * self.speed * gfw.delta_time
+            y += dy * self.speed * gfw.delta_time
+        if self.state == 'Ready':
+            x,y = self.Leafmove(x,y,dx,dy)
+
         self.time += gfw.delta_time
         self.fidx = round(self.time*RazorLeaf.FPS[self.state])
 
         if self.time > self.ready_time:
             self.state = 'Fire'
+            if self.fire_state == 0:
+                self.Leafdest()
+                dx,dy = self.delta
+                self.fire_state = 1
 
         if y <-10 or x < -5:
             self.remove()
 
+            
 
         self.pos = x,y
         self.delta = dx,dy

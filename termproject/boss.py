@@ -94,7 +94,7 @@ class Boss:
             #     if self.state != self.old_Pattern:
             #         break
             
-            self.state = 'Pattern' + str(random.randint(3,3))
+            self.state = 'Pattern' + str(random.randint(1,3))
             #설정된 보스패턴으로 초기화
             self.Pattern_INFO = bossPattern.BossPattern(self.state)
             self.old_Pattern = self.state
@@ -168,7 +168,7 @@ class Boss:
     def do_pattern3(self):
         if self.state!='Pattern3':
             return BehaviorTree.FAIL
-        old_pt_time = self.Pattern_time // 0.5
+        old_pt_time = self.Pattern_time // 0.1
 
         self.Pattern_time += gfw.delta_time
         if self.Pattern_time > 6.5:
@@ -177,8 +177,9 @@ class Boss:
             self.shield = False
             return BehaviorTree.FAIL
 
-        if old_pt_time != self.Pattern_time // 0.5:
-            bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
+        if self.Pattern_time < 2.5 :
+            if old_pt_time != self.Pattern_time // 0.1:
+                bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
         
         return BehaviorTree.SUCCESS
 
