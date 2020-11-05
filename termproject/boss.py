@@ -93,8 +93,8 @@ class Boss:
             #     self.state = 'Pattern' + str(random.randint(1,3))
             #     if self.state != self.old_Pattern:
             #         break
-            
-            self.state = 'Pattern' + str(random.randint(1,3))
+
+            self.state = 'Pattern' + str(random.randint(3,3))
             #설정된 보스패턴으로 초기화
             self.Pattern_INFO = bossPattern.BossPattern(self.state)
             self.old_Pattern = self.state
@@ -171,7 +171,7 @@ class Boss:
         old_pt_time = self.Pattern_time // 0.1
 
         self.Pattern_time += gfw.delta_time
-        if self.Pattern_time > 6.5:
+        if self.Pattern_time > 5.0:
             self.Pattern_time = 0
             self.state = 'Chance'
             self.shield = False

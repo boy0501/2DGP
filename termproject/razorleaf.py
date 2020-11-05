@@ -35,7 +35,7 @@ class RazorLeaf:
         self.shaketime = 0
         self.state = state
         self.Scale = 2
-        self.ready_time = 3.0   #나뭇잎이 발사 되기 전 ready 상태
+        self.ready_time = 1.5   #나뭇잎이 발사 되기 전 ready 상태
         self.fire_state = 0
         RazorLeaf.images = image
         self.Leafdest()
@@ -61,8 +61,8 @@ class RazorLeaf:
             destx,desty = self.destination
             dx,dy = self.delta
             x,y = self.pos
-            dx = (destx - x)/1
-            dy = (desty - y)/1
+            dx = (destx - x)/1.7
+            dy = (desty - y)/1.7
             self.delta = dx,dy
 
     def Leafmove(self,x,y,dx,dy):
@@ -101,14 +101,14 @@ class RazorLeaf:
         self.delta = dx,dy
 
     def screenshake(self,pos):
-        # self.shaketime += gfw.delta_time
-        # if 0 < self.shaketime and self.shaketime < 0.2: 
-        #     pos1 =(math.sin(self.dtheta*180/math.pi) * 5, math.sin(self.dtheta*180/math.pi) * 5)
-        #     pos[0] = pos1
-        #     self.dtheta = (self.dtheta+1) % 360
-        # if self.shaketime > 1:
-        #     self.shaketime = 0
-        pass
+        if self.state == 'Fire':
+            self.shaketime += gfw.delta_time
+            if 0 < self.shaketime and self.shaketime < 0.2: 
+                pos1 =(math.sin(self.dtheta*180/math.pi) * 5, math.sin(self.dtheta*180/math.pi) * 5)
+                pos[0] = pos1
+                self.dtheta = (self.dtheta+1) % 360
+            if self.shaketime > 1:
+                self.shaketime = 0
 
 
     def remove(self):
