@@ -30,6 +30,13 @@ class Player:
                 'Double_jump':[(32,32)],
                 'Fall':[(32,32)]
     }
+    IMAGESIZE_GETBB ={'Walk':[(24,23),(16,25),(21,22),(16,25)],
+                'Idle':[(20,22)],
+                'Jump':[(20,22)],
+                'Attack':[(20,22)],
+                'Double_jump':[(20,22)],
+                'Fall':[(20,22)]
+    }
     JUMP_STATES_DIC = {'Normal':0,'Jump':1,'Double_jump':2}
     images = {}
     FPS = 12
@@ -41,6 +48,7 @@ class Player:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 100, 100
         self.delta = (0, 0)
+        self.for_get_bb_pos = 0,0
         self.speed = 200
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
@@ -79,16 +87,25 @@ class Player:
 
 
 
- 
+    def get_bb(self):
+        x,y = self.for_get_bb_pos
+        if self.state == 'Walk':
+            return x-self.width//2,y-self.height//2,x+self.width//2,y+self.height//2
+        else:
+            return x-11,y-16,x+11,y+9
+
+        
 
     def draw(self,posi):
+        print(self.pos)
         if self.laser_time < Player.LASER_INTERVAL:
             self.state = 'Attack'
         images = self.images[self.state]
         image = images[self.fidx % len(images)]
         result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
-        self.width = Player.IMAGESIZE[self.state][self.fidx%len(images)][0]       
-        self.height = Player.IMAGESIZE[self.state][self.fidx%len(images)][1]
+        self.for_get_bb_pos = result_posi
+        self.width = Player.IMAGESIZE_GETBB[self.state][self.fidx%len(images)][0]       
+        self.height = Player.IMAGESIZE_GETBB[self.state][self.fidx%len(images)][1]
         image.composite_draw(0,self.flip,*result_posi)
         
        # image.composite_draw(0,self.flip,*result_posi,self.width,self.height)

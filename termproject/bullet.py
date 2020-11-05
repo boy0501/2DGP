@@ -10,9 +10,7 @@ class Bullet:
     bullets = []
     BULLET_MAX = 5
     BULLET_NUM = 0  #현재 총알갯수
-    def get_bb(self):
-        x,y = self.pos
-        return x - 40, y - 50, x + 40, y + 40
+
 
     def __init__(self,x,y,d):
         # if len(Bullet.images) == 0:
@@ -25,6 +23,11 @@ class Bullet:
         self.speed = 500
         self.fidx = 0
         self.time = 0
+        self.for_get_bb_pos = 0,0
+
+    def get_bb(self):
+        x,y = self.for_get_bb_pos
+        return x - 4, y - 3, x + 4, y + 3
 
     def update(self):
         self.time += gfw.delta_time
@@ -43,7 +46,9 @@ class Bullet:
     def draw(self,pos):
         image = self.image
         flip = 'h' if self.delta[0] < 0 else ''
-        image.composite_draw(0, flip, *self.pos, 8, 6)
+        result_posi = (self.pos[0] + pos[0],self.pos[1]+pos[1])
+        self.for_get_bb_pos = result_posi
+        image.composite_draw(0, flip, *result_posi, 8, 6)
 
     def remove(self):
         #print((Bullet.bullets))
