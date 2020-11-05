@@ -90,7 +90,7 @@ class Boss:
 
         if self.ret_time > 2:
             while True:
-                self.state = 'Pattern' + str(random.randint(1,2))
+                self.state = 'Pattern' + str(random.randint(3,3))
                 if self.state != self.old_Pattern:
                     break
             #설정된 보스패턴으로 초기화
@@ -163,6 +163,23 @@ class Boss:
 
         return BehaviorTree.SUCCESS
 
+    def do_pattern3(self):
+        if self.state!='Pattern3':
+            return BehaviorTree.FAIL
+        old_pt_time = self.Pattern_time // 0.5
+
+        self.Pattern_time += gfw.delta_time
+        if self.Pattern_time > 6.5:
+            self.Pattern_time = 0
+            self.state = 'Chance'
+            self.shield = False
+            return BehaviorTree.FAIL
+
+        if old_pt_time != self.Pattern_time // 0.5:
+            bossPattern.BossPattern.do_Pattern(self.Pattern_INFO)
+        
+        return BehaviorTree.SUCCESS
+
     def update(self):
         
         #보스는 어떠한 상황이던간에 위아래로 움직인다. 그래서 공통으로 넣음
@@ -223,6 +240,11 @@ class Boss:
                             "name":"Pattern2",
                             "class":LeafNode,
                             "function" : self.do_pattern2
+                        },
+                        {
+                            "name":"Pattern3",
+                            "class":LeafNode,
+                            "function" : self.do_pattern3
                         }
                     ]
                 }

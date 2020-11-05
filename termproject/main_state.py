@@ -11,7 +11,7 @@ canvas_width = 640
 canvas_height = 480
 
 def enter():
-    gfw.world.init(['bg', 'bullet','player','boss','rock','beam'])
+    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf'])
     global player
     player = Player()
     boss = Boss()

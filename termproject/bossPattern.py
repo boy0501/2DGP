@@ -77,6 +77,8 @@ class BossPattern:
         if self.state == 'Pattern2':
             beam = hyperbeam.HyperBeam(BossPattern.images[self.state],'Charge')
             gfw.world.add(gfw.layer.beam,beam)
+        if self.state == 'Pattern3':
+            pass
 
 
 
