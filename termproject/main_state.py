@@ -13,6 +13,7 @@ canvas_height = 480
 def enter():
     gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf'])
     global player
+    global boss
     player = Player()
     boss = Boss()
     bg = Background()
@@ -23,7 +24,11 @@ def enter():
 
 def update():
     gfw.world.update()
+    check()
 
+def check():
+    if gobj.collides_box(player,boss):
+        pass
 
 def draw():
     gfw.world.draw()

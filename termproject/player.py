@@ -93,7 +93,6 @@ class Player:
             return x-self.width//2,y-self.height//2,x+self.width//2,y+self.height//2
         else:
             return x-11,y-16,x+11,y+9
-
         
 
     def draw(self,posi):

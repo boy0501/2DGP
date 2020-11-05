@@ -67,8 +67,17 @@ class Boss:
         images = self.images[0]
         image = images[self.fidx % len(images)]
         x,y = self.for_get_bb_pos
-        return x - image.w*Boss.BossScale//2, y - image.h*Boss.BossScale//2, x + image.w*Boss.BossScale//2, y + image.h*Boss.BossScale//2
+        #24는 보스의 꺾이는 부분의 길이이다. h의반틈에서 24를 빼주면 꺾이는 부분
+        return x - image.w*Boss.BossScale//2, y - image.h*Boss.BossScale//2, x + image.w*Boss.BossScale//2, y + (image.h//2-24)*Boss.BossScale
  
+    def get_bb2(self):
+       images = self.images[0]
+       image = images[self.fidx % len(images)]
+       x,y = self.for_get_bb_pos
+       #마찬가지로 죄하단 x는 원본이미지 길이에서 7을 빼주면 되고, 좌하단 y는 get_bb에서 끝난 부분 부터 시작 하면 되므로 이렇게 해줌
+       return x - (image.w//2-7)*Boss.BossScale, y + (image.h//2-24)*Boss.BossScale, x + image.w*Boss.BossScale//2, y + image.h*Boss.BossScale//2
+ 
+
 
     def draw(self,posi):
         
