@@ -13,10 +13,10 @@ class RazorLeaf:
     (SDL_KEYUP,SDLK_LSHIFT): 8  
     }
     #뒤에있는 숫자는 이미지파일의 시작 인덱스이다.
-    STATES = {'Ready':0,'Fire':9}
+    STATES = {'Ready':0,'Fire':8}
     #돌에대한 이미지만 받을것이기떄문에 dic이 아닌 list
     images = []
-    FPS = {'Ready':8,'Fire':1}
+    FPS = {'Ready':7,'Fire':1}
     LASER_INTERVAL = 0
 
     #constructor
@@ -32,11 +32,15 @@ class RazorLeaf:
         self.dtheta = 0
         self.shaketime = 0
         self.state = state
+        self.Scale = 2
+        self.ready_time = 3.0   #나뭇잎이 발사 되기 전 ready 상태
         RazorLeaf.images = image
 
     def draw(self,posi):
-        image = RazorLeaf.images[RazorLeaf.STATES[self.state]]
-        image.draw(*self.pos)
+
+        image = RazorLeaf.images[RazorLeaf.STATES[self.state] + self.fidx % RazorLeaf.FPS[self.state]]
+        image.draw(*self.pos,image.w * self.Scale,image.h * self.Scale)
+
         
              
 
@@ -44,9 +48,16 @@ class RazorLeaf:
     def update(self):
         x,y = self.pos
         dx,dy = self.delta
-        dy -= self.gravity
+        if self.state == 'Fire':
+            dy -= self.gravity
+        
         x += dx * self.speed * gfw.delta_time
         y += dy * self.speed * gfw.delta_time
+        self.time += gfw.delta_time
+        self.fidx = round(self.time*RazorLeaf.FPS[self.state])
+
+        if self.time > self.ready_time:
+            self.state = 'Fire'
 
         if y <-10 or x < -5:
             self.remove()
