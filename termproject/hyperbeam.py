@@ -18,6 +18,10 @@ class HyperBeam:
     images = []
     FPS = {'Beam':5,'Charge':6,'Energy':3}
     beampix = 16 * 7 #원본이미지에 8배 곱해준것
+    IMAGESIZE_GETBB ={'Beam':[(16,16),(16,16),(16,16),(16,16),(16,16)],
+                'Charge':[(20,22),(20,20),(20,20),(20,20),(20,20),(20,20)],
+                'Energy':[(5,5),(5,5),(5,5)]
+    }
     BEAM = [(500-beampix/2,350-beampix/2),(500-beampix,350-beampix*3/4),(500-beampix*3/2,350-beampix),
     (500-beampix*39/16,350-beampix*25/16),(500-beampix*39/16,350-beampix*25/16)]
     LASER_INTERVAL = 0
@@ -27,6 +31,7 @@ class HyperBeam:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = x,y
         self.delta = 1,0
+        self.for_get_bb_pos = 0,0
         self.speed = 2
         self.gravity = 10
         self.time = 0
@@ -39,7 +44,7 @@ class HyperBeam:
         self.EnergyRe_gentime = 0.05
         self.Energytime = 0
         self.delaytime = 1.2
-        self.dimgsize = 1.0
+        self.Scale = 1.0
         self.fidx = 0
         self.beamtarget = 0,0
         self.state = state
@@ -60,11 +65,19 @@ class HyperBeam:
         if self.time > self.delaytime or self.state!='Beam': 
             if(self.state == 'Beam'):
                 self.pos = HyperBeam.BEAM[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
-
+            result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
+            self.for_get_bb_pos = result_posi
             image = HyperBeam.images[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
-            image.composite_draw(self.rad,'',*self.pos,image.w*self.dimgsize,image.h*self.dimgsize)
+            self.width = HyperBeam.IMAGESIZE_GETBB[self.state][self.fidx % HyperBeam.FPS[self.state]][0]       
+            self.height = HyperBeam.IMAGESIZE_GETBB[self.state][self.fidx % HyperBeam.FPS[self.state]][1]
+            image.composite_draw(self.rad,'',*result_posi,image.w*self.Scale,image.h*self.Scale)
        #image.draw(*self.pos,100,100)
-        
+
+    def get_bb(self):
+        image =  HyperBeam.images[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
+        x,y = self.for_get_bb_pos
+        return x - self.width* self.Scale//2, y - self.height* self.Scale//2, \
+            x + self.width* self.Scale//2, y + self.height* self.Scale//2      
              
     def EnergyMove(self):
         targetx = 500
@@ -113,7 +126,7 @@ class HyperBeam:
         
         if self.state == 'Charge':
             self.rad+=0.1
-            self.dimgsize += 0.01 
+            self.Scale += 0.01 
             self.Energytime += gfw.delta_time
             if self.Energytime > self.EnergyRe_gentime:
                 self.Energytime = 0
@@ -127,7 +140,7 @@ class HyperBeam:
             self.state = 'Beam'
             self.pos = gobj.canv_width//2,gobj.canv_height//2
             self.beamtarget = player.Player.PlayerPos
-            self.dimgsize = 7
+            self.Scale = 7
             #HyperBeam.beampix *= 7
             self.BossAndPlayer_Calcul_rad()
             #self.rad = 0 
