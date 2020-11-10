@@ -30,6 +30,15 @@ def check():
     if gobj.collides_box(player,boss):
         pass
 
+    for bullet in gfw.world.objects_at(gfw.layer.bullet):
+        if gobj.collides_box(bullet, boss):
+            gfw.world.remove(bullet)
+            Bullet.BULLET_NUM-=1
+    #if gobj.collides_box(,boss):
+    #    print('bullet')
+
+    
+
 def draw():
     gfw.world.draw()
     gobj.draw_collision_box()

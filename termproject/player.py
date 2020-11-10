@@ -96,7 +96,7 @@ class Player:
         
 
     def draw(self,posi):
-        print(self.pos)
+        #print(self.pos)
         if self.laser_time < Player.LASER_INTERVAL:
             self.state = 'Attack'
         images = self.images[self.state]

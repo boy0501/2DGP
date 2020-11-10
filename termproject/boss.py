@@ -30,6 +30,7 @@ class Boss:
         self.images = Boss.load_images()
         self.state = 'Idle'
         self.wh = ()
+        self.shiledalpha = 100
         self.width = 10
         self.height = 10
         self.flip = ''
@@ -90,6 +91,9 @@ class Boss:
                 image.composite_draw(0,self.flip,*result_posi,image.w*Boss.BossScale,image.h*Boss.BossScale)
             elif n == 1:
                 if self.shield == True:
+                    if self.shiledalpha > 105:
+                        self.shiledalpha-=1
+                    SDL_SetTextureAlphaMod(image.texture,self.shiledalpha)
                     image.composite_draw(0,self.flip,*result_posi,image.w*4,image.h*4)
 
 

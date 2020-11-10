@@ -76,8 +76,15 @@ class HyperBeam:
     def get_bb(self):
         image =  HyperBeam.images[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
         x,y = self.for_get_bb_pos
-        return x - self.width* self.Scale//2, y - self.height* self.Scale//2, \
+        if self.state != 'Beam':
+            return x - self.width* self.Scale//2, y - self.height* self.Scale//2, \
             x + self.width* self.Scale//2, y + self.height* self.Scale//2      
+        else :
+            if self.time > self.delaytime:
+                return x - image.w* self.Scale//2, y - image.h* self.Scale//2, \
+                x - image.w * self.Scale//2 + 32 * self.Scale//2 , y - image.h* self.Scale//2 + 32 * self.Scale//2   
+            else :
+                return 0,0,0,0
              
     def EnergyMove(self):
         targetx = 500
