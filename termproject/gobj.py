@@ -18,7 +18,7 @@ def move_obj(obj):
 	obj.pos = point_add(obj.pos, obj.delta)
 
 def collides_box(a, b):
-
+	check = True
 
 	if (hasattr(a,'get_bb')==False):
 		return False
@@ -31,12 +31,13 @@ def collides_box(a, b):
 
 	if hasattr(b,'get_bb2'):
 		(lb2,bb2,rb2,tb2) = b.get_bb2()	
-		if la > rb2: return False
-		if ra < lb2: return False
-		if ba > tb2: return False
-		if ta < bb2: return False
-		print("용캐도 여기까지 왔군")
-		return True
+		if la > rb2: check = False
+		if ra < lb2: check = False
+		if ba > tb2: check = False
+		if ta < bb2: check = False		#get_Bb2에서 없어도 걍 넘어감.
+		if check == True:
+			print("get_bb2와의 충돌")
+			return True
 
 
 	if la > rb: return False
@@ -46,6 +47,7 @@ def collides_box(a, b):
 
 
 
+	print("일반적인 충돌")
 
 	return True
 

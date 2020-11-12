@@ -108,12 +108,12 @@ class Boss:
             y +=  500 * gfw.delta_time
 
         if self.ret_time > 2:
-            # while True:
-            #     self.state = 'Pattern' + str(random.randint(1,3))
-            #     if self.state != self.old_Pattern:
-            #         break
+            while True:
+                self.state = 'Pattern' + str(random.randint(1,3))
+                if self.state != self.old_Pattern:
+                    break
 
-            self.state = 'Pattern' + str(random.randint(2,2))
+            #self.state = 'Pattern' + str(random.randint(2,2))
             #설정된 보스패턴으로 초기화
             self.Pattern_INFO = bossPattern.BossPattern(self.state)
             self.old_Pattern = self.state
@@ -131,7 +131,7 @@ class Boss:
         dx,dy = self.delta
 
         self.chance_time += gfw.delta_time
-        if y >75:
+        if y >105:
             y -=  800 * gfw.delta_time
 
 
