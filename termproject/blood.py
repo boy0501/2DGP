@@ -12,12 +12,12 @@ class Blood:
     BLOOD_NUM = 0  #현재 총알갯수
 
 
-    def __init__(self,x,y,dx,dy):
+    def __init__(self,pos,dx,dy):
         # if len(Blood.images) == 0:
         #     self.load_images('male')
         #     self.load_images('female')
 
-        self.pos = (x,y)
+        self.pos = pos
         self.delta = 1 * dx, 1 * dy
         self.for_get_bb_pos = 0,0
         self.image = gfw.image.load(gobj.RES_DIR + '/2862.png')
@@ -35,6 +35,7 @@ class Blood:
         x,y = self.pos
         dx,dy = self.delta
         x += dx * self.speed * gfw.delta_time
+        y += dy * self.speed * gfw.delta_time
         #y += dy * self.speed * gfw.delta_time
         self.pos = x,y
         if((self.pos[0] > get_canvas_width()+8 )|(self.pos[0] < -8)):

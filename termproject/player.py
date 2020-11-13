@@ -3,6 +3,7 @@ import random
 from pico2d import *
 import gfw
 import gobj
+import math
 import bullet
 import blood
 
@@ -213,7 +214,12 @@ class Player:
         self.pos = gobj.point_add(self.pos, diff)    
 
     def die(self):
-        pass
+        for i in range(1):
+            blood1 = blood.Blood(self.pos,math.cos(i * math.pi / 180),math.sin(i * math.pi / 180))
+            gfw.world.add(gfw.layer.blood,blood1)
+      
+        self.remove()
+        
 
     def fire(self):
         #print(len(bullet.Bullet.bullets))
@@ -231,3 +237,5 @@ class Player:
         #     for b in range(0,len(bullet.Bullet.bullets)):
         #         gfw.world.add(gfw.layer.bullet,bullet.Bullet.bullets[b])
         #     Player.LASER_INTERVAL = 0.15
+    def remove(self):
+        gfw.world.remove(self)

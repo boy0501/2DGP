@@ -11,7 +11,7 @@ canvas_width = 640
 canvas_height = 480
 
 def enter():
-    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf'])
+    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood'])
     global player
     global boss
     player = Player()
@@ -43,9 +43,11 @@ def check():
 
     for pattern in gfw.world.objects_at(gfw.layer.beam):
         if gobj.collides_box(player,pattern):
+            player.die()
             print("당신은 죽었습니다")
     for pattern in gfw.world.objects_at(gfw.layer.leaf):
         if gobj.collides_box(player,pattern):
+            player.die()
             print("당신은 죽었습니다")
     #if gobj.collides_box(,boss):
     #    print('bullet')
