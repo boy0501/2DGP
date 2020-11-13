@@ -11,14 +11,19 @@ canvas_width = 640
 canvas_height = 480
 
 def enter():
-    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','die'])
+    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die'])
     global player
     global boss
     global diebg
+    global textbg
+    global game_over
+    game_over = False
     player = Player()
     boss = Boss()
     bg = Background()
     diebg = Background(1)
+    textbg = Background(2)
+    gfw.world.add(gfw.layer.text,textbg)
     gfw.world.add(gfw.layer.player, player)
     gfw.world.add(gfw.layer.die,diebg)
     gfw.world.add(gfw.layer.bg, bg)
@@ -30,6 +35,7 @@ def update():
     #print(gfw.delta_time)
 
 def check():
+    global game_over
     if gobj.collides_box(player,boss):
         pass
 
@@ -57,6 +63,12 @@ def check():
                 player.die()
                 diebg.set_death_img_to_die()
                 print("당신은 죽었습니다")
+    if game_over == False:
+        if player.get_die_value() ==1:
+            player.die()
+            diebg.set_death_img_to_die()
+            print("당신은 죽었습니다")    
+            game_over = True        
     #if gobj.collides_box(,boss):
     #    print('bullet')
 

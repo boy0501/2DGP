@@ -132,7 +132,7 @@ class Player:
 
     def update(self):
         if self.die_value == 1:
-            pass
+            return None 
         x,y = self.pos
         dx,dy = self.delta
         #print(dx,dy)        
@@ -183,7 +183,7 @@ class Player:
         
     def handle_event(self, e):
         if self.die_value == 1:
-            pass        
+            return None       
         pair = (e.type, e.key)
         #print(pair)
         if pair in Player.KEY_MAP:

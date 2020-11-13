@@ -47,6 +47,8 @@ class Background:
             "code":3842,
             "x":20,
             "y":10
+            #가로 14
+            #세로 18 이 한칸 
         }
     ]
     BACK_INFO_NAME = ["name","BossHP","Ground","YouDie"]
@@ -94,6 +96,8 @@ class Background:
         self.time = 0
         self.death_img = 0
         self.selectbg = select  #0이면 일반배경 1이면 die배경 
+        self.text = "Hi"
+        
     def set_death_img_to_die(self):
         self.death_img = 1
 
@@ -109,6 +113,9 @@ class Background:
         elif self.selectbg == 1:
             if self.death_img == 1:
                 Background.image_ground[4].draw(Background.BACK_INFO[4]["x"]+pos[0],Background.BACK_INFO[4]["y"]+pos[1])
+        elif self.selectbg == 2:
+            Background.image_ground[5].clip_draw(14,0,14,18,Background.BACK_INFO[5]["x"]+pos[0],Background.BACK_INFO[5]["y"]+pos[1])
+
         #self.image.draw(self.x+pos[0], self.y+pos[1])
     def update(self):
         self.dy = math.sin(self.dtheta*180/math.pi) * 10
