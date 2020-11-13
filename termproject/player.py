@@ -139,11 +139,15 @@ class Player:
         x += dx * self.speed * gfw.delta_time
         y += dy * self.speed * gfw.delta_time
 
-        if y < 90 and dy < 0:
-            dy = 0
-            y = 90
-            self.Djump_state = Player.JUMP_STATES_DIC['Normal']
+        if y <0:
+            self.die()
 
+        if 50<x and x <290:
+            if y < 90 and dy < 0:
+                dy = 0
+                y = 90
+                self.Djump_state = Player.JUMP_STATES_DIC['Normal']
+        
         if self.state == 'Attack':
             self.laser_time += gfw.delta_time
             if self.laser_time >= Player.LASER_INTERVAL:
