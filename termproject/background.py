@@ -37,16 +37,16 @@ class Background:
             "y":240
         },
         {
-            "name":"Words",
-            "code":3842,
-            "x":20,
-            "y":10
-        },
-        {
             "name":"YouDie",
             "code":468,
             "x":320,
             "y":240
+        },
+        {
+            "name":"Words",
+            "code":3842,
+            "x":20,
+            "y":10
         }
     ]
     BACK_INFO_NAME = ["name","BossHP","Ground","YouDie"]
@@ -84,7 +84,7 @@ class Background:
 
 
 
-    def __init__(self):
+    def __init__(self,select = 0):
         Background.load_back_image()
         self.image = Background.load_back_images()
         self.x, self.y = canvas_width//2, canvas_height//2
@@ -92,13 +92,23 @@ class Background:
         self.dtheta = 0
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
+        self.death_img = 0
+        self.selectbg = select  #0이면 일반배경 1이면 die배경 
+    def set_death_img_to_die(self):
+        self.death_img = 1
+
     def draw(self,pos):
         images = self.image
         image = images[self.fidx % len(images)]
         #배경그리는곳
-        image.clip_draw(0,0,700,500,320+pos[0],240+pos[1])
-        for n in range(4):
-            Background.image_ground[n].draw(Background.BACK_INFO[n]["x"]+pos[0],Background.BACK_INFO[n]["y"]+pos[1])
+        
+        if self.selectbg == 0:
+            image.clip_draw(0,0,700,500,320+pos[0],240+pos[1])
+            for n in range(4):
+                Background.image_ground[n].draw(Background.BACK_INFO[n]["x"]+pos[0],Background.BACK_INFO[n]["y"]+pos[1])
+        elif self.selectbg == 1:
+            if self.death_img == 1:
+                Background.image_ground[4].draw(Background.BACK_INFO[4]["x"]+pos[0],Background.BACK_INFO[4]["y"]+pos[1])
         #self.image.draw(self.x+pos[0], self.y+pos[1])
     def update(self):
         self.dy = math.sin(self.dtheta*180/math.pi) * 10
