@@ -25,7 +25,7 @@ def enter():
 def update():
     gfw.world.update()
     check()
-    #print(gfw.delta_time)
+    print(gfw.delta_time)
 
 def check():
     if gobj.collides_box(player,boss):
@@ -38,6 +38,7 @@ def check():
     
     for pattern in gfw.world.objects_at(gfw.layer.rock):
         if gobj.collides_box(player,pattern):
+            player.die()
             print("당신은 죽었습니다")
 
     for pattern in gfw.world.objects_at(gfw.layer.beam):

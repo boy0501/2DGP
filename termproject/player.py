@@ -4,6 +4,7 @@ from pico2d import *
 import gfw
 import gobj
 import bullet
+import blood
 
 class Player:
     KEY_MAP = {
@@ -209,7 +210,10 @@ class Player:
             # print(dx, pdx, self.state)
 
     def move(self, diff):
-        self.pos = gobj.point_add(self.pos, diff)        
+        self.pos = gobj.point_add(self.pos, diff)    
+
+    def die(self):
+        pass
 
     def fire(self):
         #print(len(bullet.Bullet.bullets))
