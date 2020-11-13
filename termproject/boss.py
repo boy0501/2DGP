@@ -110,6 +110,9 @@ class Boss:
         if self.ret_time > 2:
             while True:
                 self.state = 'Pattern' + str(random.randint(1,3))
+                for text in gfw.world.objects_at(gfw.layer.text):
+                    text.set_text(text.TEXT_DIC[self.state])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
+                    #클래스 변수가 있는데 여기에 적절한 값을 넣으면 알아서 튀어나옴
                 if self.state != self.old_Pattern:
                     break
 
@@ -171,6 +174,8 @@ class Boss:
     def do_pattern2(self):
         if self.state!='Pattern2':
             return BehaviorTree.FAIL
+
+
         self.Pattern_time += gfw.delta_time
         if self.Pattern_time > 6.5:
             self.Pattern_time = 0

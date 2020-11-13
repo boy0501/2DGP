@@ -143,6 +143,9 @@ class HyperBeam:
                 energy = HyperBeam(HyperBeam.images, 'Energy', randx,randy)
                 gfw.world.add(gfw.layer.beam, energy)
         if self.time > self.Chargingtime:
+            if self.state == 'Charge':
+                for text in gfw.world.objects_at(gfw.layer.text):
+                    text.set_text(text.TEXT_DIC['Beam'])
             self.time = 0
             self.state = 'Beam'
             self.pos = gobj.canv_width//2,gobj.canv_height//2
