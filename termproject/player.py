@@ -131,6 +131,8 @@ class Player:
     
 
     def update(self):
+        if self.die_value == 1:
+            pass
         x,y = self.pos
         dx,dy = self.delta
         #print(dx,dy)        
@@ -180,6 +182,8 @@ class Player:
         pass       
         
     def handle_event(self, e):
+        if self.die_value == 1:
+            pass        
         pair = (e.type, e.key)
         #print(pair)
         if pair in Player.KEY_MAP:
@@ -220,7 +224,7 @@ class Player:
 
     def die(self):
         for i in range(360):
-            blood1 = blood.Blood(self.pos,math.cos(i * math.pi / 180)*100,math.sin(i * math.pi / 180)*100,random.randint(1,10))
+            blood1 = blood.Blood(self.pos,math.cos(i * math.pi / 180)*100,math.sin(i * math.pi / 180)*100,random.randint(5,10))
             gfw.world.add(gfw.layer.blood,blood1)
         self.die_value = 1
         self.remove()

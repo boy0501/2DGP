@@ -25,7 +25,7 @@ def enter():
 def update():
     gfw.world.update()
     check()
-    print(gfw.delta_time)
+    #print(gfw.delta_time)
 
 def check():
     if gobj.collides_box(player,boss):
@@ -59,7 +59,7 @@ def check():
 
 def draw():
     gfw.world.draw()
-    gobj.draw_collision_box()
+    #gobj.draw_collision_box()
 
 
 def handle_event(e):

@@ -41,9 +41,15 @@ class Background:
             "code":3842,
             "x":20,
             "y":10
+        },
+        {
+            "name":"YouDie",
+            "code":468,
+            "x":320,
+            "y":240
         }
     ]
-    BACK_INFO_NAME = ["name","BossHP","Ground"]
+    BACK_INFO_NAME = ["name","BossHP","Ground","YouDie"]
 
 
 
