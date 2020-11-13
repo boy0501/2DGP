@@ -5,6 +5,7 @@ import gfw
 import gobj
 import math
 import bossPattern
+import boss_life_gauge
 from behaviortree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 
 class Boss:
@@ -40,11 +41,13 @@ class Boss:
         self.bulletnum = 0
         self.gravity = 0.1
         self.dtheta = 0
+        self.HP = 100
         self.shield = True
         self.old_Pattern = ''
         self.Pattern_INFO = 0
         self.Pattern2Start = 0 # 빔 테스트 임시변수임
         self.build_behavior_tree()
+        boss_life_gauge.load()
 
     @staticmethod
     def load_images():
@@ -78,10 +81,12 @@ class Boss:
        #마찬가지로 죄하단 x는 원본이미지 길이에서 7을 빼주면 되고, 좌하단 y는 get_bb에서 끝난 부분 부터 시작 하면 되므로 이렇게 해줌
        return x - (image.w//2-7)*Boss.BossScale, y + (image.h//2-24)*Boss.BossScale, x + image.w*Boss.BossScale//2, y + image.h*Boss.BossScale//2
  
-
+    def hit(self):
+        self.HP -= 1
 
     def draw(self,posi):
-        
+        rate = self.HP / 100
+        boss_life_gauge.draw(162, 367, 95, rate,posi)        
         for n in range(2):
             images = self.images[n]
             image = images[self.fidx % len(images)]

@@ -43,6 +43,7 @@ def check():
         if gobj.collides_box(bullet, boss):
             gfw.world.remove(bullet)
             Bullet.BULLET_NUM-=1
+            boss.hit()
     
     for pattern in gfw.world.objects_at(gfw.layer.rock):
         if player.die_value == 0:
