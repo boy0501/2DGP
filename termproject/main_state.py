@@ -37,18 +37,21 @@ def check():
             Bullet.BULLET_NUM-=1
     
     for pattern in gfw.world.objects_at(gfw.layer.rock):
-        if gobj.collides_box(player,pattern):
-            player.die()
-            print("당신은 죽었습니다")
+        if player.die_value == 0:
+            if gobj.collides_box(player,pattern):
+                player.die()
+                print("당신은 죽었습니다")
 
     for pattern in gfw.world.objects_at(gfw.layer.beam):
-        if gobj.collides_box(player,pattern):
-            player.die()
-            print("당신은 죽었습니다")
+        if player.die_value == 0:
+            if gobj.collides_box(player,pattern):
+                player.die()
+                print("당신은 죽었습니다")
     for pattern in gfw.world.objects_at(gfw.layer.leaf):
-        if gobj.collides_box(player,pattern):
-            player.die()
-            print("당신은 죽었습니다")
+        if player.die_value == 0:
+            if gobj.collides_box(player,pattern):
+                player.die()
+                print("당신은 죽었습니다")
     #if gobj.collides_box(,boss):
     #    print('bullet')
 

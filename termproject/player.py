@@ -64,6 +64,7 @@ class Player:
         self.bulletnum = 0
         self.gravity = 0.1
         self.Djump_state = Player.JUMP_STATES_DIC['Normal']
+        self.die_value = 0
         
         
     @staticmethod
@@ -214,12 +215,14 @@ class Player:
         self.pos = gobj.point_add(self.pos, diff)    
 
     def die(self):
-        for i in range(1):
-            blood1 = blood.Blood(self.pos,math.cos(i * math.pi / 180),math.sin(i * math.pi / 180))
+        for i in range(360):
+            blood1 = blood.Blood(self.pos,math.cos(i * math.pi / 180)*100,math.sin(i * math.pi / 180)*100,random.randint(1,10))
             gfw.world.add(gfw.layer.blood,blood1)
-      
+        self.die_value = 1
         self.remove()
-        
+    
+    def get_die_value(self):
+        return self.die_value
 
     def fire(self):
         #print(len(bullet.Bullet.bullets))
