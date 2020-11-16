@@ -137,6 +137,9 @@ class Boss:
         # self.delta = dx,dy
         return BehaviorTree.SUCCESS
 
+    def remove(self):
+        gfw.world.remove(self)
+
     def do_die(self):
         if self.state != 'Dead':
            return BehaviorTree.FAIL
