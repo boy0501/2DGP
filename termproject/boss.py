@@ -26,6 +26,7 @@ class Boss:
         self.delta = (0, -5)
         self.for_get_bb_pos = 0,0
         self.speed = 200
+        self.rad = 0
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
         self.images = Boss.load_images()
@@ -35,6 +36,7 @@ class Boss:
         self.width = 10
         self.height = 10
         self.flip = ''
+        self.die_time = 0
         self.ret_time = 0
         self.Pattern_time = 0
         self.chance_time = 0
@@ -82,7 +84,10 @@ class Boss:
        return x - (image.w//2-7)*Boss.BossScale, y + (image.h//2-24)*Boss.BossScale, x + image.w*Boss.BossScale//2, y + image.h*Boss.BossScale//2
  
     def hit(self):
-        self.HP -= 1
+        if self.HP > 0:
+            self.HP -= 10
+        if self.HP <= 0:
+            self.state = 'Dead'
 
     def draw(self,posi):
         rate = self.HP / 100
@@ -93,7 +98,7 @@ class Boss:
             result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
             self.for_get_bb_pos = result_posi
             if n == 0:
-                image.composite_draw(0,self.flip,*result_posi,image.w*Boss.BossScale,image.h*Boss.BossScale)
+                image.composite_draw(self.rad,self.flip,*result_posi,image.w*Boss.BossScale,image.h*Boss.BossScale)
             elif n == 1:
                 if self.shield == True:
                     if self.shiledalpha > 105:
@@ -131,6 +136,17 @@ class Boss:
         self.pos = x,y
         # self.delta = dx,dy
         return BehaviorTree.SUCCESS
+
+    def do_die(self):
+        if self.state != 'Dead':
+           return BehaviorTree.FAIL
+        self.die_time += gfw.delta_time
+        if self.die_time > 4:
+            self.rad = 30
+
+
+        return BehaviorTree.SUCCESS
+
 
     def do_chance(self):
         if self.state != 'Chance':
@@ -279,6 +295,11 @@ class Boss:
                             "function" : self.do_pattern3
                         },
                     ]
+                },
+                {
+                    "name":"Dead",
+                    "class":LeafNode,
+                    "function" : self.do_die
                 }
 
             ]
