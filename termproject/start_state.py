@@ -27,6 +27,12 @@ def enter():
     selecty = 240
     selected = 3
     
+    global Sbutton,Rbutton,Qbutton,Smag,Rmag,Qmag
+    Smag = Rmag = Qmag = 1
+
+    global mfont
+    mfont = gfw.font.load('./res/ConsolaMalgun.ttf',15)
+    
 def lightfunc():
     global light_time,lightning
     light_time += gfw.delta_time
@@ -38,10 +44,36 @@ def lightfunc():
         lightning -= 3
     SDL_SetTextureAlphaMod(light.texture,lightning)
         
+def highlightButton():
+    global Sbutton,Rbutton,Qbutton,Smag,Rmag,Qmag
+    if selected == 3:
+        if Smag + 0.02 < 1.5:
+            Smag += 0.02
+        if Rmag - 0.05 > 1.0:
+            Rmag -= 0.05
+        if Qmag - 0.05 > 1.0:
+            Qmag -= 0.05
+    elif selected ==  2:
+        if Smag - 0.05 > 1.0:
+            Smag -= 0.05
+        if Rmag + 0.02 < 1.5:
+            Rmag += 0.02
+        if Qmag - 0.05 > 1.0:
+            Qmag -= 0.05
+    elif selected == 1:
+        if Smag - 0.05 > 1.0:
+            Smag -= 0.05
+        if Rmag - 0.05 > 1.0:
+            Rmag -= 0.05
+        if Qmag + 0.02 < 1.5:
+            Qmag += 0.02
+
+
 
 def update():
     gfw.world.update()
     lightfunc()
+    highlightButton()
     check()
 
 def check():
@@ -53,10 +85,25 @@ def draw():
     bg.draw(320,240)
     light.draw(320,240)
     name.draw(320,340)
-    start.draw(320,190)
-    rank.draw(320,120)
-    mquit.draw(320,50)
+    if selected == 1:
+        start.draw(320,190,start.w*Smag,start.h*Smag)
+        rank.draw(320,120,rank.w*Rmag,rank.h*Rmag)
+        mquit.draw(320,50,mquit.w*Qmag,mquit.h*Qmag)
+    elif selected == 2:
+        start.draw(320,190,start.w*Smag,start.h*Smag)
+        mquit.draw(320,50,mquit.w*Qmag,mquit.h*Qmag)
+        rank.draw(320,120,rank.w*Rmag,rank.h*Rmag)
+    elif selected == 3:
+        rank.draw(320,120,rank.w*Rmag,rank.h*Rmag)
+        mquit.draw(320,50,mquit.w*Qmag,mquit.h*Qmag)
+        start.draw(320,190,start.w*Smag,start.h*Smag)
+
+
     select.draw(320,selecty)
+    
+    
+    mfont.draw(canvas_width-155,canvas_height-10,"Arrow keys (Select)",(230,230,230))
+    mfont.draw(canvas_width-115,canvas_height-25,"Enter (Choose)",(230,230,230))
     
     gfw.world.draw()
 
@@ -81,9 +128,11 @@ def handle_event(e):
         elif e.key == SDLK_RETURN:
             if selected == 3:
                 gfw.push(main_state)
+            if selected == 1:
+                gfw.pop()
 
 def resume():
-    enter()
+    gfw.world.init([])
 
 def exit():
     pass
