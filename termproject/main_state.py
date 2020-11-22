@@ -88,10 +88,15 @@ def handle_event(e):
     elif e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
             gfw.pop()
+        elif e.key == SDLK_r:
+            if player.die_value == 1:
+                gfw.pop()
+
+
     player.handle_event(e)
 
 def exit():
-    pass
+    return
 
 if __name__ == '__main__':
     gfw.run_main()
