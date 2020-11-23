@@ -182,6 +182,9 @@ class Player:
         pass       
         
     def handle_event(self, e):
+        if e.type == SDL_KEYDOWN:
+            if e.key == SDLK_ESCAPE:
+                self.delta = 0,0
         if self.die_value == 1:
             return None       
         pair = (e.type, e.key)

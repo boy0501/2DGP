@@ -111,6 +111,7 @@ def resume():
 def handle_event(e):
     global player
     # prev_dx = boy.dx
+
     if e.type == SDL_QUIT:
         gfw.quit()
     elif e.type == SDL_KEYDOWN:
@@ -119,9 +120,9 @@ def handle_event(e):
         elif e.key == SDLK_r:
             if player.die_value == 1:
                 gfw.change(start_state)
-
-
     player.handle_event(e)
+
+
 
 def exit():
     return
