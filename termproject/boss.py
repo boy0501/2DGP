@@ -23,7 +23,7 @@ class Boss:
     #constructor
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
-        self.pos = 500, 300
+        self.pos = 0, 300
         self.delta = (0, -5)
         self.for_get_bb_pos = 0,0
         self.speed = 200
@@ -82,6 +82,10 @@ class Boss:
 
         return images
 
+    def get_shield(self):
+        return self.shield
+    def set_shield_alpha(self):
+        self.shiledalpha = 230
     def get_boss_die(self):
         return self.dead
     def get_bb(self):
@@ -118,7 +122,7 @@ class Boss:
                 image.composite_draw(self.rad,self.flip,*result_posi,image.w*Boss.BossScale,image.h*Boss.BossScale)
             elif n == 1:
                 if self.shield == True:
-                    if self.shiledalpha > 105:
+                    if self.shiledalpha > 55:
                         self.shiledalpha-=1
                     SDL_SetTextureAlphaMod(image.texture,self.shiledalpha)
                     image.composite_draw(0,self.flip,*result_posi,image.w*4,image.h*4)
@@ -268,8 +272,8 @@ class Boss:
         
         #보스는 어떠한 상황이던간에 위아래로 움직인다. 그래서 공통으로 넣음
         #함수로 묶을 수 있으나,,, 나중에 해야징징이
-        pos = (self.pos[0], self.pos[1])
-        
+        #pos = (self.pos[0], self.pos[1])
+        x,y = self.pos
         self.time += gfw.delta_time
 
         self.ret_time += gfw.delta_time
@@ -277,13 +281,15 @@ class Boss:
 
         if self.state != 'Dead':
             if self.time > 0.05:
-                pos = (self.pos[0], self.pos[1] +
-                    math.sin(self.dtheta*180/math.pi)*10)
+                y = y + math.sin(self.dtheta*180/math.pi)*10
+                #pos = (self.pos[0], self.pos[1] +
+                #    math.sin(self.dtheta*180/math.pi)*10)
                 self.dtheta = (self.dtheta+1) % 360
                 self.time = 0
+        if x + 5 <= 500:
+            x += 5
 
-
-        self.pos = pos
+        self.pos = x,y
 
 
         self.bt.run()
