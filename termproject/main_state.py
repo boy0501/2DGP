@@ -12,6 +12,8 @@ import start_state
 canvas_width = 640
 canvas_height = 480
 
+MAX_objects = 10 
+
 def enter():
     gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die'])
     global player
@@ -87,79 +89,22 @@ def draw():
 def pause():
     global to_pause
 
-    for i in range(10):
+    for i in range(MAX_objects):
         to_list = []
-        if i == 0:
-            for obj in gfw.world.objects_at(gfw.layer.bg):
-                to_list.append(obj)
-        elif i == 1:
-            for obj in gfw.world.objects_at(gfw.layer.bullet):
-                to_list.append(obj)    
-        elif i == 2:
-            for obj in gfw.world.objects_at(gfw.layer.player):
-                to_list.append(obj)     
-        elif i == 3:
-            for obj in gfw.world.objects_at(gfw.layer.boss):
-                to_list.append(obj)                
-        elif i == 4:
-            for obj in gfw.world.objects_at(gfw.layer.rock):
-                to_list.append(obj)    
-        elif i == 5:
-            for obj in gfw.world.objects_at(gfw.layer.beam):
-                to_list.append(obj)                    
-        elif i == 6:
-            for obj in gfw.world.objects_at(gfw.layer.leaf):
-                to_list.append(obj)                    
-        elif i == 7:
-            for obj in gfw.world.objects_at(gfw.layer.blood):
-                to_list.append(obj)                   
-        elif i == 8:
-            for obj in gfw.world.objects_at(gfw.layer.text):
-                to_list.append(obj)                    
-        elif i == 9:
-            for obj in gfw.world.objects_at(gfw.layer.die):
-                to_list.append(obj)                   
-     
+        for obj in gfw.world.objects_at(i):
+            to_list.append(obj)
         to_pause[i] = to_list
+
         
 
 def resume():
     gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die'])
     global to_pause
     
-    for i in range(10):
-        if i == 0:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.bg,obj)
-        elif i == 1:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.bullet,obj)   
-        elif i == 2:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.player,obj)      
-        elif i == 3:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.boss,obj)                  
-        elif i == 4:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.rock,obj)     
-        elif i == 5:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.beam,obj)                     
-        elif i == 6:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.leaf,obj)                      
-        elif i == 7:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.blood,obj)                  
-        elif i == 8:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.text,obj)                     
-        elif i == 9:
-            for obj in to_pause[i]:
-                gfw.world.add(gfw.layer.die,obj)      
-
-
+    for i in range(MAX_objects):
+        for obj in to_pause[i]:
+            gfw.world.add(i,obj)
+ 
 
 
 
