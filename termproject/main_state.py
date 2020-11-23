@@ -7,6 +7,8 @@ from background import Background
 import gobj
 import pause_state
 import start_state
+import highscore
+import record
 
 
 canvas_width = 640
@@ -23,6 +25,11 @@ def enter():
     global bg
     global game_over
     global to_pause
+    global clear_time,clear_flag,name
+    record.load()
+    name = 'no_name'
+    clear_time = 0
+    clear_flag = 0
     to_pause = {}
     game_over = False
     player = Player()
@@ -37,12 +44,15 @@ def enter():
     gfw.world.add(gfw.layer.boss,boss)
 
 def update():
+    global clear_time
+    if boss.get_boss_die() == 0:
+        clear_time += gfw.delta_time
     gfw.world.update()
     check()
     #print(gfw.delta_time)
 
 def check():
-    global game_over
+    global game_over,clear_flag,clear_time
     if gobj.collides_box(player,boss):
         pass
 
@@ -76,7 +86,11 @@ def check():
             player.die()
             diebg.set_death_img_to_die()
             print("당신은 죽었습니다")    
-            game_over = True        
+            game_over = True   
+    if boss.get_boss_die() != 0 :
+        if clear_flag == 0:
+            clear_flag = 1
+
     #if gobj.collides_box(,boss):
     #    print('bullet')
 
@@ -84,6 +98,8 @@ def check():
 
 def draw():
     gfw.world.draw()
+    if boss.get_boss_die() != 0:
+        record.draw(name)
     #gobj.draw_collision_box()
 
 def pause():
@@ -109,13 +125,26 @@ def resume():
 
 
 def handle_event(e):
-    global player
+    global player,name,clear_time
     # prev_dx = boy.dx
 
     if e.type == SDL_QUIT:
         gfw.quit()
     elif e.type == SDL_KEYDOWN:
-        if e.key == SDLK_ESCAPE:
+        if boss.get_boss_die() != 0:
+            if e.key != None:
+                if 32<=int(e.key) and e.key<=int(126):
+                    if len(name) < 13:
+                        name += chr(e.key)
+                elif e.key == SDLK_BACKSPACE:
+                    name = name[:-1]
+                elif e.key == SDLK_RETURN:
+                    highscore.load()
+                    highscore.add(clear_time,name)
+                    highscore.save()
+                    gfw.change(start_state)
+                    clear_time = 0
+        elif e.key == SDLK_ESCAPE:
             gfw.push(pause_state)
         elif e.key == SDLK_r:
             if player.die_value == 1:

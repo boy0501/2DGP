@@ -11,6 +11,7 @@ stack = None
 frame_interval = 0.01
 delta_time = 0
 
+
 def quit():
     global running
     running = False

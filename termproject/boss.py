@@ -68,7 +68,8 @@ class Boss:
         images[1] = state_shield
         return images
 
-
+    def get_boss_die(self):
+        return self.die_time
     def get_bb(self):
         images = self.images[0]
         image = images[self.fidx % len(images)]
@@ -85,7 +86,7 @@ class Boss:
  
     def hit(self):
         if self.HP > 0:
-            self.HP -= 10
+            self.HP -= 100
         if self.HP <= 0:
             self.state = 'Dead'
 

@@ -3,6 +3,7 @@ from pico2d import *
 import gobj
 import main_state
 import start_state
+import rank_state
 import random
 
 
@@ -152,11 +153,11 @@ def handle_event(e):
                 selected += 1
         elif e.key == SDLK_RETURN:
             if selected == 4:
-                pass
+                gfw.pop()
             elif selected == 3:
                 gfw.change(start_state)
             elif selected == 2:
-                pass
+                gfw.push(rank_state)
             elif selected == 1:
                 gfw.quit()
 
