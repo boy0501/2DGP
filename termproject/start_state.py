@@ -44,19 +44,15 @@ def enter():
     thunder_music = load_music('./res/미싱노브금/번개1.ogg')
     thunder_music.set_volume(40)
     thunder_music.play()
-    global thunder_time
-    thunder_time = 0
     
 def lightfunc():
-    global light_time,lightning,thunder_time,thunder_music,thunderType,thunderVersion
+    global light_time,lightning,thunder_music,thunderType,thunderVersion
     light_time += gfw.delta_time
     if light_time > random.uniform(3.0,6.0):
         lightning = 160
         light_time = 0
         thunder_music.stop()
         del thunder_music
-        thunder_time += gfw.delta_time
-        print(thunderType)
         thunderType = random.randint(0,2)
         fmt = './res/미싱노브금/번개%d.ogg'        
         fn = fmt % (thunderType + 1)
@@ -102,17 +98,7 @@ def update():
     
 
 def check():
-    global thunder_time,thunder_music,thunderType,thunderVersion
-    thunder_time += gfw.delta_time
-    print(thunderType)
-    if thunder_time >= thunderVersion[thunderType]:
-        thunderType = random.randint(0,2)
-        fmt = './res/미싱노브금/번개%d.ogg'        
-        fn = fmt % (thunderType + 1)
-        thunder_music = load_music(fn)
-        thunder_music.set_volume(40)
-        thunder_music.play()
-        thunder_time = 0
+    pass
     
 
 def draw():
@@ -142,7 +128,16 @@ def draw():
     gfw.world.draw()
 
 def pause():
-    pass
+    global bg_music,thunder_music
+    thunder_music.stop()
+    del bg_music
+
+def resume():
+    gfw.world.init([])
+    global bg_music,thunder_music
+    bg_music = load_wav('./res/미싱노브금/intro.wav')
+    bg_music.set_volume(60)
+    bg_music.repeat_play()
 
 def handle_event(e):
     global selecty,selected
@@ -164,9 +159,6 @@ def handle_event(e):
                 gfw.push(rank_state)
             elif selected == 1:
                 gfw.quit()
-
-def resume():
-    gfw.world.init([])
 
 def exit():
     global bg_music

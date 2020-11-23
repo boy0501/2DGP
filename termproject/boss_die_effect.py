@@ -15,6 +15,9 @@ class BossDieEffect:
         self.dtheta = random.randint(0,180)
         self.fidx = 0
         BossDieEffect.images = images
+        self.music = load_wav('./res/미싱노브금/boss/explosion.wav')
+        self.music.set_volume(gfw.Volume-10)
+        self.music.play()
 
     def draw(self,posi):
         result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])

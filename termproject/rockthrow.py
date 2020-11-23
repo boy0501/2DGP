@@ -17,13 +17,13 @@ class RockThrow:
     images = []
     FPS = {'Pattern1':1,'Pattern2':1,'Pattern3':1}
     LASER_INTERVAL = 0
-
+    Volume = 20
     #constructor
     def __init__(self,image,state,x,y,dx,dy):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = x,y
         self.delta = dx,dy
-        self.for_get_bb_pos = 0,0
+        self.for_get_bb_pos = self.pos
         self.speed = 2
         self.gravity = 10
         self.time = 0
@@ -33,6 +33,9 @@ class RockThrow:
         self.shaketime = 0
         self.state = state
         RockThrow.images = image
+        self.music = load_wav('./res/미싱노브금/boss/Stone.wav')
+        self.music.set_volume(gfw.Volume-10)
+        self.music.play()
 
     def draw(self,posi):
         result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
@@ -63,12 +66,18 @@ class RockThrow:
                     gfw.world.add(gfw.layer.rock, rock)
                     rock = RockThrow(RockThrow.images, 'medium', x, y, Rdx, dy)
                     gfw.world.add(gfw.layer.rock, rock)
+                    self.music = load_wav('./res/미싱노브금/boss/stoneattack.wav')
+                    self.music.set_volume(gfw.Volume-10)
+                    self.music.play()
                     self.remove()
                 elif (self.state == 'medium'):
                     rock = RockThrow(RockThrow.images, 'small', x, y, Ldx, dy)
                     gfw.world.add(gfw.layer.rock, rock)
                     rock = RockThrow(RockThrow.images, 'small', x, y, Rdx, dy)
                     gfw.world.add(gfw.layer.rock, rock)
+                    self.music = load_wav('./res/미싱노브금/boss/stoneattack.wav')
+                    self.music.set_volume(gfw.Volume-10)
+                    self.music.play()
                     self.remove()
                 elif (self.state == 'small'):
                     self.remove()

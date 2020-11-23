@@ -43,6 +43,14 @@ def enter():
     gfw.world.add(gfw.layer.bg, bg)
     gfw.world.add(gfw.layer.boss,boss)
 
+    global main_music,appear_m
+    main_music = load_music('./res/미싱노브금/Pokemon_Battle_Megamix.ogg')
+    main_music.set_volume(40)
+    main_music.repeat_play()
+    appear_m = load_wav('./res/미싱노브금/rattata.wav')
+    appear_m.set_volume(20)
+    appear_m.play()
+
 def update():
     global clear_time
     if boss.get_boss_die() == 0:
@@ -52,9 +60,13 @@ def update():
     #print(gfw.delta_time)
 
 def check():
-    global game_over,clear_flag,clear_time
+    global game_over,clear_flag,clear_time       
     if gobj.collides_box(player,boss):
-        pass
+        if player.die_value == 0:
+            player.die()
+            diebg.set_death_img_to_die()
+            print("당신은 죽었습니다")    
+
 
     for bullet in gfw.world.objects_at(gfw.layer.bullet):
         if gobj.collides_box(bullet, boss):
@@ -115,6 +127,10 @@ def pause():
             to_list.append(obj)
         to_pause[i] = to_list
 
+
+    print(main_music)
+    main_music.pause()
+
         
 
 def resume():
@@ -124,12 +140,17 @@ def resume():
     for i in range(MAX_objects):
         for obj in to_pause[i]:
             gfw.world.add(i,obj)
+    
+    main_music.resume()
+    print(main_music)
+
  
 
 
 
 def handle_event(e):
     global player,name,clear_time
+
     # prev_dx = boy.dx
 
     if e.type == SDL_QUIT:

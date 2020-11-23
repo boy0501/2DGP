@@ -31,7 +31,7 @@ class HyperBeam:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = x,y
         self.delta = 1,0
-        self.for_get_bb_pos = 0,0
+        self.for_get_bb_pos = self.pos
         self.speed = 2
         self.gravity = 10
         self.time = 0
@@ -52,6 +52,10 @@ class HyperBeam:
         self.radb = 0
         self.shakeWH = 40
         HyperBeam.images = image
+        self.music = load_wav('./res/미싱노브금/boss/hyperbeam.wav')
+        self.music.set_volume(gfw.Volume)
+        self.music_on = False
+
 
     def draw(self,posi):
         # if self.laser_time < Player.LASER_INTERVAL:
@@ -157,6 +161,10 @@ class HyperBeam:
             #self.rad = 0
             self.setBeamtuple()
         if self.state =='Beam':
+            if self.time > self.delaytime:
+                if self.music_on == False:
+                    self.music.play()
+                    self.music_on = True
             if self.time > self.Firetime:
                 self.remove()
         if self.state == 'Energy':

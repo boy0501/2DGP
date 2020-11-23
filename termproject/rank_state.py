@@ -22,9 +22,6 @@ def enter():
     rank = gfw.image.load('./res/bg/Rank.png')
     mquit = gfw.image.load('./res/bg/Quit.png')
     select = gfw.image.load('./res/bg/1270.png')
-    global lightning,light_time
-    lightning = 0
-    light_time = 0
     
     global text
     text = ''   
@@ -34,21 +31,14 @@ def enter():
     
     global mfont
     mfont = gfw.font.load('./res/ConsolaMalgun.ttf',15)
-    
-def lightfunc():
-    global light_time,lightning
-    light_time += gfw.delta_time
-    if light_time > random.uniform(3.0,4.0):
-        lightning = 160
-        light_time = 0
+    global rank_music
+    rank_music = load_wav('./res/미싱노브금/select.wav')
+    rank_music.set_volume(30)
+    rank_music.repeat_play()
 
-    if lightning- 3 >= 0:
-        lightning -= 3
-    SDL_SetTextureAlphaMod(light.texture,lightning)
         
 def update():
     gfw.world.update()
-    lightfunc()
     check()
 
 def check():
@@ -58,7 +48,6 @@ def check():
 
 def draw():
     bg.draw(320,240,bg.w,bg.h*0.3)
-    light.draw(320,240)
     rank.draw(320,400)
     highscore.draw()
     back.draw(320,50)
@@ -94,7 +83,9 @@ def resume():
     gfw.world.init([])
 
 def exit():
-    pass
+    global rank_music
+    del rank_music
+
 
 if __name__ == '__main__':
     gfw.run_main()

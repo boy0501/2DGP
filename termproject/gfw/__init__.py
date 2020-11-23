@@ -10,6 +10,7 @@ running = True
 stack = None
 frame_interval = 0.01
 delta_time = 0
+Volume = 20
 
 
 def quit():

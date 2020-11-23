@@ -19,7 +19,7 @@ class Bullet:
 
         self.pos = (x,y)
         self.delta = 1 * d, 1 * d
-        self.for_get_bb_pos = 0,0
+        self.for_get_bb_pos = self.pos
         self.image = gfw.image.load(gobj.RES_DIR + '/2862.png')
         self.speed = 500
         self.fidx = 0

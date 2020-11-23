@@ -44,13 +44,14 @@ class Player:
     FPS = 12
     LASER_INTERVAL = 0
     PlayerPos = 0,0
+    Volume = 20
 
     #constructor
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 100, 100
         self.delta = (0, 0)
-        self.for_get_bb_pos = 0,0
+        self.for_get_bb_pos = self.pos
         self.speed = 200
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
@@ -65,8 +66,15 @@ class Player:
         self.gravity = 0.1
         self.Djump_state = Player.JUMP_STATES_DIC['Normal']
         self.die_value = 0
+        self.attmusic = load_wav('./res/미싱노브금/캐릭터/Shoot.wav')
+        self.STATESMUSIC = {'Attack':load_wav('./res/미싱노브금/캐릭터/Shoot.wav'),
+        'Die':load_wav('./res/미싱노브금/캐릭터/Death.wav'),
+        'Land':load_wav('./res/미싱노브금/캐릭터/land.wav'),
+        'doublejump':load_wav('./res/미싱노브금/캐릭터/doublejump.wav')
+        }
+
         
-        
+
     @staticmethod
     def load_images():
         images = {}
@@ -118,9 +126,13 @@ class Player:
         if self.state == 'Jump':
             self.state = 'Double_jump'
             self.Djump_state = Player.JUMP_STATES_DIC['Double_jump']
+            self.STATESMUSIC['doublejump'].set_volume(Player.Volume)
+            self.STATESMUSIC['doublejump'].play()
         elif self.state == 'Fall':
             self.state = 'Double_jump'
             self.Djump_state = Player.JUMP_STATES_DIC['Double_jump']
+            self.STATESMUSIC['doublejump'].set_volume(Player.Volume)
+            self.STATESMUSIC['doublejump'].play()            
         else:
             self.state = 'Jump'
             self.Djump_state += 1
@@ -168,6 +180,8 @@ class Player:
                     self.state = 'Walk'
                 else:
                     self.state = 'Idle'
+                self.STATESMUSIC['Land'].set_volume(Player.Volume)
+                self.STATESMUSIC['Land'].play()    
             
 
 
@@ -229,6 +243,8 @@ class Player:
         for i in range(360):
             blood1 = blood.Blood(self.pos,math.cos(i * math.pi / 180)*100,math.sin(i * math.pi / 180)*100,random.randint(5,10))
             gfw.world.add(gfw.layer.blood,blood1)
+        self.STATESMUSIC['Die'].set_volume(Player.Volume)
+        self.STATESMUSIC['Die'].play()
         self.die_value = 1
         self.remove()
     
@@ -243,6 +259,8 @@ class Player:
             else:
                 bullet1 = bullet.Bullet(self.pos[0]+4,self.pos[1]-4,1)
             gfw.world.add(gfw.layer.bullet,bullet1)
+            self.STATESMUSIC['Attack'].set_volume(Player.Volume)
+            self.STATESMUSIC['Attack'].play()
             bullet.Bullet.BULLET_NUM += 1
             Player.LASER_INTERVAL = 0.15   
         # if len(bullet.Bullet.bullets)<5:

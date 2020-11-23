@@ -25,7 +25,7 @@ class Boss:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 0, 300
         self.delta = (0, -5)
-        self.for_get_bb_pos = 0,0
+        self.for_get_bb_pos = self.pos
         self.speed = 200
         self.rad = 0
         self.fidx = 0 #fps 의 dx이다
@@ -52,7 +52,10 @@ class Boss:
         self.Pattern2Start = 0 # 빔 테스트 임시변수임
         self.build_behavior_tree()
         boss_life_gauge.load()
-
+        self.music = load_wav('./res/미싱노브금/boss/explosionlong.wav')
+        self.music.set_volume(gfw.Volume-10)
+        self.winmusic = load_music('./res/미싱노브금/victory.ogg')
+        self.winmusic.set_volume(gfw.Volume)
     @staticmethod
     def load_images():
         images = {}
@@ -106,6 +109,8 @@ class Boss:
         if self.HP > 0:
             self.HP -= 100
         if self.HP <= 0:
+            if self.state != 'Dead':
+                self.winmusic.repeat_play()
             self.state = 'Dead'
             for text in gfw.world.objects_at(gfw.layer.text):
                 text.set_text(text.TEXT_DIC['Victory'])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
@@ -178,6 +183,8 @@ class Boss:
             y -= 0.5
             self.pos = x,y
         if self.die_time > 2.3:
+            if self.dead == 0:
+                self.music.play()
             self.rad = 30
             self.dead = 1
             x,y = self.pos

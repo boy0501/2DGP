@@ -35,17 +35,12 @@ def enter():
 
     global mfont
     mfont = gfw.font.load('./res/ConsolaMalgun.ttf',15)
-    
-def lightfunc():
-    global light_time,lightning
-    light_time += gfw.delta_time
-    if light_time > random.uniform(3.0,4.0):
-        lightning = 160
-        light_time = 0
 
-    if lightning- 3 >= 0:
-        lightning -= 3
-    SDL_SetTextureAlphaMod(light.texture,lightning)
+    global pause_music
+    pause_music = load_wav('./res/미싱노브금/relax.wav')
+    pause_music.set_volume(40)
+    pause_music.repeat_play()
+    
         
 def highlightButton():
     global Bmag,Mmag,Rmag,Qmag
@@ -90,7 +85,6 @@ def highlightButton():
 
 def update():
     gfw.world.update()
-    lightfunc()
     highlightButton()
     check()
 
@@ -101,7 +95,6 @@ def check():
 
 def draw():
     bg.draw(320,240,bg.w,bg.h*0.3)
-    light.draw(320,240)
     mpause.draw(320,400)
     if selected == 1:
         back.draw(320,300,back.w*Bmag,back.h*Bmag)
@@ -134,7 +127,8 @@ def draw():
     gfw.world.draw()
 
 def pause():
-    pass
+    global pause_music
+    del pause_music
 
 def handle_event(e):
     global selecty,selected
@@ -163,9 +157,14 @@ def handle_event(e):
 
 def resume():
     gfw.world.init([])
+    global pause_music
+    pause_music = load_wav('./res/미싱노브금/relax.wav')
+    pause_music.set_volume(40)
+    pause_music.repeat_play()
 
 def exit():
-    pass
+    global pause_music
+    del pause_music
 
 if __name__ == '__main__':
     gfw.run_main()

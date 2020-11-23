@@ -25,7 +25,7 @@ class RazorLeaf:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 500,300
         self.delta = 0,1
-        self.for_get_bb_pos = 0,0
+        self.for_get_bb_pos = self.pos
         self.destination = 500,300
         self.speed = 5
         self.gravity = 10
@@ -40,6 +40,9 @@ class RazorLeaf:
         self.fire_state = 0
         RazorLeaf.images = image
         self.Leafdest()
+        self.music = load_wav('./res/미싱노브금/boss/razorleap1.wav')
+        self.music.set_volume(gfw.Volume-10)
+        self.music.play()
 
     def draw(self,posi):
         result_posi = (self.pos[0] + posi[0],self.pos[1]+posi[1])
@@ -95,6 +98,9 @@ class RazorLeaf:
             self.state = 'Fire'
             if self.fire_state == 0:
                 self.Leafdest()
+                self.music = load_wav('./res/미싱노브금/boss/razorleap2.wav')
+                self.music.set_volume(gfw.Volume-10)
+                self.music.play()
                 dx,dy = self.delta
                 self.fire_state = 1
 

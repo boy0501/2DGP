@@ -19,7 +19,7 @@ class Blood:
 
         self.pos = pos
         self.delta = 1 * dx, 1 * dy
-        self.for_get_bb_pos = 0,0
+        self.for_get_bb_pos = pos
         self.image = gfw.image.load(gobj.RES_DIR + '/7.png')
         self.speed = rspeed
         self.fidx = 0
