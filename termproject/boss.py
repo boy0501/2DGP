@@ -6,6 +6,7 @@ import gobj
 import math
 import bossPattern
 import boss_life_gauge
+import boss_die_effect
 from behaviortree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 
 class Boss:
@@ -14,9 +15,9 @@ class Boss:
     (SDL_KEYDOWN, SDLK_z): 14,
     (SDL_KEYUP,SDLK_LSHIFT): 8  
     }
-    STATES = ['Idle','Dead','Pattern1','Pattern2','Pattern3','Chance']
+    STATES = ['Idle','Dead','Pattern1','Pattern2','Pattern3','Chance','Die']
     images = {}
-    FPS = 1
+    FPS = 20
     LASER_INTERVAL = 0
     BossScale = 3.5
     #constructor
@@ -37,6 +38,7 @@ class Boss:
         self.height = 10
         self.flip = ''
         self.die_time = 0
+        self.dead = 0
         self.ret_time = 0
         self.Pattern_time = 0
         self.chance_time = 0
@@ -56,8 +58,10 @@ class Boss:
         images = {}
         file_fmt_boss = '%s/보스/3827.png'
         file_fmt_shield = '%s/보스/6714.png'
+        file_fmt_die = './res/보스/보스사망/Animation-4 Direction-0 Frame-%d.png'
         state_images = []
         state_shield = []
+        state_die = []
         fn = file_fmt_boss % (gobj.RES_DIR)
         if os.path.isfile(fn):
             state_images.append(gfw.image.load(fn))
@@ -66,10 +70,20 @@ class Boss:
         if os.path.isfile(fn):
             state_shield.append(gfw.image.load(fn))
         images[1] = state_shield
+        n = -1
+        while True:
+                n += 1
+                fn = file_fmt_die % (n)
+                if os.path.isfile(fn):
+                    state_die.append(gfw.image.load(fn))
+                else:
+                    break
+        images[2] = state_die
+
         return images
 
     def get_boss_die(self):
-        return self.die_time
+        return self.dead
     def get_bb(self):
         images = self.images[0]
         image = images[self.fidx % len(images)]
@@ -89,6 +103,8 @@ class Boss:
             self.HP -= 100
         if self.HP <= 0:
             self.state = 'Dead'
+            for text in gfw.world.objects_at(gfw.layer.text):
+                text.set_text(text.TEXT_DIC['Victory'])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
 
     def draw(self,posi):
         rate = self.HP / 100
@@ -144,9 +160,25 @@ class Boss:
     def do_die(self):
         if self.state != 'Dead':
            return BehaviorTree.FAIL
+        old_pt_time = self.die_time // 0.1
         self.die_time += gfw.delta_time
-        if self.die_time > 4:
+
+        if self.dead != 1:
+            if old_pt_time != self.die_time // 0.1:
+                x,y = self.pos
+                x += random.randint(-50,50)
+                y += random.randint(-50,50)
+                b_d_e = boss_die_effect.BossDieEffect((x,y),self.images[2])
+                gfw.world.add(gfw.layer.boss_die_effect,b_d_e)
+            x,y = self.pos
+            y -= 0.5
+            self.pos = x,y
+        if self.die_time > 2.3:
             self.rad = 30
+            self.dead = 1
+            x,y = self.pos
+            y -= 2
+            self.pos = x,y
 
 
         return BehaviorTree.SUCCESS
@@ -241,16 +273,17 @@ class Boss:
         self.time += gfw.delta_time
 
         self.ret_time += gfw.delta_time
+        self.fidx = round(self.ret_time*Boss.FPS)
 
+        if self.state != 'Dead':
+            if self.time > 0.05:
+                pos = (self.pos[0], self.pos[1] +
+                    math.sin(self.dtheta*180/math.pi)*10)
+                self.dtheta = (self.dtheta+1) % 360
+                self.time = 0
 
-        if self.time > 0.05:
-            pos = (self.pos[0], self.pos[1] +
-                math.sin(self.dtheta*180/math.pi)*10)
-            self.dtheta = (self.dtheta+1) % 360
-            self.time = 0
 
         self.pos = pos
-        self.fidx = round(self.time*Boss.FPS)
 
 
         self.bt.run()
@@ -258,7 +291,11 @@ class Boss:
   
         
     def screenshake(self,pos):
-        pass       
+        # if self.state == 'Dead':
+        #     pos1 =(math.sin(self.dtheta*180/math.pi) * 5, math.sin(self.dtheta*180/math.pi) * 5)
+        #     pos[0] = pos1
+        #     self.dtheta = (self.dtheta+1) % 360   
+        pass   
         
 
     def move(self, diff):

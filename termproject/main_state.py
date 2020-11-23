@@ -14,10 +14,10 @@ import record
 canvas_width = 640
 canvas_height = 480
 
-MAX_objects = 10 
+MAX_objects = 11 
 
 def enter():
-    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die'])
+    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die','boss_die_effect'])
     global player
     global boss
     global diebg
@@ -114,7 +114,7 @@ def pause():
         
 
 def resume():
-    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die'])
+    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die','boss_die_effect'])
     global to_pause
     
     for i in range(MAX_objects):
