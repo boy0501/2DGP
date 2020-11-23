@@ -5,6 +5,8 @@ from bullet import Bullet
 from boss import Boss
 from background import Background
 import gobj
+import pause_state
+import start_state
 
 
 canvas_width = 640
@@ -16,7 +18,10 @@ def enter():
     global boss
     global diebg
     global textbg
+    global bg
     global game_over
+    global to_pause
+    to_pause = {}
     game_over = False
     player = Player()
     boss = Boss()
@@ -79,6 +84,84 @@ def draw():
     gfw.world.draw()
     #gobj.draw_collision_box()
 
+def pause():
+    global to_pause
+
+    for i in range(10):
+        to_list = []
+        if i == 0:
+            for obj in gfw.world.objects_at(gfw.layer.bg):
+                to_list.append(obj)
+        elif i == 1:
+            for obj in gfw.world.objects_at(gfw.layer.bullet):
+                to_list.append(obj)    
+        elif i == 2:
+            for obj in gfw.world.objects_at(gfw.layer.player):
+                to_list.append(obj)     
+        elif i == 3:
+            for obj in gfw.world.objects_at(gfw.layer.boss):
+                to_list.append(obj)                
+        elif i == 4:
+            for obj in gfw.world.objects_at(gfw.layer.rock):
+                to_list.append(obj)    
+        elif i == 5:
+            for obj in gfw.world.objects_at(gfw.layer.beam):
+                to_list.append(obj)                    
+        elif i == 6:
+            for obj in gfw.world.objects_at(gfw.layer.leaf):
+                to_list.append(obj)                    
+        elif i == 7:
+            for obj in gfw.world.objects_at(gfw.layer.blood):
+                to_list.append(obj)                   
+        elif i == 8:
+            for obj in gfw.world.objects_at(gfw.layer.text):
+                to_list.append(obj)                    
+        elif i == 9:
+            for obj in gfw.world.objects_at(gfw.layer.die):
+                to_list.append(obj)                   
+     
+        to_pause[i] = to_list
+        
+
+def resume():
+    gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die'])
+    global to_pause
+    
+    for i in range(10):
+        if i == 0:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.bg,obj)
+        elif i == 1:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.bullet,obj)   
+        elif i == 2:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.player,obj)      
+        elif i == 3:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.boss,obj)                  
+        elif i == 4:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.rock,obj)     
+        elif i == 5:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.beam,obj)                     
+        elif i == 6:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.leaf,obj)                      
+        elif i == 7:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.blood,obj)                  
+        elif i == 8:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.text,obj)                     
+        elif i == 9:
+            for obj in to_pause[i]:
+                gfw.world.add(gfw.layer.die,obj)      
+
+
+
+
 
 def handle_event(e):
     global player
@@ -87,10 +170,10 @@ def handle_event(e):
         gfw.quit()
     elif e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
-            gfw.pop()
+            gfw.push(pause_state)
         elif e.key == SDLK_r:
             if player.die_value == 1:
-                gfw.pop()
+                gfw.change(start_state)
 
 
     player.handle_event(e)

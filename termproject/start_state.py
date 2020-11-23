@@ -115,9 +115,7 @@ def handle_event(e):
     if e.type == SDL_QUIT:
         gfw.quit()
     elif e.type == SDL_KEYDOWN:
-        if e.key == SDLK_ESCAPE:
-            gfw.pop()
-        elif e.key == SDLK_DOWN:
+        if e.key == SDLK_DOWN:
             if selecty - 70 >30 :
                 selecty -= 70
                 selected -= 1
@@ -129,7 +127,7 @@ def handle_event(e):
             if selected == 3:
                 gfw.push(main_state)
             if selected == 1:
-                gfw.pop()
+                gfw.quit()
 
 def resume():
     gfw.world.init([])
