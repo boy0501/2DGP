@@ -26,10 +26,10 @@ def enter():
     global game_over
     global to_pause
     global clear_time,clear_flag,name
-    global cheet_key,cheet_name,cheet_active
-    cheet_key = False
-    cheet_name = ''
-    cheet_active = False
+    global cheat_key,cheat_name,cheat_active
+    cheat_key = False
+    cheat_name = ''
+    cheat_active = False
     record.load()
     name = 'no_name'
     clear_time = 0
@@ -80,7 +80,7 @@ def check():
                 boss.set_shield_alpha()
 
 
-    if cheet_active == False:
+    if cheat_active == False:
         if gobj.collides_box(player,boss):
             if player.die_value == 0:
                 player.die()
@@ -154,10 +154,12 @@ def resume():
     main_music.resume()
     print(main_music)
 
-def check_cheet():
-    global cheet_name,cheet_active
-    if cheet_name == 'shield':
-        cheet_active = True
+def check_cheat():
+    global cheat_name,cheat_active
+    if cheat_name == 'shield':
+        cheat_active = True
+        for text in gfw.world.objects_at(gfw.layer.text):
+                    text.set_text(text.TEXT_DIC['Cheat'])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
 
 
 
@@ -165,7 +167,7 @@ def check_cheet():
 
 def handle_event(e):
     global player,name,clear_time
-    global cheet_key,cheet_name
+    global cheat_key,cheat_name
 
     # prev_dx = boy.dx
 
@@ -191,18 +193,18 @@ def handle_event(e):
             if player.die_value == 1:
                 gfw.change(start_state)
         elif e.key == SDLK_1:
-            cheet_key = True
-        elif cheet_key == True:
+            cheat_key = True
+        elif cheat_key == True:
             if e.key != None:
                 if 32<=int(e.key) and e.key<=int(126):
-                    cheet_name += chr(e.key)
+                    cheat_name += chr(e.key)
                 elif e.key == SDLK_RETURN:
-                    check_cheet()
+                    check_cheat()
 
 
     elif e.type == SDL_KEYUP:
         if e.key == SDLK_1:
-            cheet_key = False
+            cheat_key = False
     player.handle_event(e)
 
 

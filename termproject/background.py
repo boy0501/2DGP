@@ -59,7 +59,8 @@ class Background:
         "Pattern3" : "Enemy MISSINGNO. used RAZOR LEAF!",
         "Die" : "BOSHY fainted!",
         "Appear" : "wild MISSINGNO. appeared!",
-        "Victory" : "wild MISSINGNO. fainted!"
+        "Victory" : "wild MISSINGNO. fainted!",
+        "Cheat" : "Cheat has been Enabled!!!"
     }
     TEXT_INFO ={
         # 18, 36, 54 ,72,90,108+126 가 아래서부터 세로 순서

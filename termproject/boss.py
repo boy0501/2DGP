@@ -38,7 +38,9 @@ class Boss:
         self.height = 10
         self.flip = ''
         self.die_time = 0
+        self.explosion_time = 0
         self.dead = 0
+        self.dead_explosion_cycle = 1.0
         self.ret_time = 0
         self.Pattern_time = 0
         self.chance_time = 0
@@ -110,10 +112,11 @@ class Boss:
             self.HP -= 1
         if self.HP <= 0:
             if self.state != 'Dead':
-                self.winmusic.repeat_play()
+                self.winmusic.play()
+                self.winmusic.stop()
+                for text in gfw.world.objects_at(gfw.layer.text):
+                    text.set_text(text.TEXT_DIC['Victory'])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
             self.state = 'Dead'
-            for text in gfw.world.objects_at(gfw.layer.text):
-                text.set_text(text.TEXT_DIC['Victory'])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
 
     def draw(self,posi):
         rate = self.HP / 100
@@ -169,22 +172,33 @@ class Boss:
     def do_die(self):
         if self.state != 'Dead':
            return BehaviorTree.FAIL
-        old_pt_time = self.die_time // 0.1
+        old_pt_time = self.explosion_time // self.dead_explosion_cycle
         self.die_time += gfw.delta_time
+        self.explosion_time += gfw.delta_time
 
         if self.dead != 1:
-            if old_pt_time != self.die_time // 0.1:
+            if old_pt_time != self.explosion_time // self.dead_explosion_cycle:
                 x,y = self.pos
                 x += random.randint(-50,50)
                 y += random.randint(-50,50)
                 b_d_e = boss_die_effect.BossDieEffect((x,y),self.images[2])
                 gfw.world.add(gfw.layer.boss_die_effect,b_d_e)
-            x,y = self.pos
-            y -= 0.5
-            self.pos = x,y
-        if self.die_time > 2.3:
+                if self.dead_explosion_cycle - 0.1 > 0.1:
+                    self.dead_explosion_cycle -= 0.1
+                if random.randrange(2) == 0:
+                    self.rad = 15 * 3.14 / 180
+                else :
+                    self.rad = -15 * 3.14 / 180
+                self.explosion_time = 0
+
+
+            #x,y = self.pos
+            #y -= 0.5
+            #self.pos = x,y
+        if self.die_time > 6.0:
             if self.dead == 0:
                 self.music.play()
+                self.winmusic.play()
             self.rad = 30
             self.dead = 1
             x,y = self.pos
