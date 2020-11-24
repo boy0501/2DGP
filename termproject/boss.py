@@ -107,7 +107,7 @@ class Boss:
  
     def hit(self):
         if self.HP > 0:
-            self.HP -= 100
+            self.HP -= 1
         if self.HP <= 0:
             if self.state != 'Dead':
                 self.winmusic.repeat_play()

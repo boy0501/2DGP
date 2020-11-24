@@ -26,6 +26,10 @@ def enter():
     global game_over
     global to_pause
     global clear_time,clear_flag,name
+    global cheet_key,cheet_name,cheet_active
+    cheet_key = False
+    cheet_name = ''
+    cheet_active = False
     record.load()
     name = 'no_name'
     clear_time = 0
@@ -61,11 +65,9 @@ def update():
 
 def check():
     global game_over,clear_flag,clear_time       
-    if gobj.collides_box(player,boss):
-        if player.die_value == 0:
-            player.die()
-            diebg.set_death_img_to_die()
-            print("당신은 죽었습니다")    
+
+
+
 
 
     for bullet in gfw.world.objects_at(gfw.layer.bullet):
@@ -77,32 +79,40 @@ def check():
             else :
                 boss.set_shield_alpha()
 
-    
-    for pattern in gfw.world.objects_at(gfw.layer.rock):
-        if player.die_value == 0:
-            if gobj.collides_box(player,pattern):
-                player.die()
-                diebg.set_death_img_to_die()
-                print("당신은 죽었습니다")
 
-    for pattern in gfw.world.objects_at(gfw.layer.beam):
-        if player.die_value == 0:
-            if gobj.collides_box(player,pattern):
+    if cheet_active == False:
+        if gobj.collides_box(player,boss):
+            if player.die_value == 0:
                 player.die()
                 diebg.set_death_img_to_die()
-                print("당신은 죽었습니다")
-    for pattern in gfw.world.objects_at(gfw.layer.leaf):
-        if player.die_value == 0:
-            if gobj.collides_box(player,pattern):
+                print("당신은 죽었습니다")    
+
+        for pattern in gfw.world.objects_at(gfw.layer.rock):
+            if player.die_value == 0:
+                if gobj.collides_box(player,pattern):
+                    player.die()
+                    diebg.set_death_img_to_die()
+                    print("당신은 죽었습니다")
+
+        for pattern in gfw.world.objects_at(gfw.layer.beam):
+            if player.die_value == 0:
+                if gobj.collides_box(player,pattern):
+                    player.die()
+                    diebg.set_death_img_to_die()
+                    print("당신은 죽었습니다")
+        for pattern in gfw.world.objects_at(gfw.layer.leaf):
+            if player.die_value == 0:
+                if gobj.collides_box(player,pattern):
+                    player.die()
+                    diebg.set_death_img_to_die()
+                    print("당신은 죽었습니다")
+        if game_over == False:
+            if player.get_die_value() ==1:
                 player.die()
                 diebg.set_death_img_to_die()
-                print("당신은 죽었습니다")
-    if game_over == False:
-        if player.get_die_value() ==1:
-            player.die()
-            diebg.set_death_img_to_die()
-            print("당신은 죽었습니다")    
-            game_over = True   
+                print("당신은 죽었습니다")    
+                game_over = True   
+
     if boss.get_boss_die() != 0 :
         if clear_flag == 0:
             clear_flag = 1
@@ -144,12 +154,18 @@ def resume():
     main_music.resume()
     print(main_music)
 
- 
+def check_cheet():
+    global cheet_name,cheet_active
+    if cheet_name == 'shield':
+        cheet_active = True
+
+
 
 
 
 def handle_event(e):
     global player,name,clear_time
+    global cheet_key,cheet_name
 
     # prev_dx = boy.dx
 
@@ -174,6 +190,19 @@ def handle_event(e):
         elif e.key == SDLK_r:
             if player.die_value == 1:
                 gfw.change(start_state)
+        elif e.key == SDLK_1:
+            cheet_key = True
+        elif cheet_key == True:
+            if e.key != None:
+                if 32<=int(e.key) and e.key<=int(126):
+                    cheet_name += chr(e.key)
+                elif e.key == SDLK_RETURN:
+                    check_cheet()
+
+
+    elif e.type == SDL_KEYUP:
+        if e.key == SDLK_1:
+            cheet_key = False
     player.handle_event(e)
 
 
