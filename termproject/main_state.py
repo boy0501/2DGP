@@ -63,12 +63,9 @@ def update():
     check()
     #print(gfw.delta_time)
 
+
 def check():
     global game_over,clear_flag,clear_time       
-
-
-
-
 
     for bullet in gfw.world.objects_at(gfw.layer.bullet):
         if gobj.collides_box(bullet, boss):
@@ -137,7 +134,7 @@ def pause():
             to_list.append(obj)
         to_pause[i] = to_list
 
-
+    player.reset_to_bug_solve_IS_UPKEYPRESSED()
     print(main_music)
     main_music.pause()
 
@@ -210,6 +207,7 @@ def handle_event(e):
 
 
 def exit():
+    #player.reset_to_bug_solve_IS_UPKEYPRESSED()
     return
 
 if __name__ == '__main__':

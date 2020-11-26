@@ -56,6 +56,7 @@ class Player:
         self.fidx = 0 #fps 의 dx이다
         self.time = 0
         self.images = Player.load_images()
+        self.to_bug_solve_value_KEYUP_ISPRESSED = False
         self.state = 'Idle'
         self.wh = ()
         self.width = 10
@@ -97,7 +98,9 @@ class Player:
         return images
 
 
-
+    def reset_to_bug_solve_IS_UPKEYPRESSED(self):
+        self.to_bug_solve_value_KEYUP_ISPRESSED = False
+        
     def get_bb(self):
         x,y = self.for_get_bb_pos
         if self.state == 'Walk':
@@ -204,7 +207,13 @@ class Player:
         pair = (e.type, e.key)
         #print(pair)
         if pair in Player.KEY_MAP:
-            #pdx = self.delta[0]
+            #버그 수정 부분 키 입력을 한 상태에서 씬에 들어오고 키를 때면 반대로 넘어가는걸 방지
+            if self.to_bug_solve_value_KEYUP_ISPRESSED == False:
+                if pair[0] == SDL_KEYUP:
+                    self.to_bug_solve_value_KEYUP_ISPRESSED = True
+                    return
+            self.to_bug_solve_value_KEYUP_ISPRESSED = True 
+            #수정부분
             self.delta = gobj.point_add(self.delta, Player.KEY_MAP[pair])
             dx,dy = self.delta
             self.state = \
