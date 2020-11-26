@@ -132,6 +132,7 @@ class Boss:
                 if self.shield == True:
                     if self.shiledalpha > 55:
                         self.shiledalpha-=1
+                        
                     SDL_SetTextureAlphaMod(image.texture,self.shiledalpha)
                     image.composite_draw(0,self.flip,*result_posi,image.w*4,image.h*4)
 
@@ -147,15 +148,15 @@ class Boss:
             y +=  500 * gfw.delta_time
 
         if self.ret_time > 2:
-            while True:
-                self.state = 'Pattern' + str(random.randint(1,3))
-                for text in gfw.world.objects_at(gfw.layer.text):
-                    text.set_text(text.TEXT_DIC[self.state])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
-                    #클래스 변수가 있는데 여기에 적절한 값을 넣으면 알아서 튀어나옴
-                if self.state != self.old_Pattern:
-                    break
+            # while True:
+            #     self.state = 'Pattern' + str(random.randint(1,3))
+            #     for text in gfw.world.objects_at(gfw.layer.text):
+            #         text.set_text(text.TEXT_DIC[self.state])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
+            #         #클래스 변수가 있는데 여기에 적절한 값을 넣으면 알아서 튀어나옴
+            #     if self.state != self.old_Pattern:
+            #         break
 
-            #self.state = 'Pattern' + str(random.randint(2,2))
+            self.state = 'Pattern' + str(random.randint(2,2))
             #설정된 보스패턴으로 초기화
             self.Pattern_INFO = bossPattern.BossPattern(self.state)
             self.old_Pattern = self.state

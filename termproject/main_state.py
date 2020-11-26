@@ -123,7 +123,9 @@ def draw():
     gfw.world.draw()
     if boss.get_boss_die() != 0:
         record.draw(name)
-    #gobj.draw_collision_box()
+    gobj.draw_collision_box()
+    
+    
 
 def pause():
     global to_pause

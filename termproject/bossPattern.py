@@ -34,6 +34,7 @@ class BossPattern:
         self.height = 10
         self.flip = ''
         BossPattern.load_images()
+        hyperbeam.HyperBeam.makeGetBBS()
 
     @staticmethod
     def load_images():

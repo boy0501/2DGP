@@ -17,6 +17,14 @@ def point_add(point1, point2):
 def move_obj(obj):
 	obj.pos = point_add(obj.pos, obj.delta)
 
+# def collides_boxes(a,b):
+# 	if (hasattr(a,'get_bb') == False):
+# 		reutrn False
+	
+# 	if (hasattr(b,'get_bbes')==False):
+# 		return False
+
+
 def collides_box(a, b):
 	check = True
 
@@ -25,6 +33,11 @@ def collides_box(a, b):
 	
 	if (hasattr(b,'get_bb')==False):
 		return False
+
+	arr = []
+	if hasattr(b, 'get_bbs'):
+		arr = b.get_bbs()
+
 
 	(la, ba, ra, ta) = a.get_bb()
 	(lb, bb, rb, tb) = b.get_bb()
@@ -57,6 +70,9 @@ def draw_collision_box():
 			draw_rectangle(*obj.get_bb())
 		if hasattr(obj, 'get_bb2'):
 			draw_rectangle(*obj.get_bb2())
+		if hasattr(obj,'get_bbs'):
+			for i in range(len(obj.get_bbs())):
+				draw_rectangle(*obj.get_bbs()[i])
 
 if __name__ == "__main__":
 	print("This file is not supposed to be executed directly.")

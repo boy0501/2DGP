@@ -22,9 +22,33 @@ class HyperBeam:
                 'Charge':[(20,22),(20,20),(20,20),(20,20),(20,20),(20,20)],
                 'Energy':[(5,5),(5,5),(5,5)]
     }
+
+    IMAGESIZE_GETBBS = {
+        # 대각선 길이는 가로 2 세로 8의 형태를 가진다.
+        'Frame0':[(0,0,16,16)],
+        'Frame1':[(0,0,16,16)],
+        'Frame2':[(0,0,16,16)],
+        'Frame3':[(0,0,16,16)],
+        'Frame4':[(0,0,16,16)]
+    }
+    #각 그림당 필요한 대각선의 갯수
+    IMAGESIZE_DIAG = [0,8,16,24,24]
+    #500,350은 보스의 위치임 ㅇㅇ,,,,,,, 이게 뭔가 했네 자꾸 그럼 보스위치에서부터 이미지가 나와야할 중점을 말하는거
     BEAM = [(500-beampix/2,350-beampix/2),(500-beampix,350-beampix*3/4),(500-beampix*3/2,350-beampix),
     (500-beampix*39/16,350-beampix*25/16),(500-beampix*39/16,350-beampix*25/16)]
     LASER_INTERVAL = 0
+
+    @staticmethod
+    def makeGetBBS():
+        for i in range(HyperBeam.FPS['Beam']):
+            for j in range(HyperBeam.IMAGESIZE_DIAG[i]):
+                if i == 3:
+                    HyperBeam.IMAGESIZE_GETBBS['Frame' + str(i)].append((31+j*2 , 20+ j , 31 + (j+1)*2 , 20+ j + 8))
+                else:
+                    HyperBeam.IMAGESIZE_GETBBS['Frame' + str(i)].append((16+j*2 , 9 + j , 16 + (j+1)*2 , 9 + j + 8))
+
+
+
 
     #constructor
     def __init__(self,image,state,x=500,y=300):
@@ -57,6 +81,9 @@ class HyperBeam:
         self.music_on = False
 
 
+
+
+
     def draw(self,posi):
         # if self.laser_time < Player.LASER_INTERVAL:
         #     self.state = 'Attack'
@@ -85,11 +112,47 @@ class HyperBeam:
             x + self.width* self.Scale//2, y + self.height* self.Scale//2      
         else :
             if self.time > self.delaytime:
+                # x - image.w * self.Scale//2 이게 이미지의 좌하단 이미지임
+                #arr = []
+                #arr.append(x - image.w* self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][0] * self.Scale, y - image.h* self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][1] * self.Scale, \
+                #x - image.w * self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][2] * self.Scale , y - image.h* self.Scale//2 + + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][3] * self.Scale)
+
+                #return x - image.w* self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][0] * self.Scale, y - image.h* self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][1] * self.Scale, \
+                #x - image.w * self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][2] * self.Scale , y - image.h* self.Scale//2 + + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][3] * self.Scale 
+
                 return x - image.w* self.Scale//2, y - image.h* self.Scale//2, \
                 x - image.w * self.Scale//2 + 32 * self.Scale//2 , y - image.h* self.Scale//2 + 32 * self.Scale//2   
             else :
                 return 0,0,0,0
-             
+
+    def get_bbline(self):
+        image =  HyperBeam.images[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
+        x,y = self.for_get_bb_pos
+        return x - image.w* self.Scale//2, y - image.h* self.Scale//2, \
+        x - image.w * self.Scale//2 + 32 * self.Scale//2 , y - image.h* self.Scale//2 + 32 * self.Scale//2   
+        
+
+
+    def get_bbs(self):
+        image =  HyperBeam.images[HyperBeam.STATES[self.state] + self.fidx % HyperBeam.FPS[self.state]]
+        x,y = self.for_get_bb_pos
+        arr = []
+        if self.state == 'Beam':
+            if self.time > self.delaytime:
+            # x - image.w * self.Scale//2 이게 이미지의 좌하단 이미지임
+            
+            #arr.append((x - image.w* self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][0] * self.Scale, y - image.h* self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][1] * self.Scale, \
+            #x - image.w * self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][2] * self.Scale , y - image.h* self.Scale//2 + + HyperBeam.IMAGESIZE_GETBBS['Beam1'][0][3] * self.Scale))
+                fnum = self.fidx % HyperBeam.FPS[self.state]
+                for i in range(len(HyperBeam.IMAGESIZE_GETBBS['Frame'+str(fnum)])):
+                    arr.append((x - image.w* self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Frame'+str(fnum)][i][0] * self.Scale, y - image.h* self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Frame'+str(fnum)][i][1] * self.Scale, \
+                    x - image.w * self.Scale//2 + HyperBeam.IMAGESIZE_GETBBS['Frame'+str(fnum)][i][2] * self.Scale , y - image.h* self.Scale//2 +  HyperBeam.IMAGESIZE_GETBBS['Frame'+str(fnum)][i][3] * self.Scale))
+    
+
+                return arr
+        return arr
+
+
     def EnergyMove(self):
         targetx = 500
         targety = 300
@@ -107,6 +170,8 @@ class HyperBeam:
         dx = originalx - dx
         dy = math.sin(self.rad)
         dy = originaly - dy
+        #500,350 즉 보스의 위치에서 beampix 보스의 이미지크기 의 /2 를 해서 중점을 찾아줌(제일 작은 이미지 기준)
+        # /2가 0 , 3/2 39/16 되는건 처음 이미지에 대한 각 이미지의 크기 비율임.
         if (self.rad*180/math.pi) > 0:
             HyperBeam.BEAM = [
         (dx*HyperBeam.beampix +     500-HyperBeam.beampix/2 ,        dy*HyperBeam.beampix +             350-HyperBeam.beampix/2),
