@@ -123,6 +123,7 @@ def draw():
     gfw.world.draw()
     if boss.get_boss_die() != 0:
         record.draw(name)
+    print(cheat_name)
     #gobj.draw_collision_box()
 
 def pause():
@@ -156,7 +157,11 @@ def check_cheat():
     if cheat_name == 'shield':
         cheat_active = True
         for text in gfw.world.objects_at(gfw.layer.text):
-                    text.set_text(text.TEXT_DIC['Cheat'])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
+                    text.set_text(text.TEXT_DIC['Cheat1'])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
+    elif cheat_name == 'power':
+        boss.set_power_cheat()
+        for text in gfw.world.objects_at(gfw.layer.text):
+                    text.set_text(text.TEXT_DIC['Cheat2'])    #text는 textbg를 objects_at 해오는거고, 이 객체에는 TEXT_DIC이라는
 
 
 
@@ -186,17 +191,19 @@ def handle_event(e):
                     clear_time = 0
         elif e.key == SDLK_ESCAPE:
             gfw.push(pause_state)
-        elif e.key == SDLK_r:
-            if player.die_value == 1:
-                gfw.change(start_state)
-        elif e.key == SDLK_1:
-            cheat_key = True
         elif cheat_key == True:
             if e.key != None:
                 if 32<=int(e.key) and e.key<=int(126):
                     cheat_name += chr(e.key)
                 elif e.key == SDLK_RETURN:
                     check_cheat()
+                    cheat_name = ""
+        elif e.key == SDLK_r:
+            if player.die_value == 1:
+                gfw.change(start_state)
+        elif e.key == SDLK_1:
+            cheat_key = True
+        
 
 
     elif e.type == SDL_KEYUP:

@@ -48,6 +48,7 @@ class Boss:
         self.gravity = 0.1
         self.dtheta = 0
         self.HP = 100
+        self.player_damage = 1
         self.shield = True
         self.old_Pattern = ''
         self.Pattern_INFO = 0
@@ -86,7 +87,8 @@ class Boss:
         images[2] = state_die
 
         return images
-
+    def set_power_cheat(self):
+        self.player_damage = 5
     def get_shield(self):
         return self.shield
     def set_shield_alpha(self):
@@ -109,7 +111,7 @@ class Boss:
  
     def hit(self):
         if self.HP > 0:
-            self.HP -= 1
+            self.HP -= self.player_damage
         if self.HP <= 0:
             if self.state != 'Dead':
                 self.winmusic.play()
