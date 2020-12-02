@@ -16,7 +16,7 @@ class Entry:
         self.name = name
 
 def load():
-    global font, image
+    global font
     font = gfw.font.load('./res/ConsolaMalgun.ttf', 20)
 
     global scores
@@ -54,7 +54,7 @@ def add(score,name):
         save()
 
 def draw():
-    global font, image, last_rank
+    global font, last_rank
     no = 1
     y = 360
     for e in scores:

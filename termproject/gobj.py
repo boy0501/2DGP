@@ -36,7 +36,7 @@ def collides_box(a, b):
 		if ba > tb2: check = False
 		if ta < bb2: check = False		#get_Bb2에서 없어도 걍 넘어감.
 		if check == True:
-			print("get_bb2와의 충돌")
+			#print("get_bb2와의 충돌")
 			return True
 
 
@@ -47,7 +47,7 @@ def collides_box(a, b):
 
 
 
-	print("일반적인 충돌")
+	#print("일반적인 충돌")
 
 	return True
 

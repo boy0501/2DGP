@@ -82,32 +82,32 @@ def check():
             if player.die_value == 0:
                 player.die()
                 diebg.set_death_img_to_die()
-                print("당신은 죽었습니다")    
+                #print("당신은 죽었습니다")    
 
         for pattern in gfw.world.objects_at(gfw.layer.rock):
             if player.die_value == 0:
                 if gobj.collides_box(player,pattern):
                     player.die()
                     diebg.set_death_img_to_die()
-                    print("당신은 죽었습니다")
+                    #print("당신은 죽었습니다")
 
         for pattern in gfw.world.objects_at(gfw.layer.beam):
             if player.die_value == 0:
                 if gobj.collides_box(player,pattern):
                     player.die()
                     diebg.set_death_img_to_die()
-                    print("당신은 죽었습니다")
+                    #print("당신은 죽었습니다")
         for pattern in gfw.world.objects_at(gfw.layer.leaf):
             if player.die_value == 0:
                 if gobj.collides_box(player,pattern):
                     player.die()
                     diebg.set_death_img_to_die()
-                    print("당신은 죽었습니다")
+                    #print("당신은 죽었습니다")
         if game_over == False:
             if player.get_die_value() ==1:
                 player.die()
                 diebg.set_death_img_to_die()
-                print("당신은 죽었습니다")    
+                #print("당신은 죽었습니다")    
                 game_over = True   
 
     if boss.get_boss_die() != 0 :
@@ -123,7 +123,6 @@ def draw():
     gfw.world.draw()
     if boss.get_boss_die() != 0:
         record.draw(name)
-    print(cheat_name)
     #gobj.draw_collision_box()
 
 def pause():
@@ -136,7 +135,7 @@ def pause():
         to_pause[i] = to_list
 
     player.reset_to_bug_solve_IS_UPKEYPRESSED()
-    print(main_music)
+    #print(main_music)
     main_music.pause()
 
         
@@ -150,7 +149,7 @@ def resume():
             gfw.world.add(i,obj)
     
     main_music.resume()
-    print(main_music)
+    #print(main_music)
 
 def check_cheat():
     global cheat_name,cheat_active

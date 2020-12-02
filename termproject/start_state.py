@@ -31,7 +31,7 @@ def enter():
     selecty = 240
     selected = 3
     
-    global Sbutton,Rbutton,Qbutton,Smag,Rmag,Qmag
+    global Smag,Rmag,Qmag
     Smag = Rmag = Qmag = 1
 
     global mfont
@@ -65,7 +65,7 @@ def lightfunc():
     SDL_SetTextureAlphaMod(light.texture,lightning)
         
 def highlightButton():
-    global Sbutton,Rbutton,Qbutton,Smag,Rmag,Qmag
+    global Smag,Rmag,Qmag
     if selected == 3:
         if Smag + 0.02 < 1.5:
             Smag += 0.02
@@ -122,8 +122,13 @@ def draw():
     select.draw(320,selecty)
     
     
-    mfont.draw(canvas_width-155,canvas_height-10,"Arrow keys (Select)",(230,230,230))
-    mfont.draw(canvas_width-115,canvas_height-25,"Enter (Choose)",(230,230,230))
+    mfont.draw(30,canvas_height-10,"In game",(230,230,230))
+    mfont.draw(0,canvas_height-25,"(Move) Arrow keys",(230,230,230))
+    mfont.draw(0,canvas_height-40,"(jump) Left Shift",(230,230,230))
+    mfont.draw(0,canvas_height-55,"(attack) z",(230,230,230))
+    mfont.draw(canvas_width-100,canvas_height-10,"In menu",(230,230,230))
+    mfont.draw(canvas_width-155,canvas_height-25,"Arrow keys (Select)",(230,230,230))
+    mfont.draw(canvas_width-115,canvas_height-40,"Enter (Choose)",(230,230,230))
     
     gfw.world.draw()
 

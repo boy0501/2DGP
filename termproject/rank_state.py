@@ -53,9 +53,13 @@ def draw():
     back.draw(320,50)
     select.draw(150,selecty)
     
-    
-    mfont.draw(canvas_width-155,canvas_height-10,"Arrow keys (Select)",(230,230,230))
-    mfont.draw(canvas_width-115,canvas_height-25,"Enter (Choose)",(230,230,230))
+    mfont.draw(30,canvas_height-10,"In game",(230,230,230))
+    mfont.draw(0,canvas_height-25,"(Move) Arrow keys",(230,230,230))
+    mfont.draw(0,canvas_height-40,"(jump) Left Shift",(230,230,230))
+    mfont.draw(0,canvas_height-55,"(attack) z",(230,230,230))
+    mfont.draw(canvas_width-100,canvas_height-10,"In menu",(230,230,230))
+    mfont.draw(canvas_width-155,canvas_height-25,"Arrow keys (Select)",(230,230,230))
+    mfont.draw(canvas_width-115,canvas_height-40,"Enter (Choose)",(230,230,230))
     
     gfw.world.draw()
 
@@ -75,9 +79,6 @@ def handle_event(e):
             pass
         elif 32<=int(e.key) and e.key<=int(126):
             text += chr(e.key)
-            print(text)
-        else :
-            print(e.key)
 
 def resume():
     gfw.world.init([])
