@@ -143,6 +143,9 @@ def resume():
     bg_music = load_wav('./res/미싱노브금/intro.wav')
     bg_music.set_volume(60)
     bg_music.repeat_play()
+    thunder_music = load_music('./res/미싱노브금/번개1.ogg')
+    thunder_music.set_volume(40)
+    thunder_music.play()
 
 def handle_event(e):
     global selecty,selected
@@ -166,9 +169,10 @@ def handle_event(e):
                 gfw.quit()
 
 def exit():
-    global bg_music
-    bg_music.stop()
-    del bg_music
+    global bg_music,thunder_music
+    #del bg_music
+    #thunder_music.stop()
+    del thunder_music
 
 if __name__ == '__main__':
     gfw.run_main()

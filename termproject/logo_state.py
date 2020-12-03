@@ -31,6 +31,7 @@ def handle_event(e):
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.quit()
+        
 def exit():
     global image
     del image

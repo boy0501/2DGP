@@ -83,6 +83,8 @@ def handle_event(e):
 def resume():
     gfw.world.init([])
 
+
+
 def exit():
     global rank_music
     del rank_music

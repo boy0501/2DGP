@@ -195,6 +195,7 @@ class HyperBeam:
 
 
     def remove(self):
+        del self.music
         #print((Bullet.bullets))
         gfw.world.remove(self)
         #print(Bullet.bullets)

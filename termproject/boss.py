@@ -59,6 +59,10 @@ class Boss:
         self.music.set_volume(gfw.Volume-10)
         self.winmusic = load_music('./res/미싱노브금/victory.ogg')
         self.winmusic.set_volume(gfw.Volume)
+        self.hitmusic = load_wav('./res/미싱노브금/캐릭터/bump.wav')
+        self.hitmusic.set_volume(gfw.Volume + 10)
+        self.hitimage = load_image('./res/보스/3828.png')
+        SDL_SetTextureAlphaMod(self.hitimage.texture,150)
     @staticmethod
     def load_images():
         images = {}
@@ -110,7 +114,9 @@ class Boss:
        return x - (image.w//2-7)*Boss.BossScale, y + (image.h//2-24)*Boss.BossScale, x + image.w*Boss.BossScale//2, y + image.h*Boss.BossScale//2
  
     def hit(self):
+        self.hitmusic.play()
         if self.HP > 0:
+            SDL_SetTextureAlphaMod(self.hitimage.texture,255)
             self.HP -= self.player_damage
         if self.HP <= 0:
             if self.state != 'Dead':
@@ -130,6 +136,7 @@ class Boss:
             self.for_get_bb_pos = result_posi
             if n == 0:
                 image.composite_draw(self.rad,self.flip,*result_posi,image.w*Boss.BossScale,image.h*Boss.BossScale)
+                self.hitimage.composite_draw(self.rad,self.flip,*result_posi,image.w*Boss.BossScale,image.h*Boss.BossScale)
             elif n == 1:
                 if self.shield == True:
                     if self.shiledalpha > 55:
@@ -169,6 +176,7 @@ class Boss:
         return BehaviorTree.SUCCESS
 
     def remove(self):
+        del self.winmusic
         gfw.world.remove(self)
 
     def do_die(self):
@@ -301,7 +309,8 @@ class Boss:
 
         self.ret_time += gfw.delta_time
         self.fidx = round(self.ret_time*Boss.FPS)
-
+        if self.fidx % 3 == 0:
+            SDL_SetTextureAlphaMod(self.hitimage.texture,0)
         if self.state != 'Dead':
             if self.time > 0.05:
                 y = y + math.sin(self.dtheta*180/math.pi)*10

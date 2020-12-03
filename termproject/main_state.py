@@ -186,7 +186,7 @@ def handle_event(e):
                     highscore.load()
                     highscore.add(clear_time,name)
                     highscore.save()
-                    gfw.change(start_state)
+                    gfw.pop()
                     clear_time = 0
         elif e.key == SDLK_ESCAPE:
             gfw.push(pause_state)
@@ -199,7 +199,7 @@ def handle_event(e):
                     cheat_name = ""
         elif e.key == SDLK_r:
             if player.die_value == 1:
-                gfw.change(start_state)
+                gfw.pop()
         elif e.key == SDLK_1:
             cheat_key = True
         
@@ -213,8 +213,25 @@ def handle_event(e):
 
 
 def exit():
+    global to_pause
+    if len(to_pause) > 0:
+        gfw.world.init(['bg', 'bullet','player','boss','rock','beam','leaf','blood','text','die','boss_die_effect'])
+        for i in range(MAX_objects):
+            for obj in to_pause[i]:
+                gfw.world.add(i,obj)
+
+    global main_music,appear_m
+    del main_music
+
+    for obj in gfw.world.objects_at(gfw.layer.boss):
+        obj.remove()
+    for obj in gfw.world.objects_at(gfw.layer.bg):
+        obj.remove()
+    for obj in gfw.world.objects_at(gfw.layer.die):
+        obj.remove()
+    for obj in gfw.world.objects_at(gfw.layer.text):
+        obj.remove()
     #player.reset_to_bug_solve_IS_UPKEYPRESSED()
-    return
 
 if __name__ == '__main__':
     gfw.run_main()

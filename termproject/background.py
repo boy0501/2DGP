@@ -173,7 +173,6 @@ class Background:
         self.text = Text
         self.textlen = 0    #현재 몇개의 텍스트가 출력되어야 하는지.
         self.die_music = load_music('./res/미싱노브금/loludied.ogg')
-        
 
     def set_death_img_to_die(self):
         self.death_img = 1
@@ -224,5 +223,8 @@ class Background:
     def screenshake(self,pos):
         pass       
         
+    def remove(self):
+        del self.die_music
+        gfw.world.remove(self)
    
 
