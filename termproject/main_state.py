@@ -103,12 +103,12 @@ def check():
                     player.die()
                     diebg.set_death_img_to_die()
                     #print("당신은 죽었습니다")
-        if game_over == False:
-            if player.get_die_value() ==1:
-                player.die()
-                diebg.set_death_img_to_die()
-                #print("당신은 죽었습니다")    
-                game_over = True   
+    if game_over == False:
+        if player.get_die_value() ==1:
+            player.die()
+            diebg.set_death_img_to_die()
+            #print("당신은 죽었습니다")    
+            game_over = True   
 
     if boss.get_boss_die() != 0 :
         if clear_flag == 0:
