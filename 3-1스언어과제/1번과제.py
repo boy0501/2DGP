@@ -53,4 +53,17 @@ wind = eval(input("풍속을 시간 당 마일 단위로 입력하세요:"))
 tem = 35.74 + 0.6215 * tempur - 35.75 * wind **0.16 + 0.4275 *tempur * wind **0.16
 print("{0:.5f} 는 체감온도입니다.".format(tem))
 
+print("#9번")
+money = eval(input("약정 금액을 입력하세요:"))
+rate = eval(input("연이율(%)을 입력하세요:"))
+year = eval(input("약정 기간(년) 을 입력하세요:"))
+result = money / ((1+rate/12/100) ** (year*12))
+print("월 납입금은 {0:.5f} 입니다.".format(result))
 
+print("#10번")
+pound = eval(input("몸무게를 파운드로 입력하세요:"))
+inch = eval(input("키를 인치로 입력하세요:"))
+kg = pound * 0.4539237
+m = inch * 0.0254
+BMI = kg / m**2
+print("BMI는 {0:.5} 입니다.".format(BMI))
