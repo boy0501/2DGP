@@ -44,7 +44,7 @@ print("#7번")
 min = eval(input("분에대한 숫자 입력:"))
 hour = min / 60
 day = hour / 24 % 365
-year = hour / 24 /365
+year = hour // 24 //365
 print("{0:.0f}년 {1:.0f}일 입니다".format(year,day))
 
 print("#8번")
@@ -67,3 +67,5 @@ kg = pound * 0.4539237
 m = inch * 0.0254
 BMI = kg / m**2
 print("BMI는 {0:.5} 입니다.".format(BMI))
+
+eval(input())
