@@ -166,3 +166,11 @@ for i in range(M,0,-1):
 
 
 
+print("#18번")
+row1 = [eval(i) for i in input("0번째 행:").split()]
+row2 = [eval(i) for i in input("1번째 행:").split()]
+row3 = [eval(i) for i in input("2번째 행:").split()]
+res1,res2,res3
+
+for i in range(4):
+    
