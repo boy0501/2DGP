@@ -21,16 +21,25 @@ d = 6370.01 * math.acos(math.sin(x1)*math.sin(x2)+math.cos(x1)*math.cos(x2)*math
 print("두점 사이의 거리",d)
 
 print("#3번")
-x1 = math.radians(35.1768201)
+x1 = math.radians(35.1768201)       #광주
 y1 = math.radians(126.7735892)
-x2 = math.radians(35.1645701)
+x2 = math.radians(35.1645701)       #부산
 y2 = math.radians(129.0015892)
-gangx = math.radians(37.7637326)
+gangx = math.radians(37.7637326)    #강원도
 gangy = math.radians(128.8824475)
-seoulx = math.radians(37.565289)
+seoulx = math.radians(37.565289)    #서울
 seouly = math.radians(126.8491259)
-d = 6370.01 * math.acos(math.sin(x1)*math.sin(x2)+math.cos(x1)*math.cos(x2)*math.cos(y1-y2))
-#덜함
+d1 = 6370.01 * math.acos(math.sin(x1)*math.sin(x2)+math.cos(x1)*math.cos(x2)*math.cos(y1-y2))#광주 부산
+d2 = 6370.01 * math.acos(math.sin(x2)*math.sin(gangx)+math.cos(x2)*math.cos(gangx)*math.cos(y2-gangy))#부산 강원
+d3 = 6370.01 * math.acos(math.sin(gangx)*math.sin(seoulx)+math.cos(gangx)*math.cos(seoulx)*math.cos(gangy-seouly))#강원 서울
+d4 = 6370.01 * math.acos(math.sin(x1)*math.sin(seoulx)+math.cos(x1)*math.cos(seoulx)*math.cos(y1-seouly))#서울 광주
+#123 삼각하나 , 143삼각하나
+s1 = (d1+d2+d3)/2
+s2 = (d1+d3+d4)/2
+area1 = (s1*(s1-d1)*(s1-d2)*(s1-d3))**0.5
+area2 = (s2*(s2-d1)*(s2-d4)*(s2-d3))**0.5
+res = area1+area2
+print("추정넓이 :{0}".format(res))
 
 print("#4번")
 code = eval(input("ASCII 코드 입력:"))
@@ -56,8 +65,10 @@ print("주당 근무시간:",time)
 print("임금:",pay)
 print("총 급여:",time*pay)
 print("공제:")
-print("원천징수세(20.0%):",time*pay*0.2)
-#덜함
+print("원천징수세(20.0%):",time*pay*tax)
+print("주민세(9.0%):",time*pay*realtax)
+print("총공제:",time*pay*tax+time*pay*realtax)
+print("공제 후 급여 :",time*pay -(time*pay*tax+time*pay*realtax))
 
 print("#7번")
 List = [eval(i) for i in input("정수 여러개:").split()]
