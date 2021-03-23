@@ -107,4 +107,62 @@ for i in List:
         l2.append(i)
 print(l2)
 
-    
+print("#11번")
+lst = [eval(i) for i in input("정수 리스트 입력").split()]
+lst  =  [30, 1, 4, 5]
+print("#12번")
+
+print("13번")
+
+print("14번")
+
+print("#15번")
+def indexOfSmallestElement(lst):
+    index = 0 
+    value = lst[0]
+    for i in range(1,len(lst)):
+        if value>lst[i]:
+            index = i
+            value = lst[i]
+    return index
+index = indexOfSmallestElement(lst)
+print("가장작은거:",index)
+
+print("#16번")
+def isSorted(lst):
+    for i in range(len(lst)-1):
+        if lst[i]>lst[i+1]:
+            return False
+    return True
+
+if isSorted(lst):
+    print("정렬되어있음")
+else:
+    print("정렬안됨")
+
+print("#17번")
+import random
+ball = eval(input("떨어뜨릴 공의 개수:"))
+hole = eval(input("콩 기계의 슬롯 개수:"))
+slots = [0] * hole
+for i in range(ball):
+    cntR = 0
+    for j in range(hole-1):
+        if random.randint(0,1):
+            print("R",end="")
+            cntR += 1
+        else :
+            print("L",end="")
+    slots[cntR] += 1
+    print("")    
+M = max(slots)
+for i in range(M,0,-1):
+    for j in range(hole):
+        if slots[j] >= i:
+            print("0",end="")
+        else:
+            print("@",end="")
+    print("")
+
+
+
