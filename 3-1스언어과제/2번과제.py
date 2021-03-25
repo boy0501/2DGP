@@ -108,15 +108,42 @@ for i in List:
 print(l2)
 
 print("#11번")
-lst = [eval(i) for i in input("정수 리스트 입력").split()]
-lst  =  [30, 1, 4, 5]
+lst  =  [30, 1, 12, 14,10,0]
+print("lst 원소개수 :{0},첫번째 원소의 인덱스 {1},마지막 원소의 인덱스{2},lst[2]의 값:{3},lst[-2]의 값:{4}",len(lst),0,-1,lst[2],lst[-2])
+
 print("#12번")
+import random
+lst  =  [30, 1, 2, 1,0]
+lst.append(40)
+lst.insert(1, 43)
+lst.extend([1, 43])
+lst.pop(1)
+lst.pop()
+lst.sort()
+lst.reverse()
+random.shuffle(lst)
+print(lst)
 
-print("13번")
+print("#13번")
+lst  =  [30, 1, 2, 1,0]
+print(lst.index(1))
+print(lst.count(1))
+print(len(lst))
+print(max(lst))
+print(min(lst))
+print(sum(lst))
 
-print("14번")
+print("#14번")
+list1 = [30, 1, 2, 1, 0]
+list2 = [1, 21, 13]
+print(list1 + list2)
+print(2 * list1)
+print(list2 * 2)
+print(list1[1 : 3])
+print(list1[3])
 
 print("#15번")
+lst = [eval(i) for i in input("정수를 입력하세요 제일 작은걸 보여드립니다.").split()]
 def indexOfSmallestElement(lst):
     index = 0 
     value = lst[0]
@@ -134,6 +161,15 @@ def isSorted(lst):
         if lst[i]>lst[i+1]:
             return False
     return True
+
+lst = [eval(i) for i in input("정수를 입력하세요 정렬됐는지 아닌지를 알려드립니다..").split()]
+
+if isSorted(lst):
+    print("정렬되어있음")
+else:
+    print("정렬안됨")
+
+lst = [eval(i) for i in input("정수를 입력하세요 정렬됐는지 아닌지를 알려드립니다..").split()]
 
 if isSorted(lst):
     print("정렬되어있음")
@@ -167,10 +203,112 @@ for i in range(M,0,-1):
 
 
 print("#18번")
-row1 = [eval(i) for i in input("0번째 행:").split()]
-row2 = [eval(i) for i in input("1번째 행:").split()]
-row3 = [eval(i) for i in input("2번째 행:").split()]
-res1,res2,res3
 
-for i in range(4):
-    
+row1 = [eval(i) for i in input("3x4 행렬의 0번째 행:").split()]
+row2 = [eval(i) for i in input("3x4 행렬의 1번째 행:").split()]
+row3 = [eval(i) for i in input("3x4 행렬의 2번째 행:").split()]
+row = [row1,row2,row3]
+
+def sumColumn(m,columnIndex):
+    j = 0
+    res = 0
+    for i in range(3):
+        res += m[i][columnIndex]
+    return res
+
+print("0번원소 합 :",sumColumn(row,0))
+print("1번원소 합 :",sumColumn(row,1))
+print("2번원소 합 :",sumColumn(row,2))
+print("3번원소 합 :",sumColumn(row,3))
+
+print("#19번")
+lst = [eval(i) for i in input("정수를 입력하세요").split()]
+res = {}
+for i in lst:
+    if i not in res:
+        res[i] = i
+        res[i] = 0
+    else:
+        res[i] += 1
+
+valuelist = res.values()
+for key,val in res.items():
+    if val == max(valuelist):
+        print(key)
+
+print("#20번")
+
+def sortColumns(m):
+    newarr = []
+    resarr = []
+    j = 0
+    for k in range(3):
+        for i in m:
+            newarr.append(i[j])
+        sort33(newarr)
+        resarr.insert(j,newarr.copy())
+        j+=1
+        newarr.clear()
+    for i in range(3):
+        j = i
+        while(j<3):
+            if i != j :
+                resarr[i][j] , resarr[j][i] = resarr[j][i] , resarr[i][j]
+            j+=1
+    return resarr
+            
+            
+def sort33(arr):
+    for j in range(2):
+        for i in range(2):
+            if arr[i]>arr[i+1]:
+                arr[i],arr[i+1] = arr[i+1],arr[i]
+        
+
+lst = [eval(i) for i in input("3x3행렬을 한 행씩 입력하세요").split()]
+lst1 = [eval(i) for i in input().split()]
+lst2 = [eval(i) for i in input().split()]
+
+l = [lst,lst1,lst2]
+new = sortColumns(l)
+print("열 정렬된 리스트는 다음과 같습니다")
+for i in range(3):
+    print(new[i])
+
+print("#21번")
+def getRightmostLowestPoint(points):
+    for i in range(len(points)):
+        j = i+1
+        while(j<len(points)):
+            if is_right(points[i],points[j]) == True:
+                points[i] , points[j] = points[j], points[i]
+            j+=1
+    for i in range(len(points)):
+        j = i+1
+        while(j<len(points)):
+            if is_bottom(points[i],points[j]) == True:
+                points[i] , points[j] = points[j], points[i]
+            j+=1
+    return points[-1]
+        
+
+def is_right(a,b):
+    if (a[0] - b[0]) > 0 : #오른쪽이면 True
+        return True
+    else:
+        return False
+
+def is_bottom(a,b):
+    if (a[1] - b[1]) < 0: #아래면 True
+        return True
+    else:
+        return False
+
+lst = [eval(i) for i in input("정수를 입력하세요").split()]
+i = 0
+mytuplelist = []
+while(i<len(lst)):
+    mytuplelist.append((lst[i],lst[i+1]))
+    i+=2
+print("최우측 하단의 점은 {0} 입니다".format(getRightmostLowestPoint(mytuplelist)))
+input()
