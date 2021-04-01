@@ -85,7 +85,7 @@ def displaySortedNumbers(num1,num2,num3):
     return lst
 n1,n2,n3 = eval(input("숫자 3개 입력"))
 lst = displaySortedNumbers(n1,n2,n3)
-print("정렬된 숫자는 {0},{1},{2} 입니다",format(lst[0],lst[1],lst[2]))
+print("정렬된 숫자는 {0},{1},{2} 입니다".format(lst[0],lst[1],lst[2]))
 
 
 #9번문제 6-12
@@ -114,7 +114,7 @@ def gcd(m,n):
         return n
     else :
         return gcd(n,m%n)
-n1,n2 = eval(input("숫자2개 입력시 최대공약수 반환"))
+n1,n2 = eval(input("숫자2개 입력시 최대공약수 반환 ,로 구분"))
 print(gcd(n1,n2))
 
 #12번문제 15-4
@@ -144,15 +144,54 @@ print("옮기는 순서는 다음과 같습니다:")
 moveDisks(n, 'A', 'B', 'C')
 print("옮기고 난 횟수는 {0}".format(cnt))
 #14번문제 15-19
+n = eval(input("2진수로 변화하고 싶은 10진수 입력: "))
+strg = []
 def decimalToBinary(value):
-    print(value%2)
+    global strg
+    strg.append(value%2)
     if value == 1:
         return value
     else:
         value = value//2
         return decimalToBinary(value)
 
-decimalToBinary(7)
+decimalToBinary(n)
+strg.reverse()
+res =""
+for i in strg:
+    res += str(i)
+print(res)
 #15번문제 15-20
+n = eval(input("16진수로 변화하고 싶은 10진수 입력: "))
+strg =[]
+def decimalToHex(value):
+    global strg
+    res = value % 16
+    if res == 10:
+        strg.append("A")
+    elif res == 11:
+        strg.append("B")
+    elif res == 12:
+        strg.append("C")
+    elif res == 13:
+        strg.append("D")
+    elif res == 14:
+        strg.append("E")
+    elif res == 15:
+        strg.append("F")
+    else:
+        strg.append(res)
+    
+    if value < 16:
+        return value
+    else:
+        value = value//16
+        return decimalToHex(value)
+decimalToHex(n)
+strg.reverse()
+res = ""
+for i in strg:
+    res += str(i)
+print(res)
 
-
+input()
