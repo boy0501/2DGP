@@ -59,6 +59,100 @@ print("무작위 점의 홀수번호 안에 생성되는 개수는 : {0}입니�
 
 
 #6번문제
+def reverse(number):
+    num = str(number)
+    return num[::-1]
 
+
+def isPalindrome(number):
+    if (str(number) == reverse(number)):
+        return True
+    else:
+        return False
+num = eval(input("숫자입력시 대칭수인지 알려드림:"))
+if isPalindrome(num):
+    print("대칭수네요")
+else:
+    print("대칭수 아니네요")
+#7번문제 6-4
+#윗 문제에서 이미 했음
+print("345의 역수:{0}",reverse(345))
+
+#8번문제 6-5
+def displaySortedNumbers(num1,num2,num3):
+    lst = [num1,num2,num3]
+    lst.sort()
+    return lst
+n1,n2,n3 = eval(input("숫자 3개 입력"))
+lst = displaySortedNumbers(n1,n2,n3)
+print("정렬된 숫자는 {0},{1},{2} 입니다",format(lst[0],lst[1],lst[2]))
+
+
+#9번문제 6-12
+def printChars(ch1,ch2,numberPerLine):
+    n = 0
+    for i in range(ord(ch1),ord(ch2)+1):
+        if n%numberPerLine == 0:
+            print()
+        print(chr(i),end=' ')
+        n+=1
+printChars('1','Z',10)
+
+#10번문제 6-13
+def m(i):
+    res = 0
+    for n in range(1,i+1): #n = 1,2,3 ...., i
+        res += n/(n+1)
+    return res
+print("i\tm(i)")
+for i in range(1,21):
+    print("{0}\t{1:.3f}".format(i,m(i)))
+#11번문제 15-3
+
+def gcd(m,n):
+    if m%n == 0:
+        return n
+    else :
+        return gcd(n,m%n)
+n1,n2 = eval(input("숫자2개 입력시 최대공약수 반환"))
+print(gcd(n1,n2))
+
+#12번문제 15-4
+def m1(i):
+    if i > 1:
+        return 1/i + m(i-1)
+    else:
+        return 1
+
+print("재귀함수로 만든 m1(10)의 값은 {0}".format(m1(10)))
+
+#13번문제 15-18 
+cnt = 0
+def moveDisks(n, fromTower, toTower, auxTower):
+    global cnt 
+    cnt+=1
+    if n==1: #정지 조건
+        print("디스크 ", n, "을/를 ", fromTower, "에서 ", toTower, "로 옮긴다.")
+    else:
+        moveDisks(n-1, fromTower, auxTower, toTower)
+        print("디스크 ", n, "을/를 ", fromTower, "에서 ", toTower, "로 옮긴다.")
+        moveDisks(n-1, auxTower, toTower, fromTower)
+       
+n = eval(input("디스크의 개수를 입력하세요: "))
+#해결 방법을 재귀적으로 찾는다.
+print("옮기는 순서는 다음과 같습니다:")
+moveDisks(n, 'A', 'B', 'C')
+print("옮기고 난 횟수는 {0}".format(cnt))
+#14번문제 15-19
+def decimalToBinary(value):
+    print(value%2)
+    if value == 1:
+        return value
+    else:
+        value = value//2
+        return decimalToBinary(value)
+
+decimalToBinary(7)
+#15번문제 15-20
 
 
