@@ -1,15 +1,3 @@
-# Round = eval(input())
-# high = 0 
-# win = 0
-# for a in range(Round):
-#     row1 = [eval(i) for i in input().split()]
-#     if abs(row1[0]-row1[1]>high):
-#         high = abs(row1[0]-row1[1])
-#         if row1[0]>row1[1]:
-#             win = 1
-#         else:
-#             win = 2
-# print("{0}{1}".format(win,high))
 
 from tkinter import *
 from tkinter.filedialog import askopenfilename

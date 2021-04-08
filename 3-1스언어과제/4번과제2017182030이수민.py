@@ -147,3 +147,5 @@ fhang = line.split('\n')
 print("문자:",len(line))
 print("단어",len(flist))
 print("행:",len(fhang))
+
+input()
