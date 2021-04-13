@@ -14,45 +14,77 @@
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 import tkinter.messagebox
-
-def openfile():
-    fn = askopenfilename()
-    filename.set(fn)
-def showresult():
-    fn = filename.get()
-    fp = open(fn)
-    counts=[0]*26
-    raw = fp.read()
-    raw.lower()
-    for ch in raw:
-        if ch.isalpha():
-            counts[ord(ch.lower())-ord('a')] += 1
-    for i in range(26):
-        if counts[i]:
-            text.insert(END,chr(ord('a')+i)+' - '+str(counts[i])+'번 나타납니다.\n')
-
-window = Tk()
-window.title('문자의 출현 빈도수')
-frame1 = Frame(window)
-frame1.pack()
-scrollbar = Scrollbar(frame1)
-scrollbar.pack(side=RIGHT,fill=Y)
-
-text = Text(frame1,width=22,height=20,wrap=WORD,yscrollcommand = scrollbar.set)
-text.pack()
-scrollbar.config(command=text.yview)
+import random
+colors = ['red','green','cyan','white','black','orange','blue']
+class Ball():
+    def __init__(self,x,y,r):
+        self.x=x
+        self.y=y
+        self.r=r
+        self.dx = 1
+        self.dy = 1
+        self.spd = 2
+        self.color = colors[random.randint(0,6)]
 
 
-frame2 = Frame(window)
-frame2.pack()
-Label(frame2,text="파일명을 입력하세요:").pack(side=LEFT)
-filename = StringVar()
-Entry(frame2,width=20,textvariable=filename).pack(side=LEFT)
-Button(frame2,text="열기",command=openfile).pack(side= LEFT)
-Button(frame2,text="결과보기",command=showresult).pack(side = LEFT)
+class MainGUI():
+    def __init__(self):
+        window = Tk()
+        window.title('공 옮기기')
+        self.width = 400
+        self.height = 200
+        self.Blist = []
+        self.isstop = False
+        self.sleeptime = 100
+        self.canvas = Canvas(window,width=self.width,height=self.height,bg='white')
+        self.canvas.pack()
+        frame = Frame(window)
+        frame.pack()
+        Button(frame,text='정지',command=self.stop).pack(side=LEFT)
+        Button(frame,text='재시작',command=self.resume).pack(side=LEFT)
+        Button(frame,text='+',command=self.add).pack(side=LEFT)
+        Button(frame,text='-',command=self.subtract).pack(side=LEFT)
+        Button(frame,text='빠르게',command=self.faster).pack(side=LEFT)
+        Button(frame,text='느리게',command=self.slower).pack(side=LEFT)
+        self.render()
+        window.mainloop()
+    def stop(self):
+        self.isstop = True
+    def resume(self):
+        self.isstop = False
+        self.render()
+    def add(self):
+        self.Blist.append(Ball(10,20,5))
+    def subtract(self):
+        self.Blist.pop()
+    def faster(self):
+        if self.sleeptime >5:
+            self.sleeptime -= 5
+    def slower(self):
+        self.sleeptime += 5
+    def render(self):
+        while not self.isstop:
+            
+            self.canvas.after(self.sleeptime)
+            self.canvas.update()
+            self.canvas.delete('ball')
 
+            for ball in self.Blist:
+                if ball.x >= self.width:
+                    ball.dx *= -1
+                if ball.x < 0:
+                    ball.dx *= -1
+                if ball.y >= self.height:
+                    ball.dy *= -1
+                if ball.y < 0:
+                    ball.dy *= -1
+                ball.x += ball.dx * ball.spd
+                ball.y += ball.dy * ball.spd
+                self.canvas.create_oval(ball.x-ball.r,ball.y-ball.r,ball.x+ball.r,ball.y+ball.r,fill=ball.color,tags='ball')
 
+    def logic(self):
+        pass
+    def inputs(self):
+        pass
 
-
-
-window.mainloop()
+MainGUI()
