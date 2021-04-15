@@ -222,7 +222,7 @@ print("2번원소 합 :",sumColumn(row,2))
 print("3번원소 합 :",sumColumn(row,3))
 
 print("#19번")
-lst = [eval(i) for i in input("정수를 입력하세요").split()]
+lst = c
 res = {}
 for i in lst:
     if i not in res:
