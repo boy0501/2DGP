@@ -1,3 +1,120 @@
+import copy
+
+K = eval(input())
+lst1 = [eval(i) for i in input().split()]
+cnt = 0 
+answer = copy.deepcopy(lst1)
+answer.sort()
+check = 0
+goj = []
+while True:
+    if cnt == len(lst1):
+        break
+    if lst1 == answer:
+        break
+    dest = 0 
+    i = cnt - 1
+    for i in range(len(lst1)-1):
+        if lst1[i]>lst1[i+1]:
+            dest = i
+    tmp = lst1[cnt]
+    del lst1[cnt]
+    lst1.insert(dest,tmp)
+    #cnt += 1
+    check += 1
+
+print(check)
+# import copy
+
+# K = eval(input())
+# lst1 = [eval(i) for i in input().split()]
+# cnt = 0 
+# answer = copy.deepcopy(lst1)
+# answer.sort()
+# check = 0
+# goj = []
+# while True:
+#     if cnt == len(lst1):
+#         break
+#     if lst1 == answer:
+#         break
+#     if lst1[cnt] != cnt+1:
+#         tmp = lst1[cnt]
+#         if lst1[lst1[cnt]-1] == cnt+1:
+#             goj.append(lst1[cnt]-1)
+#             lst1[lst1[cnt]-1],lst1[cnt] = lst1[cnt],lst1[lst1[cnt]-1]
+#             cnt += 1 
+#         else:
+#             myc = 0
+#             for i in goj:
+#                 if cnt < i :
+#                     lst1[lst1[cnt]-1],lst1[cnt] = lst1[cnt],lst1[lst1[cnt]-1]
+#                     goj.append(lst1[cnt]-1)
+#                     #cnt += 1
+#                     myc = 1
+#                     break
+#             if myc == 0:
+#                 del lst1[cnt]
+#                 lst1.insert(tmp-1,tmp)
+#                 goj.append(tmp-1)
+#     else:
+#         cnt += 1
+#     check += 1
+
+# print(check)
+
+# K,N = map(int,input().split())
+# #K = 0의 개수
+# #N = 숫자 까지 ㅇㅇ
+# check = 0
+# for i in range(N):
+#     a = bin(i)
+#     b = a[2:]           #0
+#     a = bin(i+1)
+#     c = a[2:]           #1
+
+#     for i in range(len(b)): #작은길이기준
+#         if b[-(i+1)] != c[-(i+1)]:
+#             check += 1
+#     for i in range(len(c)-len(b)):
+#         if b[i] == "1":
+#             check+=1
+# print(check)
+
+
+
+# import copy
+# K,N = map(int,input().split())
+# #K = 0의 개수
+# #N = 숫자 까지 ㅇㅇ
+# bin_list = []
+# for i in range(K):
+#     bin_list.append(0)
+# big = []
+# for i in range(N+1):
+#     a = bin(i)
+#     cnt = 0
+#     for i in a[2:]:
+#         len(a) 
+#         if bin_list[-(len(a)-2) + cnt] != int(i):
+#             bin_list[-(len(a)-2) + cnt] = 1
+#         cnt += 1
+
+#     big.append(copy.deepcopy(bin_list))
+#     for i in range(K):
+#         bin_list[i] = 0
+
+# res = 0 
+# sumres = 0 
+# for i in range(N):
+#     res = 0 
+#     j = 0
+#     for j in range(K):
+#         if big[i][j] != big[i+1][j] :
+#             res += 1
+#     sumres += res
+
+# print(sumres)
 
 
 ###########################
@@ -74,82 +191,3 @@
 # for i in m_list:
 #     i.sort(key=lambda x:x[1])
 # print(m_list)
-
-from tkinter import *
-from tkinter.filedialog import askopenfilename
-import tkinter.messagebox
-from tkinter.simpledialog import *
-from random import *
-
-
-
-class MainGUI():
-    def check(self):
-        fourCards = []
-        for i in range(4):
-            fourCards.append(self.idx[i]%13)
-        fourCards.sort()
-        fourCards = [x for x in fourCards]
-        ex = self.answer.get()
-        ex = ex.replace('+',' ')
-        ex = ex.replace('-',' ')
-        ex = ex.replace('*',' ')
-        ex = ex.replace('/',' ')
-        ex = ex.replace('(',' ')
-        ex = ex.replace(')',' ')
-        numbers = ex.split()
-        numbers = [eval(x) for x in numbers]
-        numbers.sort()
-        if fourCards == numbers:
-            if eval(self.answer.get()) == 24:
-                tkinter.messagebox.showerror("맞음","ㅇㅇ")
-            else:
-                tkinter.messagebox.showerror("틀림",self.answer.get() + "아님 값틀림")
-        else:
-            tkinter.messagebox.showerror("틀림","보여지는 카드 사용")
-
-
-    def regen(self):
-        cnt = 0
-        while(True):
-            rancard = randint(1,51)
-            if rancard not in self.idx:
-                self.card_list[cnt] = PhotoImage(file = "book/pybook/image/card/"+str(rancard)+".gif")
-                self.idx[cnt] = rancard
-                cnt += 1
-            if cnt == 4:
-                break        
-        for i in range(4):
-            self.LabelList[i]['image'] = self.card_list[i]
-    def __init__(self):
-        window = Tk()
-        window.title('24점 게임')
-        self.card_list = []
-        self.idx =[]
-        cnt = 0
-        self.frame1 = Frame(window)
-        self.frame1.pack()
-        Button(self.frame1,command=self.regen,text="새로고침").pack()
-        self.frame2 = Frame(window)
-        self.frame2.pack()
-        while(True):
-            rancard = randint(1,51)
-            if rancard not in self.idx:
-                self.card_list.append(PhotoImage(file = "book/pybook/image/card/"+str(rancard)+".gif"))
-                self.idx.append(rancard)
-                cnt += 1
-            if cnt == 4:
-                break
-        self.LabelList = []
-        for i in range(4):
-            self.LabelList.append(Label(self.frame2,image=self.card_list[i]))
-            self.LabelList[i].pack(side=LEFT)
-        self.frame3 = Frame(window)
-        self.frame3.pack()
-        Label(self.frame3,text="수식을 입력하세요:").pack(side=LEFT)
-        self.answer = StringVar()
-        Entry(self.frame3,textvariable=self.answer).pack(side=LEFT)
-        Button(self.frame3,text='확인',command=self.check).pack(side=LEFT)
-
-        window.mainloop()
-MainGUI()
