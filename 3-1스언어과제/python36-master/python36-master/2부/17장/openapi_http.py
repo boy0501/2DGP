@@ -1,11 +1,11 @@
-# -*- coding:cp949 -*-
+# -*- coding:utf-8 -*-
 import os
 import sys
 import http.client
 from xml.dom.minidom import parseString
 
-client_id = "CLIENT ID"
-client_secret = "CLIENT SECRET"
+client_id = "S7fGGakFOmfmtLzSe14I"
+client_secret = "4sTS8akHcj"
 
 #openAPI가 https 프로토콜을 사용하기 때문에 HTTPSConnection 을 사용함.
 conn = http.client.HTTPSConnection("openapi.naver.com")

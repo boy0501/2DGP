@@ -1,4 +1,4 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf-8 -*-
 import smtplib
 from email.base64mime import body_encode as encode_base64
 

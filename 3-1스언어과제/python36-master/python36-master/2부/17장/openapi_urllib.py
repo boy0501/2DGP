@@ -1,12 +1,12 @@
-# -*- coding:cp949 -*-
+# -*- coding:utf-8 -*-
 import os
 import sys
 import urllib.request
 from xml.dom.minidom import parseString
 
-client_id = "CLIENT ID"
-client_secret = "CLIENT SECRET"
-encText = urllib.parse.quote("love")
+client_id = "S7fGGakFOmfmtLzSe14I"
+client_secret = "4sTS8akHcj"
+encText = urllib.parse.quote("파이썬")
 url = "https://openapi.naver.com/v1/search/book.xml?query=" + encText
 url += "&display=10&start=1"
 resp = None

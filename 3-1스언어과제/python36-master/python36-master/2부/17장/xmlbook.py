@@ -1,4 +1,4 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf-8 -*-
 from xml.dom.minidom import parse, parseString
 from xml.etree import ElementTree
 
@@ -6,12 +6,12 @@ from xml.etree import ElementTree
 xmlFD = -1
 BooksDoc = None
 
-#### xml °ü·Ã ÇÔ¼ö ±¸Çö
+#### xml ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
 def LoadXMLFromFile():
     fileName = str(input ("please input file name to load :"))
     global xmlFD, BooksDoc
     try:
-        xmlFD = open(fileName)
+        xmlFD = open('python36-master/python36-master/2ë¶€/16ìž¥/' + fileName)
     except IOError:
         print ("invalid file name or path")
     else:
@@ -52,14 +52,14 @@ def AddBook(bookdata):
      if not checkDocument() :
         return None
      
-     # book ¿¤¸®¸ÕÆ® »ý¼º
+     # book ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
      newBook = BooksDoc.createElement('book')
      newBook.setAttribute('ISBN',bookdata['ISBN'])
-     # Title ¿¤¸®¸ÕÆ® »ý¼º
+     # Title ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
      titleEle = BooksDoc.createElement('title')
-     # ÅØ½ºÆ® ³ëµå »ý¼º
+     # ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
      titleNode = BooksDoc.createTextNode(bookdata['title'])
-     # ÅØ½ºÆ® ³ëµå¸¦ Title ¿¤¸®¸ÕÆ®¿Í ¿¬°á
+     # ï¿½Ø½ï¿½Æ® ï¿½ï¿½å¸¦ Title ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
      try:
          titleEle.appendChild(titleNode)
      except Exception:
@@ -68,7 +68,7 @@ def AddBook(bookdata):
      else:
          titleEle.appendChild(titleNode)
 
-     # Title ¿¤¸®¸ÕÆ®¸¦ Book ¿¤¸®¸ÕÆ®¿Í ¿¬°á.
+     # Title ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ Book ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
      try:
          newBook.appendChild(titleEle)
          booklist = BooksDoc.firstChild
@@ -105,12 +105,12 @@ def MakeHtmlDoc(BookList):
     #get Dom Implementation
     impl = getDOMImplementation()
     
-    newdoc = impl.createDocument(None, "html", None)  #DOM °´Ã¼ »ý¼º
+    newdoc = impl.createDocument(None, "html", None)  #DOM ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
     top_element = newdoc.documentElement
     header = newdoc.createElement('header')
     top_element.appendChild(header)
 
-    # Body ¿¤¸®¸ÕÆ® »ý¼º.
+    # Body ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½.
     body = newdoc.createElement('body')
 
     for bookitem in BookList:
@@ -122,7 +122,7 @@ def MakeHtmlDoc(BookList):
 
         body.appendChild(b)
     
-        # BR ÅÂ±× (¿¤¸®¸ÕÆ®) »ý¼º.
+        # BR ï¿½Â±ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®) ï¿½ï¿½ï¿½ï¿½.
         br = newdoc.createElement('br')
 
         body.appendChild(br)

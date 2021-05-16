@@ -1,4 +1,4 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf-8 -*-
 import smtplib
 import mimetypes
 
@@ -11,8 +11,8 @@ host = "smtp.test.com" #your smtp address
 htmlFileName = "logo.html"
 imageFileName = "logo.gif"
 
-senderAddr = "test@send.com"     #º¸³»´Â »ç¶÷ email ÁÖ¼Ò.
-recipientAddr = "test@rec.com"   #¹Þ´Â »ç¶÷ email ÁÖ¼Ò.
+senderAddr = "test@send.com"     #ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ email ï¿½Ö¼ï¿½.
+recipientAddr = "test@rec.com"   #ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ email ï¿½Ö¼ï¿½.
 
 #create MMIMEBase 
 msg = MIMEBase("multipart", "mixed")
@@ -30,11 +30,11 @@ imageFD = open(imageFileName, 'rb')
 ImagePart = MIMEImage(imageFD.read())
 imageFD.close()
 
-# ¸¸µé¾ú´ø mimeÀ» MIMEBase¿¡ Ã·ºÎ ½ÃÅ²´Ù.
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ mimeï¿½ï¿½ MIMEBaseï¿½ï¿½ Ã·ï¿½ï¿½ ï¿½ï¿½Å²ï¿½ï¿½.
 msg.attach(ImagePart)
 msg.attach(HtmlPart)
 
-#Çì´õ¿¡ Ã·ºÎ ÆÄÀÏ¿¡ ´ëÇÑ Á¤º¸¸¦ Ãß°¡ ½ÃÅ²´Ù.
+#ï¿½ï¿½ï¿½ï¿½ï¿½ Ã·ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½Å²ï¿½ï¿½.
 msg.add_header('Content-Disposition','attachment',filename=imageFileName)
 
 msg['Subject'] = "test python email"
@@ -42,7 +42,7 @@ msg['From'] = senderAddr
 msg['To'] = recipientAddr
 
 
-#¸ÞÀÏÀ» ¹ß¼ÛÇÑ´Ù.
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¼ï¿½ï¿½Ñ´ï¿½.
 s = smtplib.SMTP(host)
 s.connect()
 s.sendmail(senderAddr , [recipientAddr], msg.as_string())
