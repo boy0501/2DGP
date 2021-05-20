@@ -1,37 +1,37 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf-8 -*-
 import mimetypes
 import mysmtplib
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
 #global value
-host = "smtp.gmail.com" # Gmail STMP ¼­¹ö ÁÖ¼Ò.
+host = "smtp.gmail.com" # Gmail STMP ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½.
 port = "587"
-htmlFileName = "logo.html"
+htmlFileName = "python36-master/python36-master/2ë¶€/17ìž¥/logo.html"
 
-senderAddr = "mil*****@gmail.com"     # º¸³»´Â »ç¶÷ email ÁÖ¼Ò.
-recipientAddr = "mi****@naver.com"   # ¹Þ´Â »ç¶÷ email ÁÖ¼Ò.
+senderAddr = "ic96085137@gmail.com"     # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ email ï¿½Ö¼ï¿½.
+recipientAddr = "boy0501@naver.com"   # ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ email ï¿½Ö¼ï¿½.
 
 msg = MIMEBase("multipart", "alternative")
 msg['Subject'] = "Test email in Python 3.0"
 msg['From'] = senderAddr
 msg['To'] = recipientAddr
 
-# MIME ¹®¼­¸¦ »ý¼ºÇÕ´Ï´Ù.
+# MIME ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 htmlFD = open(htmlFileName, 'rb')
 HtmlPart = MIMEText(htmlFD.read(),'html', _charset = 'UTF-8' )
 htmlFD.close()
 
-# ¸¸µé¾ú´ø mimeÀ» MIMEBase¿¡ Ã·ºÎ ½ÃÅ²´Ù.
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ mimeï¿½ï¿½ MIMEBaseï¿½ï¿½ Ã·ï¿½ï¿½ ï¿½ï¿½Å²ï¿½ï¿½.
 msg.attach(HtmlPart)
 
-# ¸ÞÀÏÀ» ¹ß¼ÛÇÑ´Ù.
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¼ï¿½ï¿½Ñ´ï¿½.
 s = mysmtplib.MySMTP(host,port)
-#s.set_debuglevel(1)        # µð¹ö±ëÀÌ ÇÊ¿äÇÒ °æ¿ì ÁÖ¼®À» Ç¬´Ù.
+#s.set_debuglevel(1)        # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½ Ç¬ï¿½ï¿½.
 s.ehlo()
 s.starttls()
 s.ehlo()
-s.login("mil******@gmail.com","**********")
+s.login("ic96085137@gmail.com","tnals00..")
 s.sendmail(senderAddr , [recipientAddr], msg.as_string())
 s.close()
 

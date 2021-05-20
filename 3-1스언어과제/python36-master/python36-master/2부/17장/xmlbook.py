@@ -92,7 +92,7 @@ def SearchBookTitle(keyword):
         return None
     
     #get Book Element
-    bookElements = tree.getiterator("book")  # return list type
+    bookElements = tree.iter("book")  # return list type
     for item in bookElements:
         strTitle = item.find("title")
         if (strTitle.text.find(keyword) >=0 ):

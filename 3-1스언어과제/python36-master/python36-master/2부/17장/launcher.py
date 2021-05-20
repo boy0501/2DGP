@@ -35,7 +35,7 @@ def launcherFunction(menu):
     elif menu == 'e':
         keyword = str(input ('input keyword to search :'))
         printBookList(SearchBookTitle(keyword))
-    elif menu == 'g': 
+    elif menu == 'g':
         isbn = str(input ('input isbn to get :'))
         #isbn = '0596513984'
         ret = getBookDataFromISBN(isbn)

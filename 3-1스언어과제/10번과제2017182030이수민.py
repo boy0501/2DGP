@@ -1,0 +1,4 @@
+
+
+class Configuration:
+    configs = ["Category"]
