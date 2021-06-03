@@ -172,7 +172,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney -= 50
 
@@ -184,7 +184,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney -= 10
     def pressedB1(self):
@@ -195,7 +195,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney -= 1
     def pressedB50P2(self):
@@ -206,7 +206,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney2 -= 50
 
@@ -218,7 +218,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney2 -= 10
     def pressedB1P2(self):
@@ -229,7 +229,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney2 -= 1
     def pressedB50P3(self):
@@ -240,7 +240,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney3 -= 50
 
@@ -252,7 +252,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney3 -= 10
     def pressedB1P3(self):
@@ -263,7 +263,7 @@ class DoriDori:
             self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
             self.Deal["state"] = "active"
             self.Deal["bg"] = "white"
-            #Playsound('sounds/chip.wav', SND_FILENAME)
+            PlaySound('sounds/chip.wav', SND_FILENAME)
         else:
             self.betMoney3 -= 1
 
@@ -345,7 +345,7 @@ class DoriDori:
             self.nCardsPlayer = 1
             self.nCardsDealer = 0
             firstbetting += 1
-            #Playsound('sounds/cardFlip1.wav', SND_FILENAME)
+            PlaySound('sounds/cardFlip1.wav', SND_FILENAME)
         elif firstbetting == 1:
             self.hitPlayer(1)
             self.hitPlayer(2)
@@ -354,7 +354,7 @@ class DoriDori:
             self.hitDealerDown(2)
             self.hitDealerDown(3)
             firstbetting += 1
-            #Playsound('sounds/cardFlip1.wav', SND_FILENAME)
+            PlaySound('sounds/cardFlip1.wav', SND_FILENAME)
         else:
             self.hitPlayer(4)
             self.hitDealerDown(4)
@@ -416,7 +416,7 @@ class DoriDori:
         #파이썬은 라벨 이미지 레퍼런스를 갖고 있어야 이미지가 보임
         self.LcardsDealer[self.dealer.inHand() - 1].image = p
         self.LcardsDealer[self.dealer.inHand() - 1].place(x=280+n*30,y=150)
-        #Playsound('sounds/cardFlip1.wav', SND_FILENAME)
+        PlaySound('sounds/cardFlip1.wav', SND_FILENAME)
     
     def pressedHit(self):
         self.nCardsPlayer += 1
@@ -612,9 +612,9 @@ class DoriDori:
             self.playerwin3.configure(text="패")
 
         if winplayeris == True:
-            pass#Playsound('sounds/win.wav', SND_FILENAME)
+            PlaySound('sounds/win.wav', SND_FILENAME)
         else:
-            pass#Playsound('sounds/wrong.wav', SND_FILENAME)
+            PlaySound('sounds/wrong.wav', SND_FILENAME)
             
 
 
