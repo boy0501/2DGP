@@ -1,5 +1,5 @@
 # *-* coding: cp949 -*- 
-from xml.dom.minidom import parse, parseString # minidom ¸ðµâÀÇ ÆÄ½Ì ÇÔ¼ö¸¦ ÀÓÆ÷Æ®ÇÕ´Ï´Ù.
+from xml.dom.minidom import parse, parseString # minidom ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Õ´Ï´ï¿½.
 from xml.etree import ElementTree
 
 ##### global
@@ -48,17 +48,17 @@ def launcherFunction(menu):
 
 #### xml function implementation
 def LoadXMLFromFile():
-    fileName = str(input ("please input file name to load :"))  # ÀÐ¾î¿Ã ÆÄÀÏ°æ·Î¸¦ ÀÔ·Â ¹Þ½À´Ï´Ù.
+    fileName = str(input ("please input file name to load :"))  # ï¿½Ð¾ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½Î¸ï¿½ ï¿½Ô·ï¿½ ï¿½Þ½ï¿½ï¿½Ï´ï¿½.
     global xmlFD
  
     try:
-        xmlFD = open(fileName)   # xml ¹®¼­¸¦ openÇÕ´Ï´Ù.
+        xmlFD = open(fileName)   # xml ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ openï¿½Õ´Ï´ï¿½.
     except IOError:
         print ("invalid file name or path")
         return None
     else:
         try:
-            dom = parse(xmlFD)   # XML ¹®¼­¸¦ ÆÄ½ÌÇÕ´Ï´Ù.
+            dom = parse(xmlFD)   # XML ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä½ï¿½ï¿½Õ´Ï´ï¿½.
         except Exception:
             print ("loading fail!!!")
         else:
@@ -68,7 +68,7 @@ def LoadXMLFromFile():
 
 def BooksFree():
     if checkDocument():
-        BooksDoc.unlink()   # minidom °´Ã¼ ¸Þ¸ð¸®¸¦ ÇØÁ¦ÇÕ´Ï´Ù.
+        BooksDoc.unlink()   # minidom ï¿½ï¿½Ã¼ ï¿½Þ¸ð¸®¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
      
 def QuitBookMgr():
     global loopFlag
